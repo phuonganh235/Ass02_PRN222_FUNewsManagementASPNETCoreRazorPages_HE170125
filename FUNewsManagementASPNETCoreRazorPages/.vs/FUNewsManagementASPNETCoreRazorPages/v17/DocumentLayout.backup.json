@@ -3,20 +3,44 @@
   "WorkspaceRootPath": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A9903301-03F8-472A-96F4-4E536ECC166B}|Services\\Services.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\services\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A9903301-03F8-472A-96F4-4E536ECC166B}|Services\\Services.csproj|solutionrelative:services\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D1F16E64-1A77-4E58-9E42-BA7571D8BBE0}|DataAccessObjects\\DataAccessObjects.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\dataaccessobjects\\funewsmanagementcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1F16E64-1A77-4E58-9E42-BA7571D8BBE0}|DataAccessObjects\\DataAccessObjects.csproj|solutionrelative:dataaccessobjects\\funewsmanagementcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\businessobjects\\newstag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|solutionrelative:businessobjects\\newstag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\businessobjects\\newsarticle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|solutionrelative:businessobjects\\newsarticle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\businessobjects\\tag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|solutionrelative:businessobjects\\tag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\businessobjects\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|solutionrelative:businessobjects\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\businessobjects\\systemaccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|solutionrelative:businessobjects\\systemaccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C7C5198D-ACA8-4FFA-ACF6-927961FA2D77}|Repositories\\Repositories.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\repositories\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7C5198D-ACA8-4FFA-ACF6-927961FA2D77}|Repositories\\Repositories.csproj|solutionrelative:repositories\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C7C5198D-ACA8-4FFA-ACF6-927961FA2D77}|Repositories\\Repositories.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\repositories\\igenericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7C5198D-ACA8-4FFA-ACF6-927961FA2D77}|Repositories\\Repositories.csproj|solutionrelative:repositories\\igenericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C7C5198D-ACA8-4FFA-ACF6-927961FA2D77}|Repositories\\Repositories.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\repositories\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C7C5198D-ACA8-4FFA-ACF6-927961FA2D77}|Repositories\\Repositories.csproj|solutionrelative:repositories\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D1F16E64-1A77-4E58-9E42-BA7571D8BBE0}|DataAccessObjects\\DataAccessObjects.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\dataaccessobjects\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D1F16E64-1A77-4E58-9E42-BA7571D8BBE0}|DataAccessObjects\\DataAccessObjects.csproj|solutionrelative:dataaccessobjects\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\businessobjects\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B7E86E82-2363-48E9-94DC-F6C695528D2B}|BusinessObjects\\BusinessObjects.csproj|solutionrelative:businessobjects\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A9903301-03F8-472A-96F4-4E536ECC166B}|Services\\Services.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementaspnetcorerazorpages\\services\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A9903301-03F8-472A-96F4-4E536ECC166B}|Services\\Services.csproj|solutionrelative:services\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 19,
+          "SelectedChildIndex": 26,
           "Children": [
             {
               "$type": "Bookmark",
@@ -106,7 +130,111 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "GenericRepository.cs",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\Repositories\\GenericRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\GenericRepository.cs",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\Repositories\\GenericRepository.cs",
+              "RelativeToolTip": "Repositories\\GenericRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T18:17:23.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IGenericRepository.cs",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\Repositories\\IGenericRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\IGenericRepository.cs",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\Repositories\\IGenericRepository.cs",
+              "RelativeToolTip": "Repositories\\IGenericRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T18:16:57.997Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NewsTag.cs",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\NewsTag.cs",
+              "RelativeDocumentMoniker": "BusinessObjects\\NewsTag.cs",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\NewsTag.cs",
+              "RelativeToolTip": "BusinessObjects\\NewsTag.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:53:59.173Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NewsArticle.cs",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\NewsArticle.cs",
+              "RelativeDocumentMoniker": "BusinessObjects\\NewsArticle.cs",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\NewsArticle.cs",
+              "RelativeToolTip": "BusinessObjects\\NewsArticle.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAA7wCAAAABNAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:53:32.785Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Tag.cs",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\Tag.cs",
+              "RelativeDocumentMoniker": "BusinessObjects\\Tag.cs",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\Tag.cs",
+              "RelativeToolTip": "BusinessObjects\\Tag.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:53:21.805Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Category.cs",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\Category.cs",
+              "RelativeDocumentMoniker": "BusinessObjects\\Category.cs",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\Category.cs",
+              "RelativeToolTip": "BusinessObjects\\Category.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:52:54.107Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SystemAccount.cs",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\SystemAccount.cs",
+              "RelativeDocumentMoniker": "BusinessObjects\\SystemAccount.cs",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\SystemAccount.cs",
+              "RelativeToolTip": "BusinessObjects\\SystemAccount.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwBIAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:52:18.057Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "FunewsManagementContext.cs",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\DataAccessObjects\\FunewsManagementContext.cs",
+              "RelativeDocumentMoniker": "DataAccessObjects\\FunewsManagementContext.cs",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\DataAccessObjects\\FunewsManagementContext.cs",
+              "RelativeToolTip": "DataAccessObjects\\FunewsManagementContext.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAADwvw0AAABNAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:31:13.756Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "Class1.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\Services\\Class1.cs",
               "RelativeDocumentMoniker": "Services\\Class1.cs",
@@ -119,41 +247,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "Class1.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\Repositories\\Class1.cs",
               "RelativeDocumentMoniker": "Repositories\\Class1.cs",
               "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\Repositories\\Class1.cs",
               "RelativeToolTip": "Repositories\\Class1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-28T17:01:13.458Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Class1.cs",
-              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\DataAccessObjects\\Class1.cs",
-              "RelativeDocumentMoniker": "DataAccessObjects\\Class1.cs",
-              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\DataAccessObjects\\Class1.cs",
-              "RelativeToolTip": "DataAccessObjects\\Class1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:59:13.82Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Class1.cs",
-              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\Class1.cs",
-              "RelativeDocumentMoniker": "BusinessObjects\\Class1.cs",
-              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementASPNETCoreRazorPages\\BusinessObjects\\Class1.cs",
-              "RelativeToolTip": "BusinessObjects\\Class1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:56:51.104Z",
               "EditorCaption": ""
             }
           ]

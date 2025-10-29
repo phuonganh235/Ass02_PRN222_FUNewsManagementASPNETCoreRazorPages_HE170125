@@ -9,11 +9,12 @@ public partial class SystemAccount
 
     public string? AccountName { get; set; }
 
-    public string? AccountEmail { get; set; }
+    public string? AccountEmail { get; set; } = string.Empty;
 
     public int? AccountRole { get; set; }
 
-    public string? AccountPassword { get; set; }
+    public string? AccountPassword { get; set; } = string.Empty ;
 
-    public virtual ICollection<NewsArticle> NewsArticles { get; set; } = new List<NewsArticle>();
+    public ICollection<NewsArticle> CreatedNews { get; set; } = new List<NewsArticle>();
+    public ICollection<NewsArticle> UpdatedNews { get; set; } = new List<NewsArticle>();
 }

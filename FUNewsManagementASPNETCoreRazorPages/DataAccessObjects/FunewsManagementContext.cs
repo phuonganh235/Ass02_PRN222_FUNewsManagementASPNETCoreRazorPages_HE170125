@@ -7,130 +7,128 @@ namespace BusinessObjects;
 
 public partial class FunewsManagementContext : DbContext
 {
-    public FunewsManagementContext()
-    {
-    }
+    public FunewsManagementContext() { }
 
-    public FunewsManagementContext(DbContextOptions<FunewsManagementContext> options)
-        : base(options)
-    {
-    }
+    public FunewsManagementContext(DbContextOptions<FunewsManagementContext> options) : base(options) { }
 
-    public virtual DbSet<Category> Categories { get; set; }
-
-    public virtual DbSet<NewsArticle> NewsArticles { get; set; }
-
-    public virtual DbSet<SystemAccount> SystemAccounts { get; set; }
-
-    public virtual DbSet<Tag> Tags { get; set; }
-
-    private string GetConnectionString()
-    {
-        IConfiguration configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true).Build();
-        return configuration["ConnectionStrings:DefaultConnectionString"];
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(GetConnectionString());
-    }
+    public virtual DbSet<SystemAccount> SystemAccounts { get; set; } = null!;
+    public virtual DbSet<Category> Categories { get; set; } = null!;
+    public virtual DbSet<Tag> Tags { get; set; } = null!;
+    public virtual DbSet<NewsArticle> NewsArticles { get; set; } = null!;
+    public virtual DbSet<NewsTag> NewsTags { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // -------- SystemAccount ----------
+        modelBuilder.Entity<SystemAccount>(entity =>
+        {
+            entity.ToTable("SystemAccount");
+            entity.HasKey(e => e.AccountId);
+            entity.Property(e => e.AccountId).HasColumnName("AccountID"); // smallint
+            entity.Property(e => e.AccountName).HasMaxLength(100);
+            entity.Property(e => e.AccountEmail).HasMaxLength(70);
+            entity.Property(e => e.AccountPassword).HasMaxLength(70);
+            entity.Property(e => e.AccountRole); // int
+
+            entity.HasMany(e => e.CreatedNews)
+                  .WithOne(n => n.CreatedBy)
+                  .HasForeignKey(n => n.CreatedById)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(e => e.UpdatedNews)
+                  .WithOne(n => n.UpdatedBy)
+                  .HasForeignKey(n => n.UpdatedById)
+                  .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        // -------- Category ----------
         modelBuilder.Entity<Category>(entity =>
         {
             entity.ToTable("Category");
-
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-            entity.Property(e => e.CategoryDesciption).HasMaxLength(250);
+            entity.HasKey(e => e.CategoryId);
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryID"); // smallint
             entity.Property(e => e.CategoryName).HasMaxLength(100);
-            entity.Property(e => e.ParentCategoryId).HasColumnName("ParentCategoryID");
+            // GIỮ NGUYÊN TÊN CỘT BỊ TYPO
+            entity.Property(e => e.CategoryDesciption)
+                  .HasColumnName("CategoryDesciption")
+                  .HasMaxLength(250);
 
-            entity.HasOne(d => d.ParentCategory).WithMany(p => p.InverseParentCategory)
-                .HasForeignKey(d => d.ParentCategoryId)
-                .HasConstraintName("FK_Category_Category");
+            entity.Property(e => e.ParentCategoryId).HasColumnName("ParentCategoryID");
+            entity.Property(e => e.IsActive);
+
+            entity.HasOne(e => e.ParentCategory)
+                  .WithMany(e => e.SubCategories)
+                  .HasForeignKey(e => e.ParentCategoryId)
+                  .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
+        // -------- Tag ----------
+        modelBuilder.Entity<Tag>(entity =>
+        {
+            entity.ToTable("Tag");
+            entity.HasKey(e => e.TagId);
+            entity.Property(e => e.TagId).HasColumnName("TagID");
+            entity.Property(e => e.TagName).HasMaxLength(50);
+            entity.Property(e => e.Note).HasMaxLength(400);
+        });
+
+        // -------- NewsArticle ----------
         modelBuilder.Entity<NewsArticle>(entity =>
         {
             entity.ToTable("NewsArticle");
-
+            entity.HasKey(e => e.NewsArticleId);
             entity.Property(e => e.NewsArticleId)
-                .HasMaxLength(20)
-                .HasColumnName("NewsArticleID");
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-            entity.Property(e => e.CreatedById).HasColumnName("CreatedByID");
-            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.Headline).HasMaxLength(150);
-            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                  .HasColumnName("NewsArticleID")
+                  .HasMaxLength(20);
+
+            entity.Property(e => e.NewsTitle).HasMaxLength(400);
+            entity.Property(e => e.Headline).HasMaxLength(150).IsRequired();
+            entity.Property(e => e.CreatedDate);
             entity.Property(e => e.NewsContent).HasMaxLength(4000);
             entity.Property(e => e.NewsSource).HasMaxLength(400);
-            entity.Property(e => e.NewsTitle).HasMaxLength(400);
-            entity.Property(e => e.UpdatedById).HasColumnName("UpdatedByID");
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");       // smallint?
+            entity.Property(e => e.NewsStatus);                                   // bit
+            entity.Property(e => e.CreatedById).HasColumnName("CreatedByID");     // smallint
+            entity.Property(e => e.UpdatedById).HasColumnName("UpdatedByID");     // smallint
+            entity.Property(e => e.ModifiedDate);
 
-            entity.HasOne(d => d.Category).WithMany(p => p.NewsArticles)
-                .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_NewsArticle_Category");
+            entity.HasOne(e => e.Category)
+                  .WithMany(c => c.NewsArticles)
+                  .HasForeignKey(e => e.CategoryId)
+                  .OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasOne(d => d.CreatedBy).WithMany(p => p.NewsArticles)
-                .HasForeignKey(d => d.CreatedById)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_NewsArticle_SystemAccount");
+            entity.HasOne(e => e.CreatedBy)
+                  .WithMany(a => a.CreatedNews)
+                  .HasForeignKey(e => e.CreatedById)
+                  .OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasMany(d => d.Tags).WithMany(p => p.NewsArticles)
-                .UsingEntity<Dictionary<string, object>>(
-                    "NewsTag",
-                    r => r.HasOne<Tag>().WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_NewsTag_Tag"),
-                    l => l.HasOne<NewsArticle>().WithMany()
-                        .HasForeignKey("NewsArticleId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_NewsTag_NewsArticle"),
-                    j =>
-                    {
-                        j.HasKey("NewsArticleId", "TagId");
-                        j.ToTable("NewsTag");
-                        j.IndexerProperty<string>("NewsArticleId")
-                            .HasMaxLength(20)
-                            .HasColumnName("NewsArticleID");
-                        j.IndexerProperty<int>("TagId").HasColumnName("TagID");
-                    });
+            entity.HasOne(e => e.UpdatedBy)
+                  .WithMany(a => a.UpdatedNews)
+                  .HasForeignKey(e => e.UpdatedById)
+                  .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<SystemAccount>(entity =>
+        // -------- NewsTag ----------
+        modelBuilder.Entity<NewsTag>(entity =>
         {
-            entity.HasKey(e => e.AccountId);
+            entity.ToTable("NewsTag");
+            entity.HasKey(e => new { e.NewsArticleId, e.TagId });
 
-            entity.ToTable("SystemAccount");
+            entity.Property(e => e.NewsArticleId)
+                  .HasColumnName("NewsArticleID")
+                  .HasMaxLength(20);
 
-            entity.Property(e => e.AccountId)
-                .ValueGeneratedNever()
-                .HasColumnName("AccountID");
-            entity.Property(e => e.AccountEmail).HasMaxLength(70);
-            entity.Property(e => e.AccountName).HasMaxLength(100);
-            entity.Property(e => e.AccountPassword).HasMaxLength(70);
+            entity.Property(e => e.TagId).HasColumnName("TagID");
+
+            entity.HasOne(e => e.NewsArticle)
+                  .WithMany(n => n.NewsTags)
+                  .HasForeignKey(e => e.NewsArticleId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Tag)
+                  .WithMany(t => t.NewsTags)
+                  .HasForeignKey(e => e.TagId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
-
-        modelBuilder.Entity<Tag>(entity =>
-        {
-            entity.HasKey(e => e.TagId).HasName("PK_HashTag");
-
-            entity.ToTable("Tag");
-
-            entity.Property(e => e.TagId)
-                .ValueGeneratedNever()
-                .HasColumnName("TagID");
-            entity.Property(e => e.Note).HasMaxLength(400);
-            entity.Property(e => e.TagName).HasMaxLength(50);
-        });
-
-        OnModelCreatingPartial(modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

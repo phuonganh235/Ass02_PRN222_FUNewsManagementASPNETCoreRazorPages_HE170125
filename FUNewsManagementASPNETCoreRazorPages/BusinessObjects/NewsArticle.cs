@@ -27,9 +27,8 @@ public partial class NewsArticle
 
     public DateTime? ModifiedDate { get; set; }
 
-    public virtual Category? Category { get; set; }
-
-    public virtual SystemAccount? CreatedBy { get; set; }
-
-    public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+    public Category? Category { get; set; }
+    public SystemAccount? CreatedBy { get; set; }
+    public SystemAccount? UpdatedBy { get; set; }
+    public ICollection<NewsTag> NewsTags { get; set; } = new List<NewsTag>();
 }

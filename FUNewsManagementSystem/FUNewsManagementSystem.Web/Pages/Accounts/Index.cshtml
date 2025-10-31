@@ -1,69 +1,23 @@
 ﻿@page
 @model FUNewsManagementSystem.Web.Pages.Accounts.IndexModel
 @{
-    ViewData["Title"] = "Accounts";
+    ViewData["Title"] = "Manage Accounts";
+    Layout = "_Layout";
 }
 
-<h3>Accounts</h3>
+<h2>Manage Accounts</h2>
+<hr />
 
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <div class="alert alert-danger">@Model.ErrorMessage</div>
-}
+<a asp-page="Create" class="btn btn-primary mb-3">Create New Account</a>
 
-<div class="card mb-4">
-    <div class="card-header bg-secondary text-white">
-        Create / Edit Account
-    </div>
-    <div class="card-body">
-        <form method="post">
-
-            <input type="hidden" asp-for="Input.AccountID" />
-
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label">Account Name</label>
-                    <input class="form-control" asp-for="Input.AccountName" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Email</label>
-                    <input class="form-control" asp-for="Input.AccountEmail" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Password</label>
-                    <input type="text" class="form-control" asp-for="Input.AccountPassword" />
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label">Role</label>
-                    <select class="form-select" asp-for="Input.AccountRole">
-                        <option value="3">Admin</option>
-                        <option value="2">Staff</option>
-                        <option value="1">Lecturer</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="d-flex gap-2">
-                <button class="btn btn-primary" formaction="?handler=Create">Create New</button>
-                <button class="btn btn-warning" formaction="?handler=Update">Update Existing</button>
-            </div>
-
-        </form>
-    </div>
-</div>
-
-<table class="table table-bordered table-striped bg-white shadow-sm">
-    <thead class="table-dark">
+<table class="table table-bordered">
+    <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Password</th>
             <th>Role</th>
-            <th style="width:100px;"></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -73,16 +27,11 @@
                 <td>@acc.AccountID</td>
                 <td>@acc.AccountName</td>
                 <td>@acc.AccountEmail</td>
-                <td>@acc.AccountPassword</td>
+                <td>@Model.GetRoleName(acc.AccountRole)</td>
                 <td>
-                    @(acc.AccountRole == 3 ? "Admin" :
-                        acc.AccountRole == 2 ? "Staff" : "Lecturer")
-                </td>
-                <td>
-                    <form method="post" class="d-inline">
-                        <input type="hidden" name="accountId" value="@acc.AccountID" />
-                        <button class="btn btn-sm btn-danger"
-                                formaction="?handler=Delete"
+                    <a asp-page="Edit" asp-route-id="@acc.AccountID" class="btn btn-sm btn-warning">Edit</a>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@acc.AccountID" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger"
                                 onclick="return confirm('Delete this account?');">
                             Delete
                         </button>

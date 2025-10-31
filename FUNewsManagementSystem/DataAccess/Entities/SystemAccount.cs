@@ -2,14 +2,13 @@
 {
     public class SystemAccount
     {
-        public int AccountID { get; set; }
-        public string? AccountName { get; set; }
-        public string? AccountEmail { get; set; }
-        // 3 = Admin, 2 = Staff, 1 = Lecturer
-        public int AccountRole { get; set; }
-        public string? AccountPassword { get; set; }
+        public short AccountId { get; set; }
+        public string AccountName { get; set; } = string.Empty;
+        public string AccountEmail { get; set; } = string.Empty;
+        public string AccountPassword { get; set; } = string.Empty;
+        public string AccountRole { get; set; } = "Staff"; // "Admin", "Lecturer", "Staff"
+        public bool IsActive { get; set; } = true;
 
-        // Navigation
         public ICollection<NewsArticle>? CreatedArticles { get; set; }
     }
 }

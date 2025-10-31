@@ -15,57 +15,53 @@ namespace BusinessLogic.Services
             _context = context;
         }
 
-        // Lấy tất cả comment (cho admin)
         public async Task<List<CommentVM>> GetAllAsync()
         {
-            var comments = await _context.Comments
-                .Include(c => c.NewsArticle)
+            return await _context.Comments
                 .Include(c => c.Account)
+                .Include(c => c.NewsArticle)
                 .OrderByDescending(c => c.CreatedAt)
-                .ToListAsync();
+                .Select(c => new CommentVM
+                {
+                    CommentID = c.CommentID,
+                    NewsArticleID = c.NewsArticleID,
+                    CommentBy = c.Account != null ? c.Account.AccountName : "Unknown",
+                    CommentText = c.Content ?? "",
+                    CommentDate = c.CreatedAt
+                })
 
-            return comments.Select(c => new CommentVM
-            {
-                CommentID = c.CommentID,
-                NewsArticleID = c.NewsArticleID,
-                CommentBy = c.Account?.AccountName ?? "Unknown",
-                CommentText = c.Content,
-                CommentDate = c.CreatedAt
-            }).ToList();
+                .ToListAsync();
         }
 
-        // Lấy comment theo bài viết
-        public async Task<List<CommentVM>> GetByNewsAsync(int newsArticleId)
+        public async Task<List<CommentVM>> GetByNewsAsync(string newsArticleId)
         {
-            var comments = await _context.Comments
+            return await _context.Comments
                 .Include(c => c.Account)
                 .Where(c => c.NewsArticleID == newsArticleId)
                 .OrderByDescending(c => c.CreatedAt)
-                .ToListAsync();
+                .Select(c => new CommentVM
+                {
+                    CommentID = c.CommentID,
+                    NewsArticleID = c.NewsArticleID,
+                    CommentBy = c.Account != null ? c.Account.AccountName : "Unknown",
+                    CommentText = c.Content ?? "",
+                    CommentDate = c.CreatedAt
+                })
 
-            return comments.Select(c => new CommentVM
-            {
-                CommentID = c.CommentID,
-                NewsArticleID = c.NewsArticleID,
-                CommentBy = c.Account?.AccountName ?? "Guest",
-                CommentText = c.Content,
-                CommentDate = c.CreatedAt
-            }).ToList();
+                .ToListAsync();
         }
 
-        // Thêm mới comment
-        public async Task<bool> AddAsync(int newsArticleId, string commentText, string commentBy)
+        public async Task<bool> AddAsync(string newsArticleId, string commentText, string commentBy)
         {
             try
             {
-                // tìm account theo tên (nếu có)
                 var account = await _context.SystemAccounts
                     .FirstOrDefaultAsync(a => a.AccountName == commentBy);
 
                 var comment = new Comment
                 {
                     NewsArticleID = newsArticleId,
-                    AccountID = account?.AccountID ?? 0,
+                    AccountID = (short)(account?.AccountID ?? 0),
                     Content = commentText,
                     CreatedAt = DateTime.Now
                 };
@@ -80,23 +76,14 @@ namespace BusinessLogic.Services
             }
         }
 
-        // Xóa comment
         public async Task<bool> DeleteAsync(int commentId)
         {
-            try
-            {
-                var comment = await _context.Comments.FindAsync(commentId);
-                if (comment == null)
-                    return false;
+            var c = await _context.Comments.FindAsync(commentId);
+            if (c == null) return false;
 
-                _context.Comments.Remove(comment);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            _context.Comments.Remove(c);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

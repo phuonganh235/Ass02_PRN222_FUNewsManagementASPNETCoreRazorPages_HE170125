@@ -2,9 +2,9 @@
 {
     public class Tag
     {
-        public int TagID { get; set; }
-        public string? TagName { get; set; }
+        public int TagId { get; set; }
+        public string TagName { get; set; } = string.Empty;
 
-        public ICollection<NewsArticleTag>? NewsArticleTags { get; set; }
+        public ICollection<NewsTag>? NewsTags { get; set; }
     }
 }

@@ -2,10 +2,10 @@
 {
     public class NewsTag
     {
-        public string NewsArticleID { get; set; } = "";
-        public int TagID { get; set; }
-
+        public int NewsId { get; set; }
         public NewsArticle? NewsArticle { get; set; }
+
+        public int TagId { get; set; }
         public Tag? Tag { get; set; }
     }
 }

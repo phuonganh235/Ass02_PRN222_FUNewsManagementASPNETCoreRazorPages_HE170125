@@ -1,118 +1,107 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.ViewModels;
-using FUNewsManagementSystem.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace FUNewsManagementSystem.Web.Pages.News
 {
     public class IndexModel : PageModel
     {
-        private readonly INewsArticleService _newsService;
-        private readonly ICategoryService _catService;
-        private readonly ITagService _tagService;
+        private readonly INewsArticleService _newsSrv;
+        private readonly ICategoryService _catSrv;
+        private readonly ITagService _tagSrv;
 
         public IndexModel(
-            INewsArticleService newsService,
-            ICategoryService categoryService,
-            ITagService tagService)
+            INewsArticleService newsSrv,
+            ICategoryService catSrv,
+            ITagService tagSrv)
         {
-            _newsService = newsService;
-            _catService = categoryService;
-            _tagService = tagService;
+            _newsSrv = newsSrv;
+            _catSrv = catSrv;
+            _tagSrv = tagSrv;
         }
 
         public List<NewsArticleVM> NewsList { get; set; } = new();
-        public List<CategoryVM> AllCategories { get; set; } = new();
-        public List<TagVM> AllTags { get; set; } = new();
+
+        // ---- Binding form fields ----
+        [BindProperty] public string? EditId { get; set; }
+
+        [BindProperty, Required]
+        public string Title { get; set; } = string.Empty;
+
+        [BindProperty, Required]
+        public string Headline { get; set; } = string.Empty;
+
+        [BindProperty, Required]
+        public string Content { get; set; } = string.Empty;
 
         [BindProperty]
-        public int NewsArticleID { get; set; }
+        public string Source { get; set; } = string.Empty;
+
+        [BindProperty, Required]
+        public short CategoryId { get; set; }
 
         [BindProperty]
-        public string? NewsTitle { get; set; }
-        [BindProperty]
-        public string? NewsContent { get; set; }
-        [BindProperty]
-        public string? NewsSource { get; set; }
+        public new bool Status { get; set; } = true;
 
         [BindProperty]
-        public int CategoryID { get; set; }
-        [BindProperty]
-        public int NewsStatus { get; set; } // 0 draft /1 published/2 archived
+        public List<int> SelectedTagIds { get; set; } = new();
 
-        [BindProperty]
-        public List<int> SelectedTagIDs { get; set; } = new();
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task OnGetAsync()
         {
-            var guard = AuthGuard.RequireLogin(this);
-            if (guard != null) return guard;
-            // Admin & Staff có quyền News
-            if (!(AuthGuard.IsAdmin(this) || AuthGuard.IsStaff(this)))
-            {
-                return RedirectToPage("/Dashboard/Index");
-            }
-
-            NewsList = await _newsService.GetAllAsync();
-            AllCategories = await _catService.GetAllAsync();
-            AllTags = await _tagService.GetAllAsync();
-            return Page();
+            NewsList = await _newsSrv.GetAllAsync();
         }
 
         public async Task<IActionResult> OnPostCreateAsync()
         {
-            if (!(AuthGuard.IsAdmin(this) || AuthGuard.IsStaff(this)))
+            if (!ModelState.IsValid)
             {
-                return RedirectToPage("/Dashboard/Index");
+                NewsList = await _newsSrv.GetAllAsync();
+                return Page();
             }
 
-            var userId = HttpContext.Session.GetInt32("AccountID") ?? 0;
+            short createdById = (short)(HttpContext.Session.GetInt32("AccountId") ?? 0);
 
-            await _newsService.CreateAsync(
-                NewsTitle ?? "",
-                NewsContent ?? "",
-                NewsSource ?? "",
-                CategoryID,
-                userId,
-                NewsStatus,
-                SelectedTagIDs
+            await _newsSrv.CreateAsync(
+                Title,
+                Headline,
+                Content,
+                Source,
+                CategoryId,
+                createdById,
+                Status,
+                SelectedTagIds ?? new List<int>()
             );
 
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostUpdateAsync()
+        public async Task<IActionResult> OnPostEditAsync()
         {
-            if (!(AuthGuard.IsAdmin(this) || AuthGuard.IsStaff(this)))
+            if (!ModelState.IsValid)
             {
-                return RedirectToPage("/Dashboard/Index");
+                NewsList = await _newsSrv.GetAllAsync();
+                return Page();
             }
 
-            var userId = HttpContext.Session.GetInt32("AccountID") ?? 0;
-
-            await _newsService.UpdateAsync(
-                NewsArticleID,
-                NewsTitle ?? "",
-                NewsContent ?? "",
-                NewsSource ?? "",
-                CategoryID,
-                userId,
-                NewsStatus,
-                SelectedTagIDs
+            await _newsSrv.UpdateAsync(
+                EditId ?? "",
+                Title,
+                Headline,
+                Content,
+                Source,
+                CategoryId,
+                Status,
+                SelectedTagIds ?? new List<int>()
             );
 
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        public async Task<IActionResult> OnPostDeleteAsync(string deleteId)
         {
-            if (!(AuthGuard.IsAdmin(this) || AuthGuard.IsStaff(this)))
-            {
-                return RedirectToPage("/Dashboard/Index");
-            }
-
-            await _newsService.DeleteAsync(id);
+            await _newsSrv.DeleteAsync(deleteId);
             return RedirectToPage();
         }
     }

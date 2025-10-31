@@ -2,61 +2,30 @@
 using BusinessLogic.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http;
 
 namespace FUNewsManagementSystem.Web.Pages.Public
 {
     public class DetailModel : PageModel
     {
-        private readonly INewsArticleService _newsArticleService;
-        private readonly ICommentService _commentService;
+        private readonly INewsArticleService _newsSrv;
 
-        public DetailModel(INewsArticleService newsArticleService, ICommentService commentService)
+        public DetailModel(INewsArticleService newsSrv)
         {
-            _newsArticleService = newsArticleService;
-            _commentService = commentService;
+            _newsSrv = newsSrv;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public int Id { get; set; }
+        public NewsArticleVM? Article { get; set; }
 
-        public NewsArticleVM NewsDetail { get; set; } = new();
-        public List<CommentVM> CommentList { get; set; } = new();
-        public string CurrentUserName { get; set; } = "Guest";
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string id)
         {
-            var news = await _newsArticleService.GetByIdAsync(Id);
-            if (news == null)
+            var art = await _newsSrv.GetByIdAsync(id);
+            if (art == null || !art.NewsStatus)
             {
-                return RedirectToPage("/Public/Index");
+                return NotFound();
             }
 
-            NewsDetail = news;
-            CommentList = await _commentService.GetByNewsAsync(Id);
-
-            // Lấy tên người dùng từ session nếu có
-            CurrentUserName = HttpContext.Session.GetString("AccountName") ?? "Guest";
-
+            Article = art;
             return Page();
-        }
-
-        public async Task<IActionResult> OnPostAddCommentAsync(int newsArticleId, string commentText, string commentBy)
-        {
-            if (string.IsNullOrWhiteSpace(commentText))
-            {
-                TempData["ErrorMessage"] = "Comment cannot be empty.";
-                return RedirectToPage(new { id = newsArticleId });
-            }
-
-            bool result = await _commentService.AddAsync(newsArticleId, commentText, commentBy);
-
-            if (result)
-                TempData["SuccessMessage"] = "Your comment has been added!";
-            else
-                TempData["ErrorMessage"] = "Failed to add comment. Please try again.";
-
-            return RedirectToPage(new { id = newsArticleId });
         }
     }
 }

@@ -48,10 +48,9 @@ namespace BusinessLogic.Services
         {
             var acc = new SystemAccount
             {
-                AccountID = model.AccountID,
                 AccountName = model.AccountName,
                 AccountEmail = model.AccountEmail,
-                AccountRole = model.AccountRole,
+                AccountRole = (short)model.AccountRole,
                 AccountPassword = model.AccountPassword
             };
 
@@ -67,7 +66,7 @@ namespace BusinessLogic.Services
 
             acc.AccountName = model.AccountName;
             acc.AccountEmail = model.AccountEmail;
-            acc.AccountRole = model.AccountRole;
+            acc.AccountRole = (short)model.AccountRole;
             acc.AccountPassword = model.AccountPassword;
 
             _ctx.SystemAccounts.Update(acc);

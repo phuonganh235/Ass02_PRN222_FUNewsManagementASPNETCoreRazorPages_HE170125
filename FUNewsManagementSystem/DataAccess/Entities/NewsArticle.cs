@@ -2,21 +2,25 @@
 {
     public class NewsArticle
     {
-        public int NewsArticleID { get; set; }
-        public string? NewsTitle { get; set; }
-        public string? NewsContent { get; set; }
-        public string? NewsSource { get; set; }
+        public int NewsId { get; set; }
+        public string NewsTitle { get; set; } = string.Empty;
+        public string NewsContent { get; set; } = string.Empty;
+        public string NewsSource { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public string NewsStatus { get; set; } = "Draft"; // or "Published"
 
-        public int CategoryID { get; set; }
-        public Category? Category { get; set; }
-
-        public int CreatedByID { get; set; }
+        // Khóa ngoại
+        public short CreatedById { get; set; }
         public SystemAccount? CreatedBy { get; set; }
 
-        // 0 = Draft, 1 = Published, 2 = Archived (ví dụ)
-        public int NewsStatus { get; set; }
+        // Liên kết Category
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }
 
-        public ICollection<NewsArticleTag>? NewsArticleTags { get; set; }
+        // Liên kết Tag (nhiều-nhiều)
+        public ICollection<NewsTag>? NewsTags { get; set; }
+
+        // Liên kết Comment
         public ICollection<Comment>? Comments { get; set; }
     }
 }

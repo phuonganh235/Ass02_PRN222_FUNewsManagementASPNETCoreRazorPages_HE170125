@@ -1,0 +1,35 @@
+﻿@page "{id:int}"
+@model FUNewsManagementSystem.Web.Pages.Accounts.EditModel
+@{
+    ViewData["Title"] = "Edit Account";
+    Layout = "_Layout";
+}
+
+<h2>Edit Account</h2>
+<hr />
+
+<form method="post">
+    <input type="hidden" asp-for="Account.AccountID" />
+
+    <div class="mb-3">
+        <label>Name</label>
+        <input asp-for="Account.AccountName" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+        <input asp-for="Account.AccountEmail" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Role</label>
+        <select asp-for="Account.AccountRole" class="form-select">
+            <option value="1">Lecturer</option>
+            <option value="2">Staff</option>
+            <option value="3">Admin</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-page="Index" class="btn btn-secondary">Back</a>
+</form>

@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.ViewModels;
-using FUNewsManagementSystem.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,6 +8,7 @@ namespace FUNewsManagementSystem.Web.Pages.Accounts
     public class IndexModel : PageModel
     {
         private readonly IAccountService _accountService;
+
         public IndexModel(IAccountService accountService)
         {
             _accountService = accountService;
@@ -16,54 +16,26 @@ namespace FUNewsManagementSystem.Web.Pages.Accounts
 
         public List<AccountVM> Accounts { get; set; } = new();
 
-        [BindProperty]
-        public AccountVM Input { get; set; } = new();
-
-        public string? ErrorMessage { get; set; }
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task OnGetAsync()
         {
-            var guard = AuthGuard.RequireLogin(this);
-            if (guard != null) return guard;
-            if (!AuthGuard.IsAdmin(this)) return RedirectToPage("/Dashboard/Index");
-
             Accounts = await _accountService.GetAllAsync();
-            return Page();
         }
 
-        // CREATE
-        public async Task<IActionResult> OnPostCreateAsync()
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-            if (!AuthGuard.IsAdmin(this)) return RedirectToPage("/Dashboard/Index");
+            await _accountService.DeleteAsync(id);
+            return RedirectToPage();
+        }
 
-            var ok = await _accountService.CreateAsync(Input);
-            if (!ok)
+        public string GetRoleName(int roleId)
+        {
+            return roleId switch
             {
-                ErrorMessage = "Create failed.";
-            }
-            return RedirectToPage();
-        }
-
-        // UPDATE
-        public async Task<IActionResult> OnPostUpdateAsync()
-        {
-            if (!AuthGuard.IsAdmin(this)) return RedirectToPage("/Dashboard/Index");
-
-            var ok = await _accountService.UpdateAsync(Input);
-            if (!ok)
-            {
-                ErrorMessage = "Update failed.";
-            }
-            return RedirectToPage();
-        }
-
-        // DELETE
-        public async Task<IActionResult> OnPostDeleteAsync(int accountId)
-        {
-            if (!AuthGuard.IsAdmin(this)) return RedirectToPage("/Dashboard/Index");
-
-            await _accountService.DeleteAsync(accountId);
-            return RedirectToPage();
+                3 => "Admin",
+                2 => "Staff",
+                1 => "Lecturer",
+                _ => "Unknown"
+            };
         }
     }
 }

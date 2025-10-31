@@ -26,6 +26,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = D:\FALL25\PRN222\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\FUNewsManagementSystem\FUNewsManagementSystem.Web
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Accounts/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Accounts/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Accounts/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

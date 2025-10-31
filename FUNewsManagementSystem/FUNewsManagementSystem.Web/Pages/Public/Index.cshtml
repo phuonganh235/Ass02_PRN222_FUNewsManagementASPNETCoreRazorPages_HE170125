@@ -1,35 +1,31 @@
 ﻿@page
 @model FUNewsManagementSystem.Web.Pages.Public.IndexModel
 @{
-    ViewData["Title"] = "News Portal";
-    Layout = "_Layout";
+    ViewData["Title"] = "Public News";
 }
 
-<h3 class="mb-4">News Portal</h3>
+<h2>Public News</h2>
 
-@if (Model.PublishedNews.Count == 0)
+@if (Model.PublishedNews == null || !Model.PublishedNews.Any())
 {
-    <p>No published articles yet.</p>
+    <p>No news available.</p>
 }
 else
 {
-    <div class="row">
-        @foreach (var n in Model.PublishedNews)
+    <ul class="list-group">
+        @foreach (var item in Model.PublishedNews)
         {
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5>@n.NewsTitle</h5>
-                        <p class="text-muted small mb-1">@n.CategoryName | by @n.CreatedByName</p>
-                        <p class="text-truncate">@n.NewsContent</p>
-                        <a class="btn btn-sm btn-primary"
-                           asp-page="/Public/Detail"
-                           asp-route-id="@n.NewsArticleID">
-                            Read more
-                        </a>
-                    </div>
+            <li class="list-group-item">
+                <a asp-page="./Detail" asp-route-id="@item.NewsArticleID">
+                    <strong>@item.NewsTitle</strong>
+                </a>
+                <div>
+                    <small>
+                        @item.CreatedDate.ToString("yyyy-MM-dd")
+                        | @item.CategoryName
+                    </small>
                 </div>
-            </div>
+            </li>
         }
-    </div>
+    </ul>
 }

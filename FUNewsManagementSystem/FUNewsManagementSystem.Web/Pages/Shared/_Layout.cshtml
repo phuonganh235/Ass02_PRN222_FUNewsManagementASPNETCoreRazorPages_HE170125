@@ -1,0 +1,87 @@
+﻿@{
+    var accountName = Context.Session.GetString("AccountName");
+    var accountRole = Context.Session.GetInt32("AccountRole");
+    string roleLabel = accountRole switch
+    {
+        3 => "Admin",
+        2 => "Staff",
+        1 => "Lecturer",
+        _ => "Guest"
+    };
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>FUNews Management System</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 px-3">
+        <a class="navbar-brand" asp-page="/Dashboard/Index">FUNews</a>
+
+        <div class="collapse navbar-collapse show">
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Public/Index">Public News</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Dashboard/Index">Dashboard</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/News/Index">News</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Categories/Index">Categories</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Tags/Index">Tags</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Accounts/Index">Accounts</a>
+                </li>
+
+            </ul>
+
+            <ul class="navbar-nav ms-auto text-white">
+                @if (!string.IsNullOrEmpty(accountName))
+                {
+                    <li class="nav-item me-3 text-white">
+                        <span class="navbar-text text-white">
+                            Hello, @accountName (@roleLabel)
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light btn-sm" asp-page="/Auth/Logout">Logout</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light btn-sm" asp-page="/Auth/Login">Login</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        @RenderBody()
+    </div>
+
+    <footer class="text-center text-muted small">
+        <hr />
+        <p>FUNews Management System - PRN222 Assignment 2</p>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

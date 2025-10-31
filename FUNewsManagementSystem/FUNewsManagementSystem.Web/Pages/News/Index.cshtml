@@ -1,0 +1,116 @@
+﻿@page
+@model FUNewsManagementSystem.Web.Pages.News.IndexModel
+@{
+    ViewData["Title"] = "News Articles";
+}
+
+<h3>News Articles</h3>
+
+<div class="card mb-4">
+    <div class="card-header bg-secondary text-white">Create / Edit News</div>
+    <div class="card-body">
+        <form method="post">
+            <input type="hidden" asp-for="NewsArticleID" />
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Title</label>
+                    <input class="form-control" asp-for="NewsTitle" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Source</label>
+                    <input class="form-control" asp-for="NewsSource" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Content</label>
+                <textarea class="form-control" asp-for="NewsContent" rows="3"></textarea>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" asp-for="CategoryID">
+                        @foreach (var c in Model.AllCategories)
+                        {
+                            <option value="@c.CategoryID">@c.CategoryName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" asp-for="NewsStatus">
+                        <option value="0">Draft</option>
+                        <option value="1">Published</option>
+                        <option value="2">Archived</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Tags (Ctrl+Click multi)</label>
+                    <select class="form-select" asp-for="SelectedTagIDs" multiple size="4">
+                        @foreach (var t in Model.AllTags)
+                        {
+                            <option value="@t.TagID">@t.TagName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" formaction="?handler=Create">Create New</button>
+                <button class="btn btn-warning" formaction="?handler=Update">Update Existing</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-bordered table-striped bg-white shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Source</th>
+            <th>Category</th>
+            <th>CreatedBy</th>
+            <th>Status</th>
+            <th>Tags</th>
+            <th style="width:100px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var n in Model.NewsList)
+        {
+            <tr>
+                <td>@n.NewsArticleID</td>
+                <td>@n.NewsTitle</td>
+                <td>@n.NewsSource</td>
+                <td>@n.CategoryName</td>
+                <td>@n.CreatedByName</td>
+                <td>
+                    @(n.NewsStatus == 0 ? "Draft"
+                        : n.NewsStatus == 1 ? "Published"
+                        : "Archived")
+                </td>
+                <td>@n.SelectedTagNamesDisplay</td>
+                <td>
+                    <form method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@n.NewsArticleID" />
+                        <button class="btn btn-sm btn-danger"
+                                formaction="?handler=Delete"
+                                onclick="return confirm('Delete this article?');">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p class="text-end">
+    <a class="btn btn-outline-secondary btn-sm"
+       asp-page="/Comments/Index">View Comments</a>
+</p>

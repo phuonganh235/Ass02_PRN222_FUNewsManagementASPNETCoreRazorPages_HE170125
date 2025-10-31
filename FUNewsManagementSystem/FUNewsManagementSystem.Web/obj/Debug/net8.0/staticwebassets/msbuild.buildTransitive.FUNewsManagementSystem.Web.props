@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\FUNewsManagementSystem.Web.props" />
+</Project>

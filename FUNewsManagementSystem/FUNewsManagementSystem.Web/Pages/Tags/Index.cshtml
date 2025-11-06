@@ -1,59 +1,214 @@
 ﻿@page
-@model FUNewsManagementSystem.Web.Pages.Tags.IndexModel
+@model FUNewsManagementSystem.Web.Pages.Staff.Tags.IndexModel
 @{
-    ViewData["Title"] = "Tags";
+    ViewData["Title"] = "Tag Management";
 }
 
-<h3>Tags</h3>
-
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <div class="alert alert-danger">@Model.ErrorMessage</div>
-}
-
-<div class="card mb-4">
-    <div class="card-header bg-secondary text-white">Create / Edit Tag</div>
-    <div class="card-body">
-        <form method="post">
-            <input type="hidden" asp-for="Input.TagID" />
-            <div class="mb-3">
-                <label class="form-label">Tag Name</label>
-                <input class="form-control" asp-for="Input.TagName" />
-            </div>
-
-            <div class="d-flex gap-2">
-                <button class="btn btn-primary" formaction="?handler=Create">Create New</button>
-                <button class="btn btn-warning" formaction="?handler=Update">Update Existing</button>
-            </div>
-        </form>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <h2><i class="fas fa-tags"></i> Tag Management</h2>
+    </div>
+    <div class="col-md-6 text-end">
+        <button type="button" class="btn btn-primary" onclick="openCreateModal()">
+            <i class="fas fa-plus"></i> Add New Tag
+        </button>
     </div>
 </div>
 
-<table class="table table-bordered table-striped bg-white shadow-sm">
-    <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Tag Name</th>
-            <th style="width:100px;"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var t in Model.Tags)
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-10">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search tags..." />
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-secondary w-100" onclick="searchTags()">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tag Name</th>
+                        <th>Note</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tagTableBody">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <tr>
+                            <td>@tag.TagId</td>
+                            <td><span class="badge bg-secondary fs-6">@tag.TagName</span></td>
+                            <td>@tag.Note</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" onclick="openEditModal(@tag.TagId)">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="confirmDelete(@tag.TagId, '@tag.TagName')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (!Model.Tags.Any())
         {
-            <tr>
-                <td>@t.TagID</td>
-                <td>@t.TagName</td>
-                <td>
-                    <form class="d-inline" method="post">
-                        <input type="hidden" name="tagId" value="@t.TagID" />
-                        <button class="btn btn-sm btn-danger"
-                                formaction="?handler=Delete"
-                                onclick="return confirm('Delete this tag?');">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle"></i> No tags found.
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+
+<!-- Modal for Create/Edit -->
+<div class="modal fade" id="tagModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add New Tag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="tagForm">
+                    <input type="hidden" id="tagId" />
+
+                    <div class="mb-3">
+                        <label for="tagName" class="form-label">Tag Name *</label>
+                        <input type="text" class="form-control" id="tagName" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Note</label>
+                        <textarea class="form-control" id="note" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveTag()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let tagModal;
+
+        $(document).ready(function() {
+            tagModal = new bootstrap.Modal(document.getElementById('tagModal'));
+        });
+
+        function openCreateModal() {
+            $('#modalTitle').text('Add New Tag');
+            $('#tagForm')[0].reset();
+            $('#tagId').val('');
+            tagModal.show();
+        }
+
+        async function openEditModal(id) {
+            const response = await fetch(`/Staff/Tags/Get?id=${id}`);
+            const tag = await response.json();
+
+            $('#modalTitle').text('Edit Tag');
+            $('#tagId').val(tag.tagId);
+            $('#tagName').val(tag.tagName);
+            $('#note').val(tag.note || '');
+
+            tagModal.show();
+        }
+
+        async function saveTag() {
+            const tagData = {
+                tagId: $('#tagId').val() || 0,
+                tagName: $('#tagName').val(),
+                note: $('#note').val()
+            };
+
+            if (!tagData.tagName) {
+                toastr.error('Tag name is required');
+                return;
+            }
+
+            const url = tagData.tagId > 0 ? '/Staff/Tags/Update' : '/Staff/Tags/Create';
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(tagData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    toastr.success(result.message);
+                    tagModal.hide();
+
+                    // Notify via SignalR
+                    if (tagData.tagId > 0) {
+                        await window.signalRConnection.invoke("NotifyTagUpdated", tagData.tagName);
+                    } else {
+                        await window.signalRConnection.invoke("NotifyTagCreated", tagData.tagName);
+                    }
+
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    toastr.error(result.message);
+                }
+            } catch (error) {
+                toastr.error('An error occurred while saving the tag');
+                console.error(error);
+            }
+        }
+
+        function confirmDelete(id, name) {
+            if (confirm(`Are you sure you want to delete tag "${name}"?`)) {
+                deleteTag(id, name);
+            }
+        }
+
+        async function deleteTag(id, name) {
+            try {
+                const response = await fetch(`/Staff/Tags/Delete?id=${id}`, {
+                    method: 'POST'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    toastr.success(result.message);
+
+                    // Notify via SignalR
+                    await window.signalRConnection.invoke("NotifyTagDeleted", name);
+
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    toastr.error(result.message);
+                }
+            } catch (error) {
+                toastr.error('An error occurred while deleting the tag');
+                console.error(error);
+            }
+        }
+
+        async function searchTags() {
+            const searchTerm = $('#searchInput').val();
+            window.location.href = `?searchTerm=${searchTerm}`;
+        }
+
+        // Real-time refresh function
+        function refreshTagsList() {
+            location.reload();
+        }
+        window.refreshTagsList = refreshTagsList;
+    </script>
+}

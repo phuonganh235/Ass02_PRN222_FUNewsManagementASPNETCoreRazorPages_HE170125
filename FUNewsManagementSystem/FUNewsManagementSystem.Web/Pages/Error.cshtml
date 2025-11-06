@@ -2,18 +2,33 @@
 @model FUNewsManagementSystem.Web.Pages.ErrorModel
 @{
     ViewData["Title"] = "Error";
+    Layout = "_Layout";
 }
 
-<h1 class="text-danger">Error</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="text-center" style="margin-top: 100px;">
+    <h1 class="display-1 text-danger"><i class="fas fa-exclamation-triangle"></i></h1>
+    <h1 class="display-4">Oops! Something went wrong</h1>
+    <p class="lead">We're sorry, but an error has occurred.</p>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+    @if (Model.ShowRequestId)
+    {
+        <p class="text-muted">
+            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        </p>
+    }
 
-<p>
-    Please contact the system administrator if this issue persists.
-</p>
+    <div class="mt-4">
+        <a asp-page="/Index" class="btn btn-primary btn-lg">
+            <i class="fas fa-home"></i> Go to Homepage
+        </a>
+        <button onclick="history.back()" class="btn btn-secondary btn-lg">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </button>
+    </div>
+
+    <div class="mt-5">
+        <p class="text-muted">
+            If this problem persists, please contact the administrator.
+        </p>
+    </div>
+</div>

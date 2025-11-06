@@ -1,40 +1,21 @@
 ﻿using BusinessLogic.ViewModels;
-using DataAccess.Entities;
 
 namespace BusinessLogic.Interfaces
 {
     public interface INewsArticleService
     {
-        Task<NewsArticle?> GetAsync(string newsArticleId);
-        Task<List<NewsArticleVM>> GetPagedAsync(
-            int page, int pageSize,
-            string? keyword = null,
-            short? categoryId = null,
-            bool? status = null,
-            int? tagId = null);
-
-        Task<NewsArticle> CreateAsync(
-            string newsArticleId,
-            string title,
-            string? headline,
-            string? content,
-            string? source,
-            short categoryId,
-            bool status,
-            short createdById,
-            IEnumerable<int>? tagIds);
-
-        Task<NewsArticle> UpdateAsync(
-            string newsArticleId,
-            string title,
-            string? headline,
-            string? content,
-            string? source,
-            short categoryId,
-            bool status,
-            short? updatedById,
-            IEnumerable<int>? tagIds);
-
-        Task<bool> DeleteAsync(string newsArticleId);
+        Task<IEnumerable<NewsArticleViewModel>> GetAllNewsAsync();
+        Task<IEnumerable<NewsArticleViewModel>> GetActiveNewsAsync();
+        Task<IEnumerable<NewsArticleViewModel>> GetNewsByAuthorAsync(short authorId);
+        Task<IEnumerable<NewsArticleViewModel>> GetNewsByCategoryAsync(short categoryId);
+        Task<NewsArticleViewModel?> GetNewsByIdAsync(string newsId);
+        Task<bool> CreateNewsAsync(NewsArticleViewModel model, short createdById);
+        Task<bool> UpdateNewsAsync(NewsArticleViewModel model, short updatedById);
+        Task<bool> DeleteNewsAsync(string newsId);
+        Task<IEnumerable<NewsArticleViewModel>> SearchNewsAsync(string? searchTerm, short? categoryId, bool? status, DateTime? fromDate, DateTime? toDate);
+        Task<IEnumerable<NewsArticleViewModel>> GetRelatedNewsAsync(string newsId, int count = 5);
+        Task<bool> NewsIdExistsAsync(string newsId);
+        Task<Dictionary<string, int>> GetArticleStatisticsByCategoryAsync(DateTime? startDate, DateTime? endDate);
+        Task<Dictionary<string, int>> GetArticleStatisticsByAuthorAsync(DateTime? startDate, DateTime? endDate);
     }
 }

@@ -1,134 +1,249 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.ViewModels;
-using DataAccess.Context;
 using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
+using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
 {
     public class NewsArticleService : INewsArticleService
     {
-        private readonly FUNewsDbContext _ctx;
-        public NewsArticleService(FUNewsDbContext ctx)
+        private readonly INewsArticleRepository _newsRepository;
+        private readonly INewsTagRepository _newsTagRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly ISystemAccountRepository _accountRepository;
+
+        public NewsArticleService(
+            INewsArticleRepository newsRepository,
+            INewsTagRepository newsTagRepository,
+            ICategoryRepository categoryRepository,
+            ISystemAccountRepository accountRepository)
         {
-            _ctx = ctx;
+            _newsRepository = newsRepository;
+            _newsTagRepository = newsTagRepository;
+            _categoryRepository = categoryRepository;
+            _accountRepository = accountRepository;
         }
 
-        public async Task<NewsArticle?> GetAsync(string newsArticleId)
+        public async Task<IEnumerable<NewsArticleViewModel>> GetAllNewsAsync()
         {
-            return await _ctx.NewsArticles
-                .Include(n => n.Category)
-                .Include(n => n.NewsTags).ThenInclude(nt => nt.Tag)
-                .FirstOrDefaultAsync(n => n.NewsArticleID == newsArticleId);
-        }
+            var news = await _newsRepository.GetAllAsync();
+            var viewModels = new List<NewsArticleViewModel>();
 
-        public async Task<List<NewsArticleVM>> GetPagedAsync(
-            int page, int pageSize,
-            string? keyword = null,
-            short? categoryId = null,
-            bool? status = null,
-            int? tagId = null)
-        {
-            var q = _ctx.NewsArticles
-                .Include(n => n.Category)
-                .Include(n => n.NewsTags).ThenInclude(nt => nt.Tag)
-                .AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(keyword))
-                q = q.Where(n => n.NewsTitle.Contains(keyword) || (n.Headline ?? "").Contains(keyword));
-
-            if (categoryId.HasValue)
-                q = q.Where(n => n.CategoryID == categoryId.Value);
-
-            if (status.HasValue)
-                q = q.Where(n => n.NewsStatus == status.Value);
-
-            if (tagId.HasValue)
-                q = q.Where(n => n.NewsTags.Any(t => t.TagID == tagId.Value));
-
-            q = q.OrderByDescending(n => n.CreatedDate);
-
-            var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
-            return items.Select(n => new NewsArticleVM
+            foreach (var item in news)
             {
-                NewsArticleID = n.NewsArticleID,
-                NewsTitle = n.NewsTitle,
-                Headline = n.Headline,
-                CreatedDate = n.CreatedDate,
-                CategoryName = n.Category?.CategoryName,
-                NewsStatus = n.NewsStatus,
-                SelectedTagIds = n.NewsTags.Select(t => t.TagID).ToList(),
-                SelectedTagNamesDisplay = string.Join(", ", n.NewsTags.Where(t => t.Tag != null).Select(t => t.Tag!.TagName))
-            }).ToList();
+                viewModels.Add(await MapToViewModel(item));
+            }
+
+            return viewModels;
         }
 
-        public async Task<NewsArticle> CreateAsync(
-            string newsArticleId, string title, string? headline, string? content, string? source,
-            short categoryId, bool status, short createdById, IEnumerable<int>? tagIds)
+        public async Task<IEnumerable<NewsArticleViewModel>> GetActiveNewsAsync()
         {
-            var entity = new NewsArticle
+            var news = await _newsRepository.GetActiveNewsAsync();
+            var viewModels = new List<NewsArticleViewModel>();
+
+            foreach (var item in news)
             {
-                NewsArticleID = newsArticleId,
-                NewsTitle = title,
-                Headline = headline,
-                NewsContent = content,
-                NewsSource = source,
-                CategoryID = categoryId,
-                NewsStatus = status,
-                CreatedByID = createdById,
-                CreatedDate = DateTime.UtcNow
+                viewModels.Add(await MapToViewModel(item));
+            }
+
+            return viewModels;
+        }
+
+        public async Task<IEnumerable<NewsArticleViewModel>> GetNewsByAuthorAsync(short authorId)
+        {
+            var news = await _newsRepository.GetNewsByAuthorAsync(authorId);
+            var viewModels = new List<NewsArticleViewModel>();
+
+            foreach (var item in news)
+            {
+                viewModels.Add(await MapToViewModel(item));
+            }
+
+            return viewModels;
+        }
+
+        public async Task<IEnumerable<NewsArticleViewModel>> GetNewsByCategoryAsync(short categoryId)
+        {
+            var news = await _newsRepository.GetNewsByCategoryAsync(categoryId);
+            var viewModels = new List<NewsArticleViewModel>();
+
+            foreach (var item in news)
+            {
+                viewModels.Add(await MapToViewModel(item));
+            }
+
+            return viewModels;
+        }
+
+        public async Task<NewsArticleViewModel?> GetNewsByIdAsync(string newsId)
+        {
+            var news = await _newsRepository.GetNewsWithDetailsAsync(newsId);
+            return news != null ? await MapToViewModel(news) : null;
+        }
+
+        public async Task<bool> CreateNewsAsync(NewsArticleViewModel model, short createdById)
+        {
+            if (await _newsRepository.NewsIdExistsAsync(model.NewsArticleId))
+                return false;
+
+            var newsArticle = new NewsArticle
+            {
+                NewsArticleId = model.NewsArticleId,
+                NewsTitle = model.NewsTitle,
+                Headline = model.Headline,
+                NewsContent = model.NewsContent,
+                NewsSource = model.NewsSource,
+                CategoryId = model.CategoryId,
+                NewsStatus = model.NewsStatus,
+                CreatedDate = DateTime.Now,
+                CreatedById = createdById
             };
 
-            if (tagIds != null)
-                foreach (var id in tagIds.Distinct())
-                    entity.NewsTags.Add(new NewsTag { NewsArticleID = newsArticleId, TagID = id });
+            await _newsRepository.AddAsync(newsArticle);
 
-            _ctx.NewsArticles.Add(entity);
-            await _ctx.SaveChangesAsync();
-            return entity;
-        }
+            // Add tags
+            if (model.SelectedTagIds.Any())
+            {
+                await _newsTagRepository.AddTagsToNewsAsync(model.NewsArticleId, model.SelectedTagIds);
+            }
 
-        public async Task<NewsArticle> UpdateAsync(
-            string newsArticleId, string title, string? headline, string? content, string? source,
-            short categoryId, bool status, short? updatedById, IEnumerable<int>? tagIds)
-        {
-            var entity = await _ctx.NewsArticles
-                .Include(n => n.NewsTags)
-                .FirstOrDefaultAsync(n => n.NewsArticleID == newsArticleId)
-                ?? throw new KeyNotFoundException("NewsArticle not found");
-
-            entity.NewsTitle = title;
-            entity.Headline = headline;
-            entity.NewsContent = content;
-            entity.NewsSource = source;
-            entity.CategoryID = categoryId;
-            entity.NewsStatus = status;
-            entity.UpdatedByID = updatedById;
-            entity.ModifiedDate = DateTime.UtcNow;
-
-            // update tags
-            var newTags = tagIds?.Distinct().ToHashSet() ?? new HashSet<int>();
-            var oldTags = entity.NewsTags.Select(t => t.TagID).ToHashSet();
-
-            var toRemove = entity.NewsTags.Where(t => !newTags.Contains(t.TagID)).ToList();
-            if (toRemove.Count > 0) _ctx.NewsTags.RemoveRange(toRemove);
-
-            var toAdd = newTags.Where(id => !oldTags.Contains(id))
-                               .Select(id => new NewsTag { NewsArticleID = newsArticleId, TagID = id }).ToList();
-            if (toAdd.Count > 0) _ctx.NewsTags.AddRange(toAdd);
-
-            await _ctx.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task<bool> DeleteAsync(string newsArticleId)
-        {
-            var entity = await _ctx.NewsArticles.FirstOrDefaultAsync(n => n.NewsArticleID == newsArticleId);
-            if (entity == null) return false;
-            _ctx.NewsArticles.Remove(entity);
-            await _ctx.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> UpdateNewsAsync(NewsArticleViewModel model, short updatedById)
+        {
+            var newsArticle = await _newsRepository.GetByIdAsync(model.NewsArticleId);
+            if (newsArticle == null) return false;
+
+            newsArticle.NewsTitle = model.NewsTitle;
+            newsArticle.Headline = model.Headline;
+            newsArticle.NewsContent = model.NewsContent;
+            newsArticle.NewsSource = model.NewsSource;
+            newsArticle.CategoryId = model.CategoryId;
+            newsArticle.NewsStatus = model.NewsStatus;
+            newsArticle.UpdatedById = updatedById;
+            newsArticle.ModifiedDate = DateTime.Now;
+
+            await _newsRepository.UpdateAsync(newsArticle);
+
+            // Update tags
+            await _newsTagRepository.UpdateNewsTagsAsync(model.NewsArticleId, model.SelectedTagIds);
+
+            return true;
+        }
+
+        public async Task<bool> DeleteNewsAsync(string newsId)
+        {
+            var newsArticle = await _newsRepository.GetByIdAsync(newsId);
+            if (newsArticle == null) return false;
+
+            await _newsRepository.DeleteAsync(newsArticle);
+            return true;
+        }
+
+        public async Task<IEnumerable<NewsArticleViewModel>> SearchNewsAsync(
+            string? searchTerm,
+            short? categoryId,
+            bool? status,
+            DateTime? fromDate,
+            DateTime? toDate)
+        {
+            var news = await _newsRepository.SearchNewsAsync(searchTerm, categoryId, status, fromDate, toDate);
+            var viewModels = new List<NewsArticleViewModel>();
+
+            foreach (var item in news)
+            {
+                viewModels.Add(await MapToViewModel(item));
+            }
+
+            return viewModels;
+        }
+
+        public async Task<IEnumerable<NewsArticleViewModel>> GetRelatedNewsAsync(string newsId, int count = 5)
+        {
+            var news = await _newsRepository.GetRelatedNewsAsync(newsId, count);
+            var viewModels = new List<NewsArticleViewModel>();
+
+            foreach (var item in news)
+            {
+                viewModels.Add(await MapToViewModel(item));
+            }
+
+            return viewModels;
+        }
+
+        public async Task<bool> NewsIdExistsAsync(string newsId)
+        {
+            return await _newsRepository.NewsIdExistsAsync(newsId);
+        }
+
+        public async Task<Dictionary<string, int>> GetArticleStatisticsByCategoryAsync(DateTime? startDate, DateTime? endDate)
+        {
+            var stats = await _newsRepository.GetArticleCountByCategoryAsync(startDate, endDate);
+            var result = new Dictionary<string, int>();
+
+            foreach (var stat in stats)
+            {
+                var category = await _categoryRepository.GetByIdAsync(stat.Key);
+                if (category != null)
+                {
+                    result[category.CategoryName] = stat.Value;
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<Dictionary<string, int>> GetArticleStatisticsByAuthorAsync(DateTime? startDate, DateTime? endDate)
+        {
+            var stats = await _newsRepository.GetArticleCountByAuthorAsync(startDate, endDate);
+            var result = new Dictionary<string, int>();
+
+            foreach (var stat in stats)
+            {
+                var author = await _accountRepository.GetByIdAsync(stat.Key);
+                if (author != null)
+                {
+                    result[author.AccountName] = stat.Value;
+                }
+            }
+
+            return result;
+        }
+
+        private async Task<NewsArticleViewModel> MapToViewModel(NewsArticle news)
+        {
+            var viewModel = new NewsArticleViewModel
+            {
+                NewsArticleId = news.NewsArticleId,
+                NewsTitle = news.NewsTitle,
+                Headline = news.Headline,
+                NewsContent = news.NewsContent,
+                NewsSource = news.NewsSource,
+                CategoryId = news.CategoryId,
+                CategoryName = news.Category?.CategoryName,
+                NewsStatus = news.NewsStatus,
+                CreatedDate = news.CreatedDate,
+                CreatedById = news.CreatedById,
+                CreatedByName = news.CreatedBy?.AccountName,
+                UpdatedById = news.UpdatedById,
+                UpdatedByName = news.UpdatedBy?.AccountName,
+                ModifiedDate = news.ModifiedDate
+            };
+
+            // Get tags
+            var newsTags = await _newsTagRepository.GetByNewsArticleIdAsync(news.NewsArticleId);
+            viewModel.Tags = newsTags.Select(nt => new TagViewModel
+            {
+                TagId = nt.Tag.TagId,
+                TagName = nt.Tag.TagName,
+                Note = nt.Tag.Note
+            }).ToList();
+
+            viewModel.SelectedTagIds = viewModel.Tags.Select(t => t.TagId).ToList();
+
+            return viewModel;
         }
     }
 }

@@ -1,60 +1,92 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.ViewModels;
-using FUNewsManagementSystem.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FUNewsManagementSystem.Web.Pages.Tags
+namespace FUNewsManagementSystem.Web.Pages.Staff.Tags
 {
     public class IndexModel : PageModel
     {
         private readonly ITagService _tagService;
+
+        public List<TagViewModel> Tags { get; set; } = new List<TagViewModel>();
+
         public IndexModel(ITagService tagService)
         {
             _tagService = tagService;
         }
 
-        public List<TagVM> Tags { get; set; } = new();
-
-        [BindProperty]
-        public TagVM Input { get; set; } = new();
-
-        public string? ErrorMessage { get; set; }
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string? searchTerm)
         {
-            var guard = AuthGuard.RequireLogin(this);
-            if (guard != null) return guard;
-            if (!AuthGuard.IsAdmin(this)) return RedirectToPage("/Dashboard/Index");
+            // Check if user is Staff
+            var userRole = HttpContext.Session.GetInt32("UserRole");
+            if (userRole != 1)
+            {
+                return RedirectToPage("/Index");
+            }
 
-            Tags = await _tagService.GetAllAsync();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                Tags = (await _tagService.SearchTagsAsync(searchTerm)).ToList();
+            }
+            else
+            {
+                Tags = (await _tagService.GetAllTagsAsync()).ToList();
+            }
+
             return Page();
         }
 
-        public async Task<IActionResult> OnPostCreateAsync()
+        public async Task<IActionResult> OnGetGetAsync(int id)
         {
-            if (!AuthGuard.IsAdmin(this)) return RedirectToPage("/Dashboard/Index");
-
-            var ok = await _tagService.CreateAsync(Input);
-            if (!ok) ErrorMessage = "Duplicate TagName.";
-            return RedirectToPage();
+            var tag = await _tagService.GetTagByIdAsync(id);
+            return new JsonResult(tag);
         }
 
-        public async Task<IActionResult> OnPostUpdateAsync()
+        public async Task<IActionResult> OnPostCreateAsync([FromBody] TagViewModel model)
         {
-            if (!AuthGuard.IsAdmin(this)) return RedirectToPage("/Dashboard/Index");
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(new { success = false, message = "Invalid data" });
+            }
 
-            var ok = await _tagService.UpdateAsync(Input);
-            if (!ok) ErrorMessage = "Update failed (duplicate?).";
-            return RedirectToPage();
+            var result = await _tagService.CreateTagAsync(model);
+
+            if (result)
+            {
+                return new JsonResult(new { success = true, message = "Tag created successfully" });
+            }
+
+            return new JsonResult(new { success = false, message = "Tag name already exists" });
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync(int tagId)
+        public async Task<IActionResult> OnPostUpdateAsync([FromBody] TagViewModel model)
         {
-            if (!AuthGuard.IsAdmin(this)) return RedirectToPage("/Dashboard/Index");
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(new { success = false, message = "Invalid data" });
+            }
 
-            await _tagService.DeleteAsync(tagId);
-            return RedirectToPage();
+            var result = await _tagService.UpdateTagAsync(model);
+
+            if (result)
+            {
+                return new JsonResult(new { success = true, message = "Tag updated successfully" });
+            }
+
+            return new JsonResult(new { success = false, message = "Tag name already exists or tag not found" });
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var result = await _tagService.DeleteTagAsync(id);
+
+            if (result)
+            {
+                return new JsonResult(new { success = true, message = "Tag deleted successfully" });
+            }
+
+            return new JsonResult(new { success = false, message = "Tag not found" });
         }
     }
 }

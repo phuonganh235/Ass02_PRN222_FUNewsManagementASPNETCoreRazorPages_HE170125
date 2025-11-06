@@ -1,11 +1,23 @@
-﻿namespace DataAccess.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DataAccess.Entities
 {
+    [Table("NewsTag")]
     public class NewsTag
     {
-        public string NewsArticleID { get; set; } = string.Empty;
-        public int TagID { get; set; }
+        [Key, Column(Order = 0)]
+        [StringLength(20)]
+        public string NewsArticleId { get; set; } = string.Empty;
 
-        public NewsArticle? NewsArticle { get; set; }
-        public Tag? Tag { get; set; }
+        [Key, Column(Order = 1)]
+        public int TagId { get; set; }
+
+        // Navigation properties
+        [ForeignKey("NewsArticleId")]
+        public virtual NewsArticle NewsArticle { get; set; } = null!;
+
+        [ForeignKey("TagId")]
+        public virtual Tag Tag { get; set; } = null!;
     }
 }

@@ -28,48 +28,16 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Accounts/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNcQ3JlYXRlLmNzaHRtbA==
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Admin/Accounts/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWNjb3VudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Accounts/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNcRWRpdC5jc2h0bWw=
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Accounts/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Accounts/_AccountCreateEditModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNcX0FjY291bnRDcmVhdGVFZGl0TW9kYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Auth/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dpbi5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Auth/Logout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Categories/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllc1xDcmVhdGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Categories/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllc1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Categories/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllc1xJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Comments/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWVudHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Dashboard/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Admin/Reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUmVwb3J0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Error.cshtml]
@@ -80,40 +48,48 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/News/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1xDcmVhdGUuY3NodG1s
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/News/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1xEZWxldGUuY3NodG1s
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/News/Detail.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1xEZXRhaWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/News/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/News/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c1xJbmRleC5jc2h0bWw=
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/NewsDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmV3c0RldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Public/Detail.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVibGljXERldGFpbC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Public/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVibGljXEluZGV4LmNzaHRtbA==
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Staff/Categories/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhZmZcQ2F0ZWdvcmllc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Staff/NewsArticles/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhZmZcTmV3c0FydGljbGVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Staff/NewsArticles/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhZmZcTmV3c0FydGljbGVzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Staff/NewsArticles/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhZmZcTmV3c0FydGljbGVzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Staff/NewsArticles/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhZmZcTmV3c0FydGljbGVzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FALL25/PRN222/Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125/FUNewsManagementSystem/FUNewsManagementSystem.Web/Pages/Tags/Index.cshtml]

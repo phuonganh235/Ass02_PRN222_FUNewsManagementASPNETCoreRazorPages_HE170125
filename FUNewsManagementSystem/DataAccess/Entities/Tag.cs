@@ -1,11 +1,23 @@
-﻿namespace DataAccess.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DataAccess.Entities
 {
+    [Table("Tag")]
     public class Tag
     {
-        public int TagID { get; set; }
-        public string? TagName { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int TagId { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string TagName { get; set; } = string.Empty;
+
+        [StringLength(400)]
         public string? Note { get; set; }
 
-        public ICollection<NewsTag> NewsTags { get; set; } = new List<NewsTag>();
+        // Navigation property
+        public virtual ICollection<NewsTag> NewsTags { get; set; } = new List<NewsTag>();
     }
 }

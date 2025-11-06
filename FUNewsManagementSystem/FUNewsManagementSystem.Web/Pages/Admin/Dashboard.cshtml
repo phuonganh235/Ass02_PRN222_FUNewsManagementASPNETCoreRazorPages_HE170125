@@ -1,0 +1,237 @@
+﻿@page
+@model FUNewsManagementSystem.Web.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2 class="mb-4"><i class="fas fa-chart-line"></i> Admin Dashboard</h2>
+
+<!-- Date Range Filter -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate" name="startDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-4">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate" name="endDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">&nbsp;</label>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-newspaper"></i> Total Articles</h5>
+                <h2 class="display-4" id="totalArticles">@Model.Dashboard.TotalArticles</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-check-circle"></i> Active Articles</h5>
+                <h2 class="display-4" id="activeArticles">@Model.Dashboard.ActiveArticles</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-users"></i> Total Accounts</h5>
+                <h2 class="display-4" id="totalAccounts">@Model.Dashboard.TotalAccounts</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-comments"></i> Total Comments</h5>
+                <h2 class="display-4" id="totalComments">@Model.Dashboard.TotalComments</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-secondary">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-folder"></i> Categories</h5>
+                <h2 class="display-4" id="totalCategories">@Model.Dashboard.TotalCategories</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-dark">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-tags"></i> Tags</h5>
+                <h2 class="display-4" id="totalTags">@Model.Dashboard.TotalTags</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-times-circle"></i> Inactive</h5>
+                <h2 class="display-4" id="inactiveArticles">@Model.Dashboard.InactiveArticles</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-bar"></i> Articles by Category</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-pie"></i> Articles by Author</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="authorChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Articles -->
+<div class="card">
+    <div class="card-header">
+        <h5><i class="fas fa-clock"></i> Recent Articles</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody id="recentArticlesTable">
+                    @foreach (var article in Model.Dashboard.RecentArticles)
+                    {
+                        <tr>
+                            <td>@article.NewsArticleId</td>
+                            <td>@article.NewsTitle</td>
+                            <td>@article.CategoryName</td>
+                            <td>@article.CreatedByName</td>
+                            <td>@article.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Category Chart
+        const categoryData = @Html.Raw(Json.Serialize(Model.Dashboard.ArticlesByCategory));
+        const categoryLabels = Object.keys(categoryData);
+        const categoryValues = Object.values(categoryData);
+
+        const categoryChart = new Chart(document.getElementById('categoryChart'), {
+            type: 'bar',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    label: 'Articles',
+                    data: categoryValues,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        // Author Chart
+        const authorData = @Html.Raw(Json.Serialize(Model.Dashboard.ArticlesByAuthor));
+        const authorLabels = Object.keys(authorData);
+        const authorValues = Object.values(authorData);
+
+        const authorChart = new Chart(document.getElementById('authorChart'), {
+            type: 'pie',
+            data: {
+                labels: authorLabels,
+                datasets: [{
+                    data: authorValues,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Real-time dashboard refresh function
+        function refreshDashboard() {
+            fetch('/Admin/Dashboard/GetStats')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('totalArticles').textContent = data.totalArticles;
+                    document.getElementById('activeArticles').textContent = data.activeArticles;
+                    document.getElementById('inactiveArticles').textContent = data.inactiveArticles;
+                    document.getElementById('totalAccounts').textContent = data.totalAccounts;
+                    document.getElementById('totalCategories').textContent = data.totalCategories;
+                    document.getElementById('totalTags').textContent = data.totalTags;
+                    document.getElementById('totalComments').textContent = data.totalComments;
+
+                    // Update charts
+                    categoryChart.data.labels = Object.keys(data.articlesByCategory);
+                    categoryChart.data.datasets[0].data = Object.values(data.articlesByCategory);
+                    categoryChart.update();
+
+                    authorChart.data.labels = Object.keys(data.articlesByAuthor);
+                    authorChart.data.datasets[0].data = Object.values(data.articlesByAuthor);
+                    authorChart.update();
+                });
+        }
+
+        // Make function available globally for SignalR
+        window.refreshDashboard = refreshDashboard;
+    </script>
+}

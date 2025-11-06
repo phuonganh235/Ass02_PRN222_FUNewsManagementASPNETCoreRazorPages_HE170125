@@ -1,62 +1,116 @@
 ﻿using BusinessLogic.Interfaces;
-using DataAccess.Context;
+using BusinessLogic.ViewModels;
 using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
+using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly FUNewsDbContext _ctx;
-        public CategoryService(FUNewsDbContext ctx)
+        private readonly ICategoryRepository _categoryRepository;
+
+        public CategoryService(ICategoryRepository categoryRepository)
         {
-            _ctx = ctx;
+            _categoryRepository = categoryRepository;
         }
 
-        public async Task<List<Category>> GetAllAsync(bool? onlyActive = null)
+        public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
-            var q = _ctx.Categories.AsQueryable();
-            if (onlyActive == true) q = q.Where(x => x.IsActive);
-            return await q.OrderBy(x => x.CategoryName).ToListAsync();
+            var categories = await _categoryRepository.GetAllAsync();
+            return categories.Select(MapToViewModel);
         }
 
-        public async Task<Category?> GetAsync(short id)
+        public async Task<IEnumerable<CategoryViewModel>> GetActiveCategoriesAsync()
         {
-            return await _ctx.Categories.FirstOrDefaultAsync(x => x.CategoryID == id);
+            var categories = await _categoryRepository.GetActiveCategoriesAsync();
+            return categories.Select(MapToViewModel);
         }
 
-        public async Task<Category> CreateAsync(string name, string? description, short? parentId, bool isActive)
+        public async Task<IEnumerable<CategoryViewModel>> GetParentCategoriesAsync()
         {
-            var c = new Category
+            var categories = await _categoryRepository.GetParentCategoriesAsync();
+            return categories.Select(MapToViewModel);
+        }
+
+        public async Task<CategoryViewModel?> GetCategoryByIdAsync(short id)
+        {
+            var category = await _categoryRepository.GetByIdAsync(id);
+            return category != null ? MapToViewModel(category) : null;
+        }
+
+        public async Task<bool> CreateCategoryAsync(CategoryViewModel model)
+        {
+            if (await _categoryRepository.CategoryNameExistsAsync(model.CategoryName))
+                return false;
+
+            var category = new Category
             {
-                CategoryName = name,
-                CategoryDescription = description,
-                ParentCategoryID = parentId,
-                IsActive = isActive
+                CategoryName = model.CategoryName,
+                            CategoryDescription = model.CategoryDesciption,
+                ParentCategoryId = model.ParentCategoryId,
+                IsActive = model.IsActive
             };
-            _ctx.Categories.Add(c);
-            await _ctx.SaveChangesAsync();
-            return c;
-        }
 
-        public async Task<Category> UpdateAsync(short id, string name, string? description, short? parentId, bool isActive)
-        {
-            var c = await _ctx.Categories.FindAsync(id) ?? throw new KeyNotFoundException("Category not found");
-            c.CategoryName = name;
-            c.CategoryDescription = description;
-            c.ParentCategoryID = parentId;
-            c.IsActive = isActive;
-            await _ctx.SaveChangesAsync();
-            return c;
-        }
-
-        public async Task<bool> DeleteAsync(short id)
-        {
-            var c = await _ctx.Categories.FindAsync(id);
-            if (c == null) return false;
-            _ctx.Categories.Remove(c);
-            await _ctx.SaveChangesAsync();
+            await _categoryRepository.AddAsync(category);
             return true;
+        }
+
+        public async Task<bool> UpdateCategoryAsync(CategoryViewModel model)
+        {
+            if (await _categoryRepository.CategoryNameExistsAsync(model.CategoryName, model.CategoryId))
+                return false;
+
+            var category = await _categoryRepository.GetByIdAsync(model.CategoryId);
+            if (category == null) return false;
+
+            category.CategoryName = model.CategoryName;
+            category.CategoryDescription = model.CategoryDesciption;
+            category.ParentCategoryId = model.ParentCategoryId;
+            category.IsActive = model.IsActive;
+
+            await _categoryRepository.UpdateAsync(category);
+            return true;
+        }
+
+        public async Task<bool> DeleteCategoryAsync(short id)
+        {
+            if (await _categoryRepository.HasNewsArticlesAsync(id))
+                return false;
+
+            var category = await _categoryRepository.GetByIdAsync(id);
+            if (category == null) return false;
+
+            await _categoryRepository.DeleteAsync(category);
+            return true;
+        }
+
+        public async Task<IEnumerable<CategoryViewModel>> SearchCategoriesAsync(string? searchTerm, bool? isActive)
+        {
+            var categories = await _categoryRepository.SearchCategoriesAsync(searchTerm, isActive);
+            return categories.Select(MapToViewModel);
+        }
+
+        public async Task<bool> CanDeleteCategoryAsync(short categoryId)
+        {
+            return !await _categoryRepository.HasNewsArticlesAsync(categoryId);
+        }
+
+        public async Task<bool> CategoryNameExistsAsync(string name, short? excludeCategoryId = null)
+        {
+            return await _categoryRepository.CategoryNameExistsAsync(name, excludeCategoryId);
+        }
+
+        private CategoryViewModel MapToViewModel(Category category)
+        {
+            return new CategoryViewModel
+            {
+                CategoryId = category.CategoryID,
+                CategoryName = category.CategoryName,
+                CategoryDesciption = category.CategoryDescription,
+                ParentCategoryId = category.ParentCategoryId,
+                ParentCategoryName = category.ParentCategory?.CategoryName,
+                IsActive = category.IsActive
+            };
         }
     }
 }

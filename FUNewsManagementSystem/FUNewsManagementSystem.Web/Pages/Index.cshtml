@@ -1,14 +1,99 @@
 ﻿@page
 @model FUNewsManagementSystem.Web.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Home - FU News";
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4">Welcome to FUNews Management System</h1>
-    <p class="lead">Assignment 2 - PRN222</p>
-
-    <p>
-        <a asp-page="/Auth/Login" class="btn btn-primary btn-lg mt-3">Go to Login</a>
-    </p>
+<div class="text-center mb-4">
+    <h1 class="display-4">Welcome to FU News</h1>
+    <p class="lead">Latest news and updates from FPT University</p>
 </div>
+
+<!-- Filter Section -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search news articles..." />
+    </div>
+    <div class="col-md-3">
+        <select id="categoryFilter" class="form-select">
+            <option value="">All Categories</option>
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.CategoryId">@category.CategoryName</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-primary w-100" onclick="filterNews()">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</div>
+
+<!-- News Grid -->
+<div class="row" id="newsContainer">
+    @foreach (var news in Model.NewsList)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <span class="badge bg-primary mb-2">@news.CategoryName</span>
+                    <h5 class="card-title">@news.NewsTitle</h5>
+                    <p class="card-text text-muted">@news.Headline</p>
+                    <p class="text-muted small">
+                        <i class="fas fa-user"></i> @news.CreatedByName |
+                        <i class="fas fa-calendar"></i> @news.CreatedDate.ToString("dd/MM/yyyy")
+                    </p>
+                    @if (news.Tags.Any())
+                    {
+                        <div class="mb-2">
+                            @foreach (var tag in news.Tags)
+                            {
+                                <span class="badge bg-secondary">@tag.TagName</span>
+                            }
+                        </div>
+                    }
+                    <a asp-page="/NewsDetails" asp-route-id="@news.NewsArticleId" class="btn btn-sm btn-outline-primary">
+                        Read More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="card-footer text-muted small">
+                    @{
+                        var commentCount = news.Comments?.Count ?? 0;
+                    }
+                    <i class="fas fa-comments"></i> @commentCount comments
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.NewsList.Any())
+{
+    <div class="alert alert-info text-center">
+        <i class="fas fa-info-circle"></i> No news articles found.
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function filterNews() {
+            const searchTerm = document.getElementById('searchInput').value;
+            const categoryId = document.getElementById('categoryFilter').value;
+            window.location.href = `/?searchTerm=${searchTerm}&categoryId=${categoryId}`;
+        }
+
+        // Allow search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                filterNews();
+            }
+        });
+
+        // Listen for new article notifications
+        function refreshNewsList() {
+            location.reload();
+        }
+        window.refreshNewsList = refreshNewsList;
+    </script>
+}

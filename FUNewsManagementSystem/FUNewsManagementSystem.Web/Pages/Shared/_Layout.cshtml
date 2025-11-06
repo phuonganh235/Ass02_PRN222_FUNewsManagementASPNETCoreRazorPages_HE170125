@@ -1,35 +1,159 @@
-﻿@{
-    var userName = Context.Session.GetString("UserName");
-}
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Title"] - FUNews</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FU News Management</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<body class="container py-3">
-    <header class="mb-3 d-flex justify-content-between align-items-center">
-        <h3>FUNews</h3>
-        <nav>
-            <a class="btn btn-link" asp-page="/Public/Index">Public</a>
-            <a class="btn btn-link" asp-page="/News/Index">News</a>
-            <a class="btn btn-link" asp-page="/Categories/Index">Categories</a>
-            <a class="btn btn-link" asp-page="/Tags/Index">Tags</a>
-            <a class="btn btn-link" asp-page="/Dashboard/Index">Dashboard</a>
-            @if (string.IsNullOrEmpty(userName))
-            {
-                <a class="btn btn-primary" asp-page="/Auth/Login">Login</a>
-            }
-            else
-            {
-                <span class="me-2">Hello, @userName</span>
-                <a class="btn btn-outline-danger" asp-page="/Auth/Logout">Logout</a>
-            }
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-page="/Index">FU News Management</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" 
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Index">Home</a>
+                        </li>
+
+                        @{
+                            var userRole = Context.Session.GetInt32("UserRole");
+                            var userName = Context.Session.GetString("UserName");
+                        }
+
+                        @if (userRole == 0)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Admin/Dashboard">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Admin/Accounts/Index">Accounts</a>
+                            </li>
+                        }
+                        else if (userRole == 1) // Staff
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Staff/Categories/Index">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Staff/NewsArticles/Index">News Articles</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Staff/Tags/Index">Tags</a>
+                            </li>
+                        }
+                    </ul>
+
+                    @if (!string.IsNullOrEmpty(userName))
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i> @userName
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" asp-page="/Profile">Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-page="/Logout">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Login">Login</a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
         </nav>
     </header>
-    <main>
-        @RenderBody()
-    </main>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - FU News Management System
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script>
+        // SignalR Connection
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub")
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("ReceiveNotification", function (message, type) {
+            toastr[type || 'info'](message);
+        });
+
+        connection.on("RefreshCategories", function () {
+            if (typeof refreshCategoriesList === 'function') {
+                refreshCategoriesList();
+            }
+        });
+
+        connection.on("RefreshNewsList", function () {
+            if (typeof refreshNewsList === 'function') {
+                refreshNewsList();
+            }
+        });
+
+        connection.on("RefreshTags", function () {
+            if (typeof refreshTagsList === 'function') {
+                refreshTagsList();
+            }
+        });
+
+        connection.on("RefreshDashboard", function () {
+            if (typeof refreshDashboard === 'function') {
+                refreshDashboard();
+            }
+        });
+
+        connection.on("ReceiveComment", function (newsArticleId, commentId, accountName, content, timeAgo) {
+            if (typeof addCommentToList === 'function') {
+                addCommentToList(newsArticleId, commentId, accountName, content, timeAgo);
+            }
+        });
+
+        connection.on("CommentDeleted", function (commentId, newsArticleId) {
+            if (typeof removeCommentFromList === 'function') {
+                removeCommentFromList(commentId);
+            }
+        });
+
+        connection.start().catch(function (err) {
+            console.error('SignalR Connection Error: ', err.toString());
+        });
+
+        // Make connection available globally
+        window.signalRConnection = connection;
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

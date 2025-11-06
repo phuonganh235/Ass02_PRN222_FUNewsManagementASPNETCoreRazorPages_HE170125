@@ -6,48 +6,75 @@ namespace DataAccess.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly FUNewsDbContext _ctx;
-        protected readonly DbSet<T> _db;
+        protected readonly FUNewsManagementDbContext _context;
+        protected readonly DbSet<T> _dbSet;
 
-        public GenericRepository(FUNewsDbContext ctx)
+        public GenericRepository(FUNewsManagementDbContext context)
         {
-            _ctx = ctx;
-            _db = ctx.Set<T>();
+            _context = context;
+            _dbSet = context.Set<T>();
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _db.ToListAsync();
+            return await _dbSet.ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(object id)
+        public virtual async Task<T?> GetByIdAsync(object id)
         {
-            return await _db.FindAsync(id);
+            return await _dbSet.FindAsync(id);
         }
 
-        public async Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate)
+        public virtual async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _db.Where(predicate).ToListAsync();
+            return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public async Task AddAsync(T entity)
+        public virtual async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
-            await _db.AddAsync(entity);
+            return await _dbSet.FirstOrDefaultAsync(predicate);
         }
 
-        public void Update(T entity)
+        public virtual async Task AddAsync(T entity)
         {
-            _db.Update(entity);
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(T entity)
+        public virtual async Task AddRangeAsync(IEnumerable<T> entities)
         {
-            _db.Remove(entity);
+            await _dbSet.AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task SaveChangesAsync()
+        public virtual async Task UpdateAsync(T entity)
         {
-            await _ctx.SaveChangesAsync();
+            _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public virtual async Task DeleteAsync(T entity)
+        {
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public virtual async Task DeleteRangeAsync(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+            await _context.SaveChangesAsync();
+        }
+
+        public virtual async Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null)
+        {
+            if (predicate == null)
+                return await _dbSet.CountAsync();
+            return await _dbSet.CountAsync(predicate);
+        }
+
+        public virtual async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
         }
     }
 }

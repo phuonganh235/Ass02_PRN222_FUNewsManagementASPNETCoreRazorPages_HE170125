@@ -1,13 +1,18 @@
-﻿using DataAccess.Entities;
+﻿using BusinessLogic.ViewModels;
 
 namespace BusinessLogic.Interfaces
 {
     public interface ICategoryService
     {
-        Task<List<Category>> GetAllAsync(bool? onlyActive = null);
-        Task<Category?> GetAsync(short id);
-        Task<Category> CreateAsync(string name, string? description, short? parentId, bool isActive);
-        Task<Category> UpdateAsync(short id, string name, string? description, short? parentId, bool isActive);
-        Task<bool> DeleteAsync(short id);
+        Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
+        Task<IEnumerable<CategoryViewModel>> GetActiveCategoriesAsync();
+        Task<IEnumerable<CategoryViewModel>> GetParentCategoriesAsync();
+        Task<CategoryViewModel?> GetCategoryByIdAsync(short id);
+        Task<bool> CreateCategoryAsync(CategoryViewModel model);
+        Task<bool> UpdateCategoryAsync(CategoryViewModel model);
+        Task<bool> DeleteCategoryAsync(short id);
+        Task<IEnumerable<CategoryViewModel>> SearchCategoriesAsync(string? searchTerm, bool? isActive);
+        Task<bool> CanDeleteCategoryAsync(short categoryId);
+        Task<bool> CategoryNameExistsAsync(string name, short? excludeCategoryId = null);
     }
 }

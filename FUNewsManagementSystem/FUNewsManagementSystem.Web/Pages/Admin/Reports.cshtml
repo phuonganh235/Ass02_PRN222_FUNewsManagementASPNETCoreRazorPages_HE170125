@@ -1,0 +1,233 @@
+﻿@page
+@model FUNewsManagementSystem.Web.Pages.Admin.ReportsModel
+@{
+    ViewData["Title"] = "Reports & Statistics";
+}
+
+<h2 class="mb-4"><i class="fas fa-chart-bar"></i> Reports & Statistics</h2>
+
+<!-- Date Range Filter -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-filter"></i> Filter Report</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate" name="startDate"
+                       value="@Model.StartDate?.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-4">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate" name="endDate"
+                       value="@Model.EndDate?.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search"></i> Generate
+                </button>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <button type="button" class="btn btn-success w-100" onclick="exportToExcel()">
+                    <i class="fas fa-file-excel"></i> Export
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h3>@Model.TotalArticles</h3>
+                <p class="mb-0">Total Articles</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h3>@Model.ActiveArticles</h3>
+                <p class="mb-0">Active Articles</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <h3>@Model.InactiveArticles</h3>
+                <p class="mb-0">Inactive Articles</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <h3>@Model.TotalComments</h3>
+                <p class="mb-0">Total Comments</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Articles by Category -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-folder"></i> Articles by Category</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="categoryTable">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th class="text-end">Article Count</th>
+                        <th class="text-end">Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ArticlesByCategory.OrderByDescending(x => x.Value))
+                    {
+                        var percentage = Model.TotalArticles > 0
+                        ? (item.Value * 100.0 / Model.TotalArticles).ToString("F2")
+                        : "0";
+                        <tr>
+                            <td><strong>@item.Key</strong></td>
+                            <td class="text-end">@item.Value</td>
+                            <td class="text-end">@percentage%</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Articles by Author -->
+<div class="card mb-4">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0"><i class="fas fa-users"></i> Articles by Author</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="authorTable">
+                <thead>
+                    <tr>
+                        <th>Author</th>
+                        <th class="text-end">Article Count</th>
+                        <th class="text-end">Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ArticlesByAuthor.OrderByDescending(x => x.Value))
+                    {
+                        var percentage = Model.TotalArticles > 0
+                        ? (item.Value * 100.0 / Model.TotalArticles).ToString("F2")
+                        : "0";
+                        <tr>
+                            <td><strong>@item.Key</strong></td>
+                            <td class="text-end">@item.Value</td>
+                            <td class="text-end">@percentage%</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Article List -->
+<div class="card">
+    <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0"><i class="fas fa-list"></i> Article List (Sorted by Date - Descending)</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover" id="articleTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Created Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var article in Model.Articles)
+                    {
+                        <tr>
+                            <td>@article.NewsArticleId</td>
+                            <td>@article.NewsTitle</td>
+                            <td>@article.CategoryName</td>
+                            <td>@article.CreatedByName</td>
+                            <td>@article.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                @if (article.NewsStatus)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        function exportToExcel() {
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+
+            // Summary sheet
+            const summaryData = [
+                ['FU News Management System - Report'],
+                ['Generated Date:', new Date().toLocaleDateString()],
+                ['Period:', '@(Model.StartDate?.ToString("dd/MM/yyyy") ?? "")' + ' - ' + '@(Model.EndDate?.ToString("dd/MM/yyyy") ?? "")'],
+                [],
+                ['Summary Statistics'],
+                ['Total Articles', @Model.TotalArticles],
+                ['Active Articles', @Model.ActiveArticles],
+                ['Inactive Articles', @Model.InactiveArticles],
+                ['Total Comments', @Model.TotalComments]
+            ];
+            const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+            XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+            // Articles by Category
+            const categoryTable = document.getElementById('categoryTable');
+            const wsCategory = XLSX.utils.table_to_sheet(categoryTable);
+            XLSX.utils.book_append_sheet(wb, wsCategory, 'By Category');
+
+            // Articles by Author
+            const authorTable = document.getElementById('authorTable');
+            const wsAuthor = XLSX.utils.table_to_sheet(authorTable);
+            XLSX.utils.book_append_sheet(wb, wsAuthor, 'By Author');
+
+            // Article List
+            const articleTable = document.getElementById('articleTable');
+            const wsArticles = XLSX.utils.table_to_sheet(articleTable);
+            XLSX.utils.book_append_sheet(wb, wsArticles, 'Articles');
+
+            // Export
+            const fileName = 'FU_News_Report_' + new Date().toISOString().slice(0,10) + '.xlsx';
+            XLSX.writeFile(wb, fileName);
+
+            toastr.success('Report exported successfully!');
+        }
+    </script>
+}

@@ -1,0 +1,138 @@
+﻿@page
+@model FUNewsManagementSystem.Web.Pages.Staff.NewsArticles.EditModel
+@{
+    ViewData["Title"] = "Edit News Article";
+}
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <h2><i class="fas fa-edit"></i> Edit News Article</h2>
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-page="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            <input type="hidden" asp-for="Input.NewsArticleId" />
+            <input type="hidden" asp-for="Input.CreatedById" />
+            <input type="hidden" asp-for="Input.CreatedDate" />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Article ID</label>
+                        <input type="text" class="form-control" value="@Model.Input.NewsArticleId" disabled />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="Input.CategoryId" class="form-label">Category *</label>
+                        <select asp-for="Input.CategoryId" class="form-select">
+                            <option value="">-- Select Category --</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.CategoryId"
+                                        selected="@(Model.Input.CategoryId == category.CategoryId)">
+                                    @category.CategoryName
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="Input.CategoryId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.NewsTitle" class="form-label">Title *</label>
+                <input asp-for="Input.NewsTitle" class="form-control" />
+                <span asp-validation-for="Input.NewsTitle" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Headline" class="form-label">Headline *</label>
+                <input asp-for="Input.Headline" class="form-control" />
+                <span asp-validation-for="Input.Headline" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.NewsContent" class="form-label">Content *</label>
+                <textarea asp-for="Input.NewsContent" class="form-control" rows="8"></textarea>
+                <span asp-validation-for="Input.NewsContent" class="text-danger"></span>
+                <small class="text-muted">Maximum 4000 characters</small>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.NewsSource" class="form-label">Source</label>
+                <input asp-for="Input.NewsSource" class="form-control" />
+                <span asp-validation-for="Input.NewsSource" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tags</label>
+                <div class="row">
+                    @foreach (var tag in Model.AllTags)
+                    {
+                        var isChecked = Model.Input.SelectedTagIds.Contains(tag.TagId);
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       name="Input.SelectedTagIds"
+                                       value="@tag.TagId"
+                                       id="tag_@tag.TagId"
+                                       checked="@isChecked" />
+                                <label class="form-check-label" for="tag_@tag.TagId">
+                                    @tag.TagName
+                                </label>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="Input.NewsStatus" class="form-check-input" />
+                <label asp-for="Input.NewsStatus" class="form-check-label">Active</label>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>Created:</strong> @Model.Input.CreatedDate.ToString("dd/MM/yyyy HH:mm") by @Model.Input.CreatedByName
+                @if (Model.Input.ModifiedDate.HasValue)
+                {
+                    <br />
+                    <strong>Last Modified:</strong>
+ 
+                    @Model.Input.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm")
+                    @if (!string.IsNullOrEmpty(Model.Input.UpdatedByName))
+                    {
+                        <text> by @Model.Input.UpdatedByName</text>
+                    }
+                }
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Notify admin that user is editing
+        const userName = '@HttpContext.Session.GetString("UserName")';
+        const newsId = '@Model.Input.NewsArticleId';
+        if (userName && newsId) {
+            window.signalRConnection?.invoke("NotifyUserEditing", newsId, userName);
+        }
+    </script>
+}

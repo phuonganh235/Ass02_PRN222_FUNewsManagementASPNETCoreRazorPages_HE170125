@@ -1,38 +1,52 @@
-﻿using BusinessLogic.Interfaces;
-using BusinessLogic.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using BusinessLogic.Services;
+using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
+using DataAccess.Entities;
 
-namespace FUNewsManagementSystem.Web.Pages.Accounts
+namespace FUNewsManagementSystem.Web.Pages.News
 {
     public class EditModel : PageModel
     {
-        private readonly IAccountService _accountService;
-
-        public EditModel(IAccountService accountService)
-        {
-            _accountService = accountService;
-        }
-
         [BindProperty]
-        public AccountVM Account { get; set; } = new();
+        public NewsArticle Input { get; set; } = new();
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public List<Category> Categories { get; set; } = new();
+
+        public async Task OnGetAsync(string id)
         {
-            var account = await _accountService.GetByIdAsync(id);
-            if (account == null)
-                return RedirectToPage("Index");
+            var opt = new DbContextOptionsBuilder<FUNewsDbContext>()
+                .UseSqlServer("Server=.;Database=FUNewsManagement;Trusted_Connection=True;Encrypt=False")
+                .Options;
+            using var ctx = new FUNewsDbContext(opt);
 
-            Account = account;
-            return Page();
+            var catService = new CategoryService(ctx);
+            Categories = await catService.GetAllAsync(true);
+
+            var newsService = new NewsArticleService(ctx);
+            Input = await newsService.GetAsync(id) ?? new NewsArticle();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string id)
         {
-            if (!ModelState.IsValid)
-                return Page();
+            var opt = new DbContextOptionsBuilder<FUNewsDbContext>()
+                .UseSqlServer("Server=.;Database=FUNewsManagement;Trusted_Connection=True;Encrypt=False")
+                .Options;
+            using var ctx = new FUNewsDbContext(opt);
 
-            await _accountService.UpdateAsync(Account);
+            var newsService = new NewsArticleService(ctx);
+            await newsService.UpdateAsync(
+                id,
+                Input.NewsTitle,
+                Input.Headline,
+                Input.NewsContent,
+                Input.NewsSource,
+                Input.CategoryID,
+                Input.NewsStatus,
+                updatedById: 1,
+                tagIds: null);
+
             return RedirectToPage("Index");
         }
     }

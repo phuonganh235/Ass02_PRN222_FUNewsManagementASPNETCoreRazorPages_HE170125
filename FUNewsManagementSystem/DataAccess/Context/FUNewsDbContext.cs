@@ -7,37 +7,55 @@ namespace DataAccess.Context
     {
         public FUNewsDbContext(DbContextOptions<FUNewsDbContext> options) : base(options) { }
 
-        public DbSet<SystemAccount> SystemAccounts { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<NewsArticle> NewsArticles { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<NewsTag> NewsTags { get; set; }
+        public DbSet<SystemAccount> SystemAccounts => Set<SystemAccount>();
+        public DbSet<Category> Categories => Set<Category>();
+        public DbSet<NewsArticle> NewsArticles => Set<NewsArticle>();
+        public DbSet<Tag> Tags => Set<Tag>();
+        public DbSet<NewsTag> NewsTags => Set<NewsTag>();
+        public DbSet<Comment> Comments => Set<Comment>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<SystemAccount>().HasKey(a => a.AccountID);
 
-            // ---- Many-to-Many: NewsArticle <-> Tag ----
+            modelBuilder.Entity<Category>().HasKey(c => c.CategoryID);
+
+            modelBuilder.Entity<NewsArticle>().HasKey(n => n.NewsArticleID);
+
+            modelBuilder.Entity<NewsArticle>()
+                .HasOne(n => n.Category)
+                .WithMany(c => c.NewsArticles)
+                .HasForeignKey(n => n.CategoryID);
+
+            modelBuilder.Entity<NewsArticle>()
+                .HasOne(n => n.CreatedBy)
+                .WithMany(a => a.NewsArticles)
+                .HasForeignKey(n => n.CreatedByID);
+
             modelBuilder.Entity<NewsTag>()
-                .HasKey(nt => new { nt.NewsId, nt.TagId });
+                .HasKey(nt => new { nt.NewsArticleID, nt.TagID });
 
             modelBuilder.Entity<NewsTag>()
                 .HasOne(nt => nt.NewsArticle)
                 .WithMany(n => n.NewsTags)
-                .HasForeignKey(nt => nt.NewsId);
+                .HasForeignKey(nt => nt.NewsArticleID);
 
             modelBuilder.Entity<NewsTag>()
                 .HasOne(nt => nt.Tag)
                 .WithMany(t => t.NewsTags)
-                .HasForeignKey(nt => nt.TagId);
+                .HasForeignKey(nt => nt.TagID);
 
-            // ---- NewsArticle <-> SystemAccount ----
-            modelBuilder.Entity<NewsArticle>()
-                .HasOne(n => n.CreatedBy)
-                .WithMany(a => a.CreatedArticles)
-                .HasForeignKey(n => n.CreatedById)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Comment>().HasKey(c => c.CommentID);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.NewsArticle)
+                .WithMany(n => n.Comments)
+                .HasForeignKey(c => c.NewsArticleID);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Account)
+                .WithMany(a => a.Comments)
+                .HasForeignKey(c => c.AccountID);
         }
     }
 }

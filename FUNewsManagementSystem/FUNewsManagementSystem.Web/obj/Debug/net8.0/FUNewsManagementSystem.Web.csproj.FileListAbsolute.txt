@@ -479,3 +479,4 @@ D:\FALL25\PRN222\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\FUNe
 D:\FALL25\PRN222\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\FUNewsManagementSystem\FUNewsManagementSystem.Web\obj\Debug\net8.0\FUNewsManagementSystem.Web.pdb
 D:\FALL25\PRN222\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\FUNewsManagementSystem\FUNewsManagementSystem.Web\obj\Debug\net8.0\FUNewsManagementSystem.Web.genruntimeconfig.cache
 D:\FALL25\PRN222\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\FUNewsManagementSystem\FUNewsManagementSystem.Web\obj\Debug\net8.0\ref\FUNewsManagementSystem.Web.dll
+D:\FALL25\PRN222\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\FUNewsManagementSystem\FUNewsManagementSystem.Web\obj\Debug\net8.0\rpswa.dswa.cache.json

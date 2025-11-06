@@ -3,32 +3,9 @@
 @{
     ViewData["Title"] = "Dashboard";
 }
-
-<div class="card shadow">
-    <div class="card-header bg-primary text-white">
-        <h5 class="m-0">Dashboard</h5>
-    </div>
-    <div class="card-body">
-        <p class="lead">
-            Welcome, <strong>@Model.WelcomeName</strong>!<br />
-            Your role: <strong>@Model.RoleName</strong>.
-        </p>
-
-        <hr />
-
-        <div class="row text-center">
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-outline-dark w-100" asp-page="/Accounts/Index">Manage Accounts</a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-outline-dark w-100" asp-page="/Categories/Index">Manage Categories</a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-outline-dark w-100" asp-page="/Tags/Index">Manage Tags</a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-outline-dark w-100" asp-page="/News/Index">Manage News</a>
-            </div>
-        </div>
-    </div>
-</div>
+<h2>Dashboard</h2>
+<ul>
+    <li>Tổng số bài viết: <b>@Model.NewsCount</b></li>
+    <li>Tổng số chuyên mục: <b>@Model.CategoryCount</b></li>
+    <li>Tổng số tài khoản: <b>@Model.AccountCount</b></li>
+</ul>

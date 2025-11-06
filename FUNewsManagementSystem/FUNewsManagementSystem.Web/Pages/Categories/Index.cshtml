@@ -3,81 +3,21 @@
 @{
     ViewData["Title"] = "Categories";
 }
-
-<h3>Categories</h3>
-
-<div class="card mb-4">
-    <div class="card-header bg-secondary text-white">
-        Create / Edit Category
-    </div>
-    <div class="card-body">
-        <form method="post">
-
-            <input type="hidden" asp-for="Input.CategoryID" />
-
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label">Name</label>
-                    <input class="form-control" asp-for="Input.CategoryName" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Parent Category ID</label>
-                    <input class="form-control" asp-for="Input.ParentCategoryID" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Active?</label>
-                    <select class="form-select" asp-for="Input.IsActive">
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Description</label>
-                <textarea class="form-control" asp-for="Input.CategoryDescription"></textarea>
-            </div>
-
-            <div class="d-flex gap-2">
-                <button class="btn btn-primary" formaction="?handler=Create">Create New</button>
-                <button class="btn btn-warning" formaction="?handler=Update">Update Existing</button>
-            </div>
-
-        </form>
-    </div>
-</div>
-
-<table class="table table-bordered table-striped bg-white shadow-sm">
-    <thead class="table-dark">
+<h2>Categories</h2>
+<a asp-page="Create" class="btn btn-primary mb-2">Create</a>
+<table class="table table-bordered">
+    <tr><th>ID</th><th>Name</th><th>Description</th><th>Active</th><th></th></tr>
+    @foreach (var c in Model.Items)
+    {
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>ParentID</th>
-            <th>Active</th>
-            <th>Description</th>
-            <th style="width:100px;"></th>
+            <td>@c.CategoryID</td>
+            <td>@c.CategoryName</td>
+            <td>@c.CategoryDescription</td>
+            <td>@(c.IsActive ? "Yes" : "No")</td>
+            <td>
+                <a asp-page="Edit" asp-route-id="@c.CategoryID" class="btn btn-sm btn-success">Edit</a>
+                <a asp-page="Delete" asp-route-id="@c.CategoryID" class="btn btn-sm btn-danger">Delete</a>
+            </td>
         </tr>
-    </thead>
-    <tbody>
-        @foreach (var c in Model.Categories)
-        {
-            <tr>
-                <td>@c.CategoryID</td>
-                <td>@c.CategoryName</td>
-                <td>@c.ParentCategoryID</td>
-                <td>@(c.IsActive ? "Yes" : "No")</td>
-                <td>@c.CategoryDescription</td>
-                <td>
-                    <form method="post" class="d-inline">
-                        <input type="hidden" name="categoryId" value="@c.CategoryID" />
-                        <button class="btn btn-sm btn-danger"
-                                formaction="?handler=Delete"
-                                onclick="return confirm('Delete this category?');">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
+    }
 </table>

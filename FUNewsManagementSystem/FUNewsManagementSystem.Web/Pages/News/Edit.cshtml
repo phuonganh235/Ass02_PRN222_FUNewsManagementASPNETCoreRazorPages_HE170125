@@ -1,0 +1,46 @@
+﻿@page "{id}"
+@model FUNewsManagementSystem.Web.Pages.News.Edit
+@{
+    ViewData["Title"] = "Chỉnh sửa bài viết";
+}
+
+<h2>Chỉnh sửa bài viết</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label>Tiêu đề</label>
+        <input asp-for="Input.NewsTitle" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Headline</label>
+        <input asp-for="Input.Headline" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Nội dung</label>
+        <textarea asp-for="Input.NewsContent" class="form-control" rows="6"></textarea>
+    </div>
+    <div class="form-group">
+        <label>Nguồn</label>
+        <input asp-for="Input.NewsSource" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Chuyên mục</label>
+        <select asp-for="Input.CategoryID" class="form-control">
+            @foreach (var c in Model.Categories)
+            {
+                <option value="@c.CategoryID" selected="@(c.CategoryID == Model.Input.CategoryID)">
+                    @c.CategoryName
+                </option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Trạng thái</label>
+        <select asp-for="Input.NewsStatus" class="form-control">
+            <option value="true">Hiển thị</option>
+            <option value="false">Ẩn</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Cập nhật</button>
+</form>

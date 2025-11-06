@@ -1,26 +1,25 @@
-﻿namespace DataAccess.Entities
+﻿using System;
+using System.Collections.Generic;
+namespace DataAccess.Entities
 {
     public class NewsArticle
     {
-        public int NewsId { get; set; }
-        public string NewsTitle { get; set; } = string.Empty;
-        public string NewsContent { get; set; } = string.Empty;
-        public string NewsSource { get; set; } = string.Empty;
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public string NewsStatus { get; set; } = "Draft"; // or "Published"
+        public string NewsArticleID { get; set; } = default!; // nvarchar(20)
+        public string NewsTitle { get; set; } = default!;     // nvarchar(400)
+        public string? Headline { get; set; }                 // nvarchar(150)
+        public DateTime CreatedDate { get; set; }
+        public string? NewsContent { get; set; }              // nvarchar(4000)
+        public string? NewsSource { get; set; }               // nvarchar(400)
+        public short CategoryID { get; set; }
+        public bool NewsStatus { get; set; }
+        public short CreatedByID { get; set; }
+        public short? UpdatedByID { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
-        // Khóa ngoại
-        public short CreatedById { get; set; }
-        public SystemAccount? CreatedBy { get; set; }
-
-        // Liên kết Category
-        public int CategoryId { get; set; }
         public Category? Category { get; set; }
-
-        // Liên kết Tag (nhiều-nhiều)
+        public SystemAccount? CreatedBy { get; set; }
+        public SystemAccount? UpdatedBy { get; set; }
         public ICollection<NewsTag>? NewsTags { get; set; }
-
-        // Liên kết Comment
         public ICollection<Comment>? Comments { get; set; }
     }
 }

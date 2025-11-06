@@ -1,45 +1,46 @@
-﻿using BusinessLogic.Interfaces;
-using BusinessLogic.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http;
+using BusinessLogic.Services;
+using BusinessLogic.ViewModels;
+using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace FUNewsManagementSystem.Web.Pages.Comments
 {
     public class IndexModel : PageModel
     {
-        private readonly ICommentService _commentService;
+        [BindProperty]
+        public string NewsArticleID { get; set; } = string.Empty;
 
-        public IndexModel(ICommentService commentService)
-        {
-            _commentService = commentService;
-        }
+        [BindProperty]
+        public string Content { get; set; } = string.Empty;
 
         public List<CommentVM> CommentList { get; set; } = new();
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string id)
         {
-            CommentList = await _commentService.GetAllAsync();
+            NewsArticleID = id;
+            var opt = new DbContextOptionsBuilder<FUNewsDbContext>()
+                .UseSqlServer("Server=.;Database=FUNewsManagement;Trusted_Connection=True;Encrypt=False")
+                .Options;
+            using var ctx = new FUNewsDbContext(opt);
+            var commentService = new CommentService(ctx);
+            CommentList = await commentService.GetByNewsAsync(id);
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync(int commentId)
+        public async Task<IActionResult> OnPostAsync()
         {
-            int? role = HttpContext.Session.GetInt32("AccountRole");
+            if (string.IsNullOrWhiteSpace(Content)) return Page();
 
-            if (role != 3)
-            {
-                TempData["ErrorMessage"] = "You are not authorized to delete comments.";
-                return RedirectToPage();
-            }
+            var opt = new DbContextOptionsBuilder<FUNewsDbContext>()
+                .UseSqlServer("Server=.;Database=FUNewsManagement;Trusted_Connection=True;Encrypt=False")
+                .Options;
+            using var ctx = new FUNewsDbContext(opt);
+            var commentService = new CommentService(ctx);
 
-            bool result = await _commentService.DeleteAsync(commentId);
+            await commentService.AddAsync(NewsArticleID, accountId: 1, content: Content);
 
-            if (result)
-                TempData["SuccessMessage"] = "Comment deleted successfully!";
-            else
-                TempData["ErrorMessage"] = "Failed to delete comment.";
-
-            return RedirectToPage();
+            return RedirectToPage(new { id = NewsArticleID });
         }
     }
 }

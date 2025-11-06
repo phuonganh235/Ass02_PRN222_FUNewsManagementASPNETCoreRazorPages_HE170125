@@ -1,13 +1,13 @@
-﻿using BusinessLogic.ViewModels;
+﻿using DataAccess.Entities;
 
 namespace BusinessLogic.Interfaces
 {
     public interface ICategoryService
     {
-        Task<List<CategoryVM>> GetAllAsync();
-        Task<CategoryVM?> GetByIdAsync(int id);
-        Task<bool> CreateAsync(CategoryVM model);
-        Task<bool> UpdateAsync(CategoryVM model);
-        Task<bool> DeleteAsync(int id);
+        Task<List<Category>> GetAllAsync(bool? onlyActive = null);
+        Task<Category?> GetAsync(short id);
+        Task<Category> CreateAsync(string name, string? description, short? parentId, bool isActive);
+        Task<Category> UpdateAsync(short id, string name, string? description, short? parentId, bool isActive);
+        Task<bool> DeleteAsync(short id);
     }
 }

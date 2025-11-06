@@ -1,14 +1,11 @@
-﻿using BusinessLogic.ViewModels;
+﻿using DataAccess.Entities;
 
 namespace BusinessLogic.Interfaces
 {
     public interface ITagService
     {
-        Task<List<TagVM>> GetAllAsync();
-        Task<TagVM?> GetByIdAsync(int id);
-        Task<bool> CreateAsync(TagVM vm);
-        Task<bool> UpdateAsync(TagVM vm);
-        Task<bool> DeleteAsync(int id);
-        Task<bool> IsDuplicateAsync(string name, int? excludeId = null);
+        Task<List<Tag>> GetAllAsync();
+        Task<Tag?> GetAsync(int id);
+        Task<Tag> CreateAsync(string name, string? note);
     }
 }

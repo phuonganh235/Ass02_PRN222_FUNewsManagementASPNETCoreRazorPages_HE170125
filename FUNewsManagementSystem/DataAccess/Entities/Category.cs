@@ -2,13 +2,12 @@
 {
     public class Category
     {
-        public int CategoryID { get; set; }
-        public string CategoryName { get; set; } = "";
+        public short CategoryID { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
         public string? CategoryDescription { get; set; }
-        public int? ParentCategoryID { get; set; }
+        public short? ParentCategoryID { get; set; }
         public bool IsActive { get; set; }
 
-        // Navigation
-        public ICollection<NewsArticle>? NewsArticles { get; set; }
+        public ICollection<NewsArticle> NewsArticles { get; set; } = new List<NewsArticle>();
     }
 }

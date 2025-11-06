@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 
-namespace FUNewsManagementSystem.Web.Pages.Auth
+namespace FUNewsManagementSystem.Web.Pages.Auth;
+
+public class LogoutModel : PageModel
 {
-    public class LogoutModel : PageModel
+    public IActionResult OnGet()
     {
-        public IActionResult OnGet()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToPage("/Auth/Login");
-        }
+        HttpContext.Session.Clear();
+        return RedirectToPage("/Auth/Login");
     }
 }

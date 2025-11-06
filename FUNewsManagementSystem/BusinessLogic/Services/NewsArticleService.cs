@@ -14,153 +14,119 @@ namespace BusinessLogic.Services
             _ctx = ctx;
         }
 
-        public async Task<List<NewsArticleVM>> GetAllAsync()
+        public async Task<NewsArticle?> GetAsync(string newsArticleId)
         {
-            var data = await _ctx.NewsArticles
+            return await _ctx.NewsArticles
                 .Include(n => n.Category)
-                .Include(n => n.CreatedBy)
-                .Include(n => n.NewsTags!)
-                    .ThenInclude(nt => nt.Tag)
-                .ToListAsync();
+                .Include(n => n.NewsTags).ThenInclude(nt => nt.Tag)
+                .FirstOrDefaultAsync(n => n.NewsArticleID == newsArticleId);
+        }
 
-            return data.Select(n => new NewsArticleVM
+        public async Task<List<NewsArticleVM>> GetPagedAsync(
+            int page, int pageSize,
+            string? keyword = null,
+            short? categoryId = null,
+            bool? status = null,
+            int? tagId = null)
+        {
+            var q = _ctx.NewsArticles
+                .Include(n => n.Category)
+                .Include(n => n.NewsTags).ThenInclude(nt => nt.Tag)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+                q = q.Where(n => n.NewsTitle.Contains(keyword) || (n.Headline ?? "").Contains(keyword));
+
+            if (categoryId.HasValue)
+                q = q.Where(n => n.CategoryID == categoryId.Value);
+
+            if (status.HasValue)
+                q = q.Where(n => n.NewsStatus == status.Value);
+
+            if (tagId.HasValue)
+                q = q.Where(n => n.NewsTags.Any(t => t.TagID == tagId.Value));
+
+            q = q.OrderByDescending(n => n.CreatedDate);
+
+            var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return items.Select(n => new NewsArticleVM
             {
                 NewsArticleID = n.NewsArticleID,
                 NewsTitle = n.NewsTitle,
                 Headline = n.Headline,
-                NewsContent = n.NewsContent,
-                NewsSource = n.NewsSource,
-                CategoryID = n.CategoryID,
-                CategoryName = n.Category?.CategoryName,
-                CreatedByID = n.CreatedByID,
-                CreatedByName = n.CreatedBy?.AccountName,
                 CreatedDate = n.CreatedDate,
-                ModifiedDate = n.ModifiedDate,
+                CategoryName = n.Category?.CategoryName,
                 NewsStatus = n.NewsStatus,
-                SelectedTagIDs = n.NewsTags?.Select(t => t.TagID).ToList() ?? new(),
-                SelectedTagNames = n.NewsTags?.Select(t => t.Tag!.TagName ?? "").ToList() ?? new()
+                SelectedTagIds = n.NewsTags.Select(t => t.TagID).ToList(),
+                SelectedTagNamesDisplay = string.Join(", ", n.NewsTags.Where(t => t.Tag != null).Select(t => t.Tag!.TagName))
             }).ToList();
         }
 
-        public async Task<NewsArticleVM?> GetByIdAsync(string id)
+        public async Task<NewsArticle> CreateAsync(
+            string newsArticleId, string title, string? headline, string? content, string? source,
+            short categoryId, bool status, short createdById, IEnumerable<int>? tagIds)
         {
-            var n = await _ctx.NewsArticles
-                .Include(n => n.Category)
-                .Include(n => n.CreatedBy)
-                .Include(n => n.NewsTags!)
-                    .ThenInclude(nt => nt.Tag)
-                .FirstOrDefaultAsync(n => n.NewsArticleID == id);
-
-            if (n == null) return null;
-
-            return new NewsArticleVM
+            var entity = new NewsArticle
             {
-                NewsArticleID = n.NewsArticleID,
-                NewsTitle = n.NewsTitle,
-                Headline = n.Headline,
-                NewsContent = n.NewsContent,
-                NewsSource = n.NewsSource,
-                CategoryID = n.CategoryID,
-                CategoryName = n.Category?.CategoryName,
-                CreatedByID = n.CreatedByID,
-                CreatedByName = n.CreatedBy?.AccountName,
-                CreatedDate = n.CreatedDate,
-                ModifiedDate = n.ModifiedDate,
-                NewsStatus = n.NewsStatus,
-                SelectedTagIDs = n.NewsTags?.Select(t => t.TagID).ToList() ?? new(),
-                SelectedTagNames = n.NewsTags?.Select(t => t.Tag!.TagName ?? "").ToList() ?? new()
-            };
-        }
-
-        public async Task<bool> CreateAsync(
-            string newsTitle,
-            string headline,
-            string newsContent,
-            string newsSource,
-            short categoryId,
-            short createdById,
-            bool newsStatus,
-            List<int> tagIds)
-        {
-            var news = new NewsArticle
-            {
-                NewsArticleID = Guid.NewGuid().ToString("N").Substring(0, 20),
-                NewsTitle = newsTitle,
+                NewsArticleID = newsArticleId,
+                NewsTitle = title,
                 Headline = headline,
-                NewsContent = newsContent,
-                NewsSource = newsSource,
+                NewsContent = content,
+                NewsSource = source,
                 CategoryID = categoryId,
+                NewsStatus = status,
                 CreatedByID = createdById,
-                NewsStatus = newsStatus,
-                CreatedDate = DateTime.Now
+                CreatedDate = DateTime.UtcNow
             };
 
-            _ctx.NewsArticles.Add(news);
-            await _ctx.SaveChangesAsync();
+            if (tagIds != null)
+                foreach (var id in tagIds.Distinct())
+                    entity.NewsTags.Add(new NewsTag { NewsArticleID = newsArticleId, TagID = id });
 
-            foreach (var tid in tagIds.Distinct())
-            {
-                _ctx.NewsTags.Add(new NewsTag
-                {
-                    NewsArticleID = news.NewsArticleID,
-                    TagID = tid
-                });
-            }
-
+            _ctx.NewsArticles.Add(entity);
             await _ctx.SaveChangesAsync();
-            return true;
+            return entity;
         }
 
-        public async Task<bool> UpdateAsync(
-            string newsArticleId,
-            string newsTitle,
-            string headline,
-            string newsContent,
-            string newsSource,
-            short categoryId,
-            bool newsStatus,
-            List<int> tagIds)
+        public async Task<NewsArticle> UpdateAsync(
+            string newsArticleId, string title, string? headline, string? content, string? source,
+            short categoryId, bool status, short? updatedById, IEnumerable<int>? tagIds)
         {
-            var news = await _ctx.NewsArticles
+            var entity = await _ctx.NewsArticles
                 .Include(n => n.NewsTags)
-                .FirstOrDefaultAsync(n => n.NewsArticleID == newsArticleId);
+                .FirstOrDefaultAsync(n => n.NewsArticleID == newsArticleId)
+                ?? throw new KeyNotFoundException("NewsArticle not found");
 
-            if (news == null) return false;
+            entity.NewsTitle = title;
+            entity.Headline = headline;
+            entity.NewsContent = content;
+            entity.NewsSource = source;
+            entity.CategoryID = categoryId;
+            entity.NewsStatus = status;
+            entity.UpdatedByID = updatedById;
+            entity.ModifiedDate = DateTime.UtcNow;
 
-            news.NewsTitle = newsTitle;
-            news.Headline = headline;
-            news.NewsContent = newsContent;
-            news.NewsSource = newsSource;
-            news.CategoryID = categoryId;
-            news.NewsStatus = newsStatus;
-            news.ModifiedDate = DateTime.Now;
+            // update tags
+            var newTags = tagIds?.Distinct().ToHashSet() ?? new HashSet<int>();
+            var oldTags = entity.NewsTags.Select(t => t.TagID).ToHashSet();
 
-            _ctx.NewsTags.RemoveRange(news.NewsTags ?? new List<NewsTag>());
+            var toRemove = entity.NewsTags.Where(t => !newTags.Contains(t.TagID)).ToList();
+            if (toRemove.Count > 0) _ctx.NewsTags.RemoveRange(toRemove);
 
-            foreach (var tid in tagIds.Distinct())
-            {
-                _ctx.NewsTags.Add(new NewsTag
-                {
-                    NewsArticleID = newsArticleId,
-                    TagID = tid
-                });
-            }
+            var toAdd = newTags.Where(id => !oldTags.Contains(id))
+                               .Select(id => new NewsTag { NewsArticleID = newsArticleId, TagID = id }).ToList();
+            if (toAdd.Count > 0) _ctx.NewsTags.AddRange(toAdd);
 
             await _ctx.SaveChangesAsync();
-            return true;
+            return entity;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string newsArticleId)
         {
-            var news = await _ctx.NewsArticles
-                .Include(n => n.NewsTags)
-                .FirstOrDefaultAsync(n => n.NewsArticleID == id);
-
-            if (news == null) return false;
-
-            _ctx.NewsTags.RemoveRange(news.NewsTags ?? new List<NewsTag>());
-            _ctx.NewsArticles.Remove(news);
-
+            var entity = await _ctx.NewsArticles.FirstOrDefaultAsync(n => n.NewsArticleID == newsArticleId);
+            if (entity == null) return false;
+            _ctx.NewsArticles.Remove(entity);
             await _ctx.SaveChangesAsync();
             return true;
         }

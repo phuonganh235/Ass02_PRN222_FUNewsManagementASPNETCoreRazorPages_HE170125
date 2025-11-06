@@ -1,12 +1,12 @@
 ﻿namespace DataAccess.Entities
 {
+    // join table N-N between NewsArticle and Tag
     public class NewsArticleTag
     {
-        public string NewsArticleID { get; set; } = string.Empty;
-        public int TagID { get; set; }
-
-        // Navigation properties
+        public int NewsArticleID { get; set; }
         public NewsArticle? NewsArticle { get; set; }
+
+        public int TagID { get; set; }
         public Tag? Tag { get; set; }
     }
 }

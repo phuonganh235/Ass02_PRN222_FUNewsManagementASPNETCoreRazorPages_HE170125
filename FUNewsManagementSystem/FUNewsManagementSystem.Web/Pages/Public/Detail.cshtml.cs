@@ -1,31 +1,29 @@
-﻿using BusinessLogic.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using BusinessLogic.Services;
+using DataAccess.Context;
 using BusinessLogic.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using DataAccess.Entities;
 
-namespace FUNewsManagementSystem.Web.Pages.Public
+namespace FUNewsManagementSystem.Web.Pages.News
 {
     public class DetailModel : PageModel
     {
-        private readonly INewsArticleService _newsSrv;
+        public NewsArticle? Article { get; set; }
+        public List<CommentVM> Comments { get; set; } = new();
 
-        public DetailModel(INewsArticleService newsSrv)
+        public async Task OnGetAsync(string id)
         {
-            _newsSrv = newsSrv;
-        }
+            var options = new DbContextOptionsBuilder<FUNewsDbContext>()
+                .UseSqlServer("Server=.;Database=FUNewsManagement;Trusted_Connection=True;Encrypt=False")
+                .Options;
 
-        public NewsArticleVM? Article { get; set; }
+            using var ctx = new FUNewsDbContext(options);
+            var newsService = new NewsArticleService(ctx);
+            var commentService = new CommentService(ctx);
 
-        public async Task<IActionResult> OnGetAsync(string id)
-        {
-            var art = await _newsSrv.GetByIdAsync(id);
-            if (art == null || !art.NewsStatus)
-            {
-                return NotFound();
-            }
-
-            Article = art;
-            return Page();
+            Article = await newsService.GetAsync(id);
+            Comments = await commentService.GetByNewsAsync(id);
         }
     }
 }

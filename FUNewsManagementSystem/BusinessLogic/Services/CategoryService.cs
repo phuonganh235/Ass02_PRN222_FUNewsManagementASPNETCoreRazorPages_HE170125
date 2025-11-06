@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.Interfaces;
-using BusinessLogic.ViewModels;
 using DataAccess.Context;
 using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -9,75 +8,52 @@ namespace BusinessLogic.Services
     public class CategoryService : ICategoryService
     {
         private readonly FUNewsDbContext _ctx;
-
         public CategoryService(FUNewsDbContext ctx)
         {
             _ctx = ctx;
         }
 
-        public async Task<List<CategoryVM>> GetAllAsync()
+        public async Task<List<Category>> GetAllAsync(bool? onlyActive = null)
         {
-            return await _ctx.Categories
-                .Select(c => new CategoryVM
-                {
-                    CategoryID = c.CategoryID,
-                    CategoryName = c.CategoryName,
-                    CategoryDescription = c.CategoryDescription,
-                    ParentCategoryID = c.ParentCategoryID,
-                    IsActive = c.IsActive
-                })
-                .ToListAsync();
+            var q = _ctx.Categories.AsQueryable();
+            if (onlyActive == true) q = q.Where(x => x.IsActive);
+            return await q.OrderBy(x => x.CategoryName).ToListAsync();
         }
 
-        public async Task<CategoryVM?> GetByIdAsync(int id)
+        public async Task<Category?> GetAsync(short id)
         {
-            return await _ctx.Categories
-                .Where(c => c.CategoryID == id)
-                .Select(c => new CategoryVM
-                {
-                    CategoryID = c.CategoryID,
-                    CategoryName = c.CategoryName,
-                    CategoryDescription = c.CategoryDescription,
-                    ParentCategoryID = c.ParentCategoryID,
-                    IsActive = c.IsActive
-                })
-                .FirstOrDefaultAsync();
+            return await _ctx.Categories.FirstOrDefaultAsync(x => x.CategoryID == id);
         }
 
-        public async Task<bool> CreateAsync(CategoryVM model)
+        public async Task<Category> CreateAsync(string name, string? description, short? parentId, bool isActive)
         {
             var c = new Category
             {
-                CategoryName = model.CategoryName,
-                CategoryDescription = model.CategoryDescription,
-                ParentCategoryID = model.ParentCategoryID,
-                IsActive = model.IsActive
+                CategoryName = name,
+                CategoryDescription = description,
+                ParentCategoryID = parentId,
+                IsActive = isActive
             };
             _ctx.Categories.Add(c);
             await _ctx.SaveChangesAsync();
-            return true;
+            return c;
         }
 
-        public async Task<bool> UpdateAsync(CategoryVM model)
+        public async Task<Category> UpdateAsync(short id, string name, string? description, short? parentId, bool isActive)
         {
-            var c = await _ctx.Categories.FindAsync(model.CategoryID);
-            if (c == null) return false;
-
-            c.CategoryName = model.CategoryName;
-            c.CategoryDescription = model.CategoryDescription;
-            c.ParentCategoryID = model.ParentCategoryID;
-            c.IsActive = model.IsActive;
-
-            _ctx.Categories.Update(c);
+            var c = await _ctx.Categories.FindAsync(id) ?? throw new KeyNotFoundException("Category not found");
+            c.CategoryName = name;
+            c.CategoryDescription = description;
+            c.ParentCategoryID = parentId;
+            c.IsActive = isActive;
             await _ctx.SaveChangesAsync();
-            return true;
+            return c;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(short id)
         {
             var c = await _ctx.Categories.FindAsync(id);
             if (c == null) return false;
-
             _ctx.Categories.Remove(c);
             await _ctx.SaveChangesAsync();
             return true;

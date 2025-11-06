@@ -1,31 +1,24 @@
-﻿using FUNewsManagementSystem.Web.Helpers;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 
-namespace FUNewsManagementSystem.Web.Pages.Dashboard
+namespace FUNewsManagementSystem.Web.Pages.Dashboard;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    public int NewsCount { get; set; }
+    public int CategoryCount { get; set; }
+    public int AccountCount { get; set; }
+
+    public async Task OnGet()
     {
-        public string? WelcomeName { get; set; }
-        public string RoleName { get; set; } = "";
+        var opt = new DbContextOptionsBuilder<FUNewsDbContext>()
+            .UseSqlServer("Server=.;Database=FUNewsManagement;Trusted_Connection=True;Encrypt=False")
+            .Options;
 
-        public IActionResult OnGet()
-        {
-            var guard = AuthGuard.RequireLogin(this);
-            if (guard != null) return guard;
-
-            WelcomeName = HttpContext.Session.GetString("AccountName");
-            var role = HttpContext.Session.GetInt32("AccountRole");
-
-            RoleName = role switch
-            {
-                3 => "Admin",
-                2 => "Staff",
-                1 => "Lecturer",
-                _ => "Unknown"
-            };
-
-            return Page();
-        }
+        using var ctx = new FUNewsDbContext(opt);
+        NewsCount = await ctx.NewsArticles.CountAsync();
+        CategoryCount = await ctx.Categories.CountAsync();
+        AccountCount = await ctx.SystemAccounts.CountAsync();
     }
 }

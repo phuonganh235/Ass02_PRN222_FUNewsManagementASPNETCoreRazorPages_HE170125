@@ -1,54 +1,31 @@
-﻿@page
+﻿@page "{id}"
 @model FUNewsManagementSystem.Web.Pages.Comments.IndexModel
-@using Microsoft.AspNetCore.Http
 @{
-    ViewData["Title"] = "Comments Management";
-    Layout = "_Layout";
+    ViewData["Title"] = "Bình luận bài viết";
 }
 
-<h3 class="mb-3">Comments Management</h3>
+<h3>Bình luận cho bài viết @Model.NewsArticleID</h3>
 
-<table class="table table-bordered table-hover">
-    <thead class="table-light">
-        <tr>
-            <th>ID</th>
-            <th>Comment By</th>
-            <th>Content</th>
-            <th>Created Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.CommentList == null || !Model.CommentList.Any())
+<form method="post">
+    <textarea asp-for="Content" rows="4" class="form-control"></textarea>
+    <button type="submit" class="btn btn-primary mt-2">Gửi bình luận</button>
+</form>
+
+<hr />
+
+@if (Model.CommentList.Count == 0)
+{
+    <p>Chưa có bình luận.</p>
+}
+else
+{
+    <ul>
+        @foreach (var c in Model.CommentList)
         {
-            <tr>
-                <td colspan="5" class="text-center text-muted">No comments available.</td>
-            </tr>
+            <li>
+                <b>@c.AccountName</b> - @c.CommentDate.ToString("dd/MM/yyyy HH:mm")<br />
+                @c.CommentText
+            </li>
         }
-        else
-        {
-            @foreach (var c in Model.CommentList)
-            {
-                <tr>
-                    <td>@c.CommentID</td>
-                    <td>@c.CommentBy</td>
-                    <td>@c.CommentText</td>
-                    <td>@c.CommentDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>
-                        @if (HttpContext.Session.GetInt32("AccountRole") == 3)
-                        {
-                            <form method="post" class="d-inline">
-                                <input type="hidden" name="commentId" value="@c.CommentID" />
-                                <button class="btn btn-sm btn-danger"
-                                        formaction="?handler=Delete"
-                                        onclick="return confirm('Delete this comment?');">
-                                    Delete
-                                </button>
-                            </form>
-                        }
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+    </ul>
+}

@@ -1,102 +1,33 @@
-﻿using BusinessLogic.Interfaces;
-using BusinessLogic.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
+﻿@page
+@model FUNewsManagementSystem.Web.Pages.News.IndexModel
+@{
+    ViewData["Title"] = "Danh sách bài viết";
+}
 
-namespace FUNewsManagementSystem.Web.Pages.News
-{
-    public class IndexModel : PageModel
-    {
-        private readonly INewsArticleService _newsSrv;
-        private readonly ICategoryService _catSrv;
-        private readonly ITagService _tagSrv;
+<h2>Danh sách bài viết</h2>
 
-        public IndexModel(
-            INewsArticleService newsSrv,
-            ICategoryService catSrv,
-            ITagService tagSrv)
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mã bài viết</th>
+            <th>Tiêu đề</th>
+            <th>Chuyên mục</th>
+            <th>Ngày tạo</th>
+            <th>Trạng thái</th>
+            <th>Tags</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.NewsList)
         {
-            _newsSrv = newsSrv;
-            _catSrv = catSrv;
-            _tagSrv = tagSrv;
+            <tr>
+                <td>@item.NewsArticleID</td>
+                <td>@item.NewsTitle</td>
+                <td>@item.CategoryName</td>
+                <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                <td>@(item.NewsStatus ? "Hiển thị" : "Ẩn")</td>
+                <td>@item.SelectedTagNamesDisplay</td>
+            </tr>
         }
-
-        public List<NewsArticleVM>
-    NewsList { get; set; } = new();
-
-    // form fields (bind)
-    [BindProperty] public int EditId { get; set; }
-    [BindProperty, Required] public string Title { get; set; } = "";
-    [BindProperty, Required] public string Content { get; set; } = "";
-    [BindProperty] public string Source { get; set; } = "";
-    [BindProperty, Required] public int CategoryId { get; set; }
-    [BindProperty] public bool Status { get; set; } = true;
-    [BindProperty] public List<int>
-        SelectedTagIds { get; set; } = new();
-
-        public async Task OnGetAsync()
-        {
-        NewsList = await _newsSrv.GetAllAsync();
-        }
-
-        // Tạo mới
-        public async Task<IActionResult>
-            OnPostCreateAsync()
-            {
-            if (!ModelState.IsValid)
-            {
-            NewsList = await _newsSrv.GetAllAsync();
-            return Page();
-            }
-
-            // ví dụ: lấy ID người tạo từ session
-            short createdById = (short)(HttpContext.Session.GetInt32("AccountId") ?? 0);
-
-            await _newsSrv.CreateAsync(
-            Title,
-            Content,
-            Source,
-            CategoryId,
-            createdById,
-            Status,
-            SelectedTagIds ?? new List<int>
-                ()
-                );
-
-                return RedirectToPage();
-                }
-
-                // Cập nhật
-                public async Task<IActionResult>
-                    OnPostEditAsync()
-                    {
-                    if (!ModelState.IsValid)
-                    {
-                    NewsList = await _newsSrv.GetAllAsync();
-                    return Page();
-                    }
-
-                    await _newsSrv.UpdateAsync(
-                    EditId,
-                    Title,
-                    Content,
-                    Source,
-                    CategoryId,
-                    Status,
-                    SelectedTagIds ?? new List<int>
-                        ()
-                        );
-
-                        return RedirectToPage();
-                        }
-
-                        // Xóa
-                        public async Task<IActionResult>
-                            OnPostDeleteAsync(int deleteId)
-                            {
-                            await _newsSrv.DeleteAsync(deleteId);
-                            return RedirectToPage();
-                            }
-                            }
-                            }
+    </tbody>
+</table>

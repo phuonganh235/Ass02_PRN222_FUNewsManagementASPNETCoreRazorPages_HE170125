@@ -1,47 +1,39 @@
-﻿using BusinessLogic.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using BusinessLogic.Services;
+using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 
-namespace FUNewsManagementSystem.Web.Pages.Auth
+namespace FUNewsManagementSystem.Web.Pages.Auth;
+
+public class LoginModel : PageModel
 {
-    public class LoginModel : PageModel
+    [BindProperty] public string Email { get; set; } = string.Empty;
+    [BindProperty] public string Password { get; set; } = string.Empty;
+    public string Error { get; set; } = "";
+
+    public void OnGet() { }
+
+    public async Task<IActionResult> OnPostAsync()
     {
-        private readonly IAuthService _authService;
-        public LoginModel(IAuthService authService)
+        var opt = new DbContextOptionsBuilder<FUNewsDbContext>()
+            .UseSqlServer("Server=.;Database=FUNewsManagement;Trusted_Connection=True;Encrypt=False")
+            .Options;
+
+        using var ctx = new FUNewsDbContext(opt);
+        var auth = new AuthService(ctx);
+        var user = await auth.LoginAsync(Email, Password);
+
+        if (user == null)
         {
-            _authService = authService;
+            Error = "Sai email hoặc mật khẩu!";
+            return Page();
         }
 
-        [BindProperty]
-        public string Email { get; set; } = string.Empty;
-        [BindProperty]
-        public string Password { get; set; } = string.Empty;
+        HttpContext.Session.SetString("UserId", user.AccountID.ToString());
+        HttpContext.Session.SetString("UserRole", user.AccountRole.ToString());
+        HttpContext.Session.SetString("UserName", user.AccountName);
 
-        public string? ErrorMessage { get; set; }
-
-        public void OnGet()
-        {
-            // clear session when go to login screen
-            HttpContext.Session.Clear();
-        }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var user = await _authService.LoginAsync(Email, Password);
-
-            if (user == null)
-            {
-                ErrorMessage = "Invalid email or password.";
-                return Page();
-            }
-
-            // store session
-            HttpContext.Session.SetInt32("AccountID", user.AccountID);
-            HttpContext.Session.SetString("AccountName", user.AccountName ?? "");
-            HttpContext.Session.SetString("AccountEmail", user.AccountEmail ?? "");
-            HttpContext.Session.SetInt32("AccountRole", user.AccountRole);
-
-            return RedirectToPage("/Dashboard/Index");
-        }
+        return RedirectToPage("/Dashboard/Index");
     }
 }

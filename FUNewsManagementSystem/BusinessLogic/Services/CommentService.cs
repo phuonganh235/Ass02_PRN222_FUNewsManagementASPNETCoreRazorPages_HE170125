@@ -8,34 +8,15 @@ namespace BusinessLogic.Services
 {
     public class CommentService : ICommentService
     {
-        private readonly FUNewsDbContext _context;
-
-        public CommentService(FUNewsDbContext context)
+        private readonly FUNewsDbContext _ctx;
+        public CommentService(FUNewsDbContext ctx)
         {
-            _context = context;
-        }
-
-        public async Task<List<CommentVM>> GetAllAsync()
-        {
-            return await _context.Comments
-                .Include(c => c.Account)
-                .Include(c => c.NewsArticle)
-                .OrderByDescending(c => c.CreatedAt)
-                .Select(c => new CommentVM
-                {
-                    CommentID = c.CommentID,
-                    NewsArticleID = c.NewsArticleID,
-                    CommentBy = c.Account != null ? c.Account.AccountName : "Unknown",
-                    CommentText = c.Content ?? "",
-                    CommentDate = c.CreatedAt
-                })
-
-                .ToListAsync();
+            _ctx = ctx;
         }
 
         public async Task<List<CommentVM>> GetByNewsAsync(string newsArticleId)
         {
-            return await _context.Comments
+            return await _ctx.Comments
                 .Include(c => c.Account)
                 .Where(c => c.NewsArticleID == newsArticleId)
                 .OrderByDescending(c => c.CreatedAt)
@@ -43,47 +24,25 @@ namespace BusinessLogic.Services
                 {
                     CommentID = c.CommentID,
                     NewsArticleID = c.NewsArticleID,
-                    CommentBy = c.Account != null ? c.Account.AccountName : "Unknown",
-                    CommentText = c.Content ?? "",
-                    CommentDate = c.CreatedAt
+                    AccountName = c.Account != null ? c.Account.AccountName : "(unknown)",
+                    CommentDate = c.CreatedAt,
+                    CommentText = c.Content
                 })
-
                 .ToListAsync();
         }
 
-        public async Task<bool> AddAsync(string newsArticleId, string commentText, string commentBy)
+        public async Task<Comment> AddAsync(string newsArticleId, short accountId, string content)
         {
-            try
+            var c = new Comment
             {
-                var account = await _context.SystemAccounts
-                    .FirstOrDefaultAsync(a => a.AccountName == commentBy);
-
-                var comment = new Comment
-                {
-                    NewsArticleID = newsArticleId,
-                    AccountID = (short)(account?.AccountID ?? 0),
-                    Content = commentText,
-                    CreatedAt = DateTime.Now
-                };
-
-                _context.Comments.Add(comment);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> DeleteAsync(int commentId)
-        {
-            var c = await _context.Comments.FindAsync(commentId);
-            if (c == null) return false;
-
-            _context.Comments.Remove(c);
-            await _context.SaveChangesAsync();
-            return true;
+                NewsArticleID = newsArticleId,
+                AccountID = accountId,
+                Content = content,
+                CreatedAt = DateTime.UtcNow
+            };
+            _ctx.Comments.Add(c);
+            await _ctx.SaveChangesAsync();
+            return c;
         }
     }
 }

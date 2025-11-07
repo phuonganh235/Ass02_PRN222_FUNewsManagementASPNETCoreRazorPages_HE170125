@@ -70,7 +70,8 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
             return new JsonResult(new { success = false, message = "News article not found" });
         }
 
-        public async Task<IActionResult> OnPostDuplicateAsync(string id)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> OnPostDuplicateAsync([FromBody] DuplicateRequest request)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue)
@@ -78,7 +79,7 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
                 return new JsonResult(new { success = false, message = "User not authenticated" });
             }
 
-            var newId = await _newsService.DuplicateNewsAsync(id, (short)userId.Value);
+            var newId = await _newsService.DuplicateNewsAsync(request.Id, (short)userId.Value);
 
             if (newId != null)
             {
@@ -92,5 +93,11 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
 
             return new JsonResult(new { success = false, message = "Failed to duplicate article" });
         }
+
+        public class DuplicateRequest
+        {
+            public string Id { get; set; } = string.Empty;
+        }
+
     }
 }

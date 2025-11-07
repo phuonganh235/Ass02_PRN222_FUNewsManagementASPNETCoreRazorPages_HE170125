@@ -213,8 +213,7 @@
                 const response = await fetch(`/Staff/NewsArticles/Index?handler=Duplicate`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ id: id })
                 });

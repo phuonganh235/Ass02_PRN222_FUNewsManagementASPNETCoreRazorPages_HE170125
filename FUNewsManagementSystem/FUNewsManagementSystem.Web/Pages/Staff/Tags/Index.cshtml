@@ -118,7 +118,7 @@
             showLoading();
 
             try {
-                const response = await fetch(`/Tags/Index?handler=Get&id=${id}`);
+                const response = await fetch(`/Staff/Tags/Index?handler=Get&id=${id}`);
                 const tag = await response.json();
 
                 hideLoading();
@@ -143,13 +143,17 @@
                 Note: $('#note').val().trim()
             };
 
+            console.log('[DEBUG] Saving tag:', tagData);
+
             if (!tagData.TagName) {
                 toastr.error('Tag name is required');
                 return;
             }
 
             const handler = tagData.TagId > 0 ? 'Update' : 'Create';
-            const url = `/Tags/Index?handler=${handler}`;
+            const url = `/Staff/Tags/Index?handler=${handler}`;
+
+            console.log('[DEBUG] URL:', url);
 
             showLoading();
 
@@ -160,7 +164,9 @@
                     body: JSON.stringify(tagData)
                 });
 
+                console.log('[DEBUG] Response status:', response.status);
                 const result = await response.json();
+                console.log('[DEBUG] Response data:', result);
 
                 hideLoading();
 
@@ -182,7 +188,7 @@
             } catch (error) {
                 hideLoading();
                 toastr.error('An error occurred while saving the tag');
-                console.error(error);
+                console.error('Error details:', error);
             }
         }
 
@@ -196,7 +202,7 @@
             showLoading();
 
             try {
-                const response = await fetch(`/Tags/Index?handler=Delete&id=${id}`, {
+                const response = await fetch(`/Staff/Tags/Index?handler=Delete&id=${id}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });

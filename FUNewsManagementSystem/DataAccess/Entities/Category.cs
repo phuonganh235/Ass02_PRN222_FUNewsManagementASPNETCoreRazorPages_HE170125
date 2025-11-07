@@ -16,7 +16,7 @@ public class Category
     [StringLength(250)]
     public string? CategoryDescription { get; set; }
 
-    public short? ParentCategoryId { get; set; }
+    public short? ParentCategoryID { get; set; }
 
     [Required]
     public bool IsActive { get; set; } = true;

@@ -21,7 +21,7 @@ namespace DataAccess.Repositories
         public async Task<IEnumerable<Category>> GetParentCategoriesAsync()
         {
             return await _dbSet
-                .Where(c => c.ParentCategoryId == null && c.IsActive)
+                .Where(c => c.ParentCategoryID == null && c.IsActive)
                 .OrderBy(c => c.CategoryName)
                 .ToListAsync();
         }

@@ -47,7 +47,7 @@ namespace BusinessLogic.Services
             {
                 CategoryName = model.CategoryName,
                             CategoryDescription = model.CategoryDesciption,
-                ParentCategoryId = model.ParentCategoryId,
+                ParentCategoryID = model.ParentCategoryId,
                 IsActive = model.IsActive
             };
 
@@ -65,7 +65,7 @@ namespace BusinessLogic.Services
 
             category.CategoryName = model.CategoryName;
             category.CategoryDescription = model.CategoryDesciption;
-            category.ParentCategoryId = model.ParentCategoryId;
+            category.ParentCategoryID = model.ParentCategoryId;
             category.IsActive = model.IsActive;
 
             await _categoryRepository.UpdateAsync(category);
@@ -107,7 +107,7 @@ namespace BusinessLogic.Services
                 CategoryId = category.CategoryID,
                 CategoryName = category.CategoryName,
                 CategoryDesciption = category.CategoryDescription,
-                ParentCategoryId = category.ParentCategoryId,
+                ParentCategoryId = category.ParentCategoryID,
                 ParentCategoryName = category.ParentCategory?.CategoryName,
                 IsActive = category.IsActive
             };

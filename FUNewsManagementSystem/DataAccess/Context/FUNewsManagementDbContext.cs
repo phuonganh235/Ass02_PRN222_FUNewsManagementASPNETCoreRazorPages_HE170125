@@ -47,7 +47,7 @@ namespace DataAccess.Context
             modelBuilder.Entity<Category>()
                 .HasOne(c => c.ParentCategory)
                 .WithMany(c => c.ChildCategories)
-                .HasForeignKey(c => c.ParentCategoryId)
+                .HasForeignKey(c => c.ParentCategoryID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<NewsTag>()
@@ -74,15 +74,16 @@ namespace DataAccess.Context
                 .HasForeignKey(c => c.AccountId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Seed initial data (Admin account)
+            // Seed initial data (Admin account from appsettings will be added via migration)
+            // Note: Admin account should match appsettings.json
             modelBuilder.Entity<SystemAccount>().HasData(
                 new SystemAccount
                 {
                     AccountId = 1,
                     AccountName = "Administrator",
                     AccountEmail = "admin@FUNewsManagementSystem.org",
-                    AccountPassword = "@@abc123@@", // In production, should be hashed
-                    AccountRole = 0 // Admin
+                    AccountPassword = "@@abc123@@", // Should match appsettings.json
+                    AccountRole = 0 // Admin role
                 }
             );
 

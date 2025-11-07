@@ -1,5 +1,27 @@
 ﻿@page
 @model FUNewsManagementSystem.Web.Pages.LogoutModel
 @{
-    // No view needed - handled in code-behind
+    Layout = "_Layout";
+    ViewData["Title"] = "Logout";
 }
+
+<div class="container text-center" style="margin-top: 100px;">
+    <div class="card mx-auto" style="max-width: 500px;">
+        <div class="card-body p-5">
+            <i class="fas fa-sign-out-alt fa-4x text-warning mb-4"></i>
+            <h3>Confirm Logout</h3>
+            <p class="text-muted">Are you sure you want to logout?</p>
+
+            <form method="post" class="mt-4">
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Yes, Logout
+                    </button>
+                    <a href="javascript:history.back()" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

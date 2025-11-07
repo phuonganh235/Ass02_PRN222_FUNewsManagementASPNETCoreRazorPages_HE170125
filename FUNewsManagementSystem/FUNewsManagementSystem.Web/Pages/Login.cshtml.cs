@@ -34,6 +34,25 @@ namespace FUNewsManagementSystem.Web.Pages
                 return Page();
             }
 
+            // ✅ BƯỚC 1: KIỂM TRA ADMIN TỪ APPSETTINGS TRƯỚC
+            var adminEmail = _configuration["AdminAccount:Email"];
+            var adminPassword = _configuration["AdminAccount:Password"];
+
+            if (!string.IsNullOrEmpty(adminEmail) &&
+                !string.IsNullOrEmpty(adminPassword) &&
+                Input.Email.Equals(adminEmail, StringComparison.OrdinalIgnoreCase) &&
+                Input.Password == adminPassword)
+            {
+                // Admin login từ appsettings
+                HttpContext.Session.SetInt32("UserId", 0);
+                HttpContext.Session.SetString("UserName", "Administrator");
+                HttpContext.Session.SetString("UserEmail", adminEmail);
+                HttpContext.Session.SetInt32("UserRole", 0);
+
+                return RedirectToPage("/Admin/Dashboard");
+            }
+
+            // ✅ BƯỚC 2: SAU ĐÓ MỚI KIỂM TRA DATABASE
             var account = await _accountService.AuthenticateAsync(Input.Email, Input.Password);
 
             if (account == null)
@@ -42,14 +61,14 @@ namespace FUNewsManagementSystem.Web.Pages
                 return Page();
             }
 
-            // Set session
+            // Set session cho Staff/Lecturer từ database
             HttpContext.Session.SetInt32("UserId", account.AccountId);
             HttpContext.Session.SetString("UserName", account.AccountName);
             HttpContext.Session.SetString("UserEmail", account.AccountEmail);
             HttpContext.Session.SetInt32("UserRole", account.AccountRole);
 
-            // Redirect based on role
-            if (account.AccountRole == 0) // Admin
+            // Redirect theo role
+            if (account.AccountRole == 0) // Admin từ DB
             {
                 return RedirectToPage("/Admin/Dashboard");
             }
@@ -57,7 +76,7 @@ namespace FUNewsManagementSystem.Web.Pages
             {
                 return RedirectToPage("/Staff/NewsArticles/Index");
             }
-            else // Lecturer
+            else // Lecturer (role = 2)
             {
                 return RedirectToPage("/Index");
             }

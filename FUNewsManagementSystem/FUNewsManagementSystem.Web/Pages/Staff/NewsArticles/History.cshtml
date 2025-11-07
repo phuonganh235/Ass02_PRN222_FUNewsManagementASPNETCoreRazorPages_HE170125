@@ -1,0 +1,187 @@
+﻿@page
+@model FUNewsManagementSystem.Web.Pages.Staff.NewsArticles.HistoryModel
+@{
+    ViewData["Title"] = "My Article History";
+}
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <h2><i class="fas fa-history"></i> My Article History</h2>
+        <p class="text-muted">View all articles you have created</p>
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-page="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create New
+        </a>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h3>@Model.TotalArticles</h3>
+                <p class="mb-0">Total Articles</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h3>@Model.ActiveArticles</h3>
+                <p class="mb-0">Active</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <h3>@Model.InactiveArticles</h3>
+                <p class="mb-0">Inactive</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <h3>@Model.TotalComments</h3>
+                <p class="mb-0">Comments</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter -->
+<div class="card mb-3">
+    <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0"><i class="fas fa-calendar"></i> Date Range Filter</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">From Date</label>
+                <input type="date" name="fromDate" class="form-control"
+                       value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                       max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">To Date</label>
+                <input type="date" name="toDate" class="form-control"
+                       value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                       max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <a href="/Staff/NewsArticles/History" class="btn btn-secondary w-100">
+                    <i class="fas fa-redo"></i> Clear
+                </a>
+            </div>
+        </form>
+
+        @if (Model.FromDate.HasValue || Model.ToDate.HasValue)
+        {
+            <div class="alert alert-info mt-3 mb-0">
+                <i class="fas fa-info-circle"></i>
+                <strong>Period:</strong>
+                @(Model.FromDate?.ToString("dd/MM/yyyy") ?? "Beginning")
+                to
+                @(Model.ToDate?.ToString("dd/MM/yyyy") ?? "Now")
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Articles List -->
+<div class="card">
+    <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">
+            <i class="fas fa-list"></i> Articles
+            <span class="badge bg-light text-dark">Sorted by Date (Latest First)</span>
+        </h5>
+    </div>
+    <div class="card-body">
+        @if (!Model.Articles.Any())
+        {
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle"></i> No articles found for the selected period.
+                <br /><br />
+                <a asp-page="Create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create Your First Article
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th width="10%">ID</th>
+                            <th width="35%">Title</th>
+                            <th width="15%">Category</th>
+                            <th width="15%">Created Date</th>
+                            <th width="10%">Status</th>
+                            <th width="15%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var article in Model.Articles)
+                        {
+                            <tr>
+                                <td><code>@article.NewsArticleId</code></td>
+                                <td>
+                                    <strong>@article.NewsTitle</strong><br />
+                                    <small class="text-muted">@article.Headline</small>
+                                </td>
+                                <td><span class="badge bg-primary">@article.CategoryName</span></td>
+                                <td>
+                                    @article.CreatedDate.ToString("dd/MM/yyyy HH:mm")
+                                    @if (article.ModifiedDate.HasValue)
+                                    {
+                                        <br />
+                            
+                                        <small class="text-warning">
+                                            <i class="fas fa-edit"></i> Modified: @article.ModifiedDate.Value.ToString("dd/MM/yyyy")
+                                        </small>
+                                    }
+                                </td>
+                                <td>
+                                    @if (article.NewsStatus)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-page="Details" asp-route-id="@article.NewsArticleId"
+                                           class="btn btn-info" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-page="Edit" asp-route-id="@article.NewsArticleId"
+                                           class="btn btn-warning" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

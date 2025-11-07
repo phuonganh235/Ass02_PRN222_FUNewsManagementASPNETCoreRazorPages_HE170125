@@ -46,12 +46,19 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.Tags
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostCreateAsync([FromBody] TagViewModel model)
         {
+            // Debug logging
+            Console.WriteLine($"[DEBUG] OnPostCreateAsync called");
+            Console.WriteLine($"[DEBUG] Model: TagId={model?.TagId}, TagName='{model?.TagName}', Note='{model?.Note}'");
+            Console.WriteLine($"[DEBUG] ModelState.IsValid: {ModelState.IsValid}");
+
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
                     .ToList();
+
+                Console.WriteLine($"[DEBUG] Validation errors: {string.Join(", ", errors)}");
 
                 return new JsonResult(new
                 {
@@ -60,14 +67,25 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.Tags
                 });
             }
 
-            var result = await _tagService.CreateTagAsync(model);
-
-            if (result)
+            try
             {
-                return new JsonResult(new { success = true, message = "Tag created successfully" });
-            }
+                var result = await _tagService.CreateTagAsync(model);
 
-            return new JsonResult(new { success = false, message = "Tag name already exists" });
+                Console.WriteLine($"[DEBUG] CreateTagAsync result: {result}");
+
+                if (result)
+                {
+                    return new JsonResult(new { success = true, message = "Tag created successfully" });
+                }
+
+                return new JsonResult(new { success = false, message = "Tag name already exists" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Exception in CreateTag: {ex.Message}");
+                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                return new JsonResult(new { success = false, message = $"Error: {ex.Message}" });
+            }
         }
 
         [IgnoreAntiforgeryToken]

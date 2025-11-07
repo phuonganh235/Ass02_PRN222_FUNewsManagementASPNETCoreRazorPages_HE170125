@@ -248,5 +248,35 @@
             location.reload();
         }
         window.refreshNewsList = refreshNewsList;
+
+        // SignalR Real-time notifications
+        if (window.signalRConnection) {
+            // News article created
+            window.signalRConnection.on("NewsArticleCreated", function(newsTitle, authorName) {
+                toastr.success(`📰 New article "${newsTitle}" published by ${authorName}`, 'Article Created', {
+                    timeOut: 5000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
+            });
+
+            // News article updated
+            window.signalRConnection.on("NewsArticleUpdated", function(newsTitle) {
+                toastr.info(`✏️ Article "${newsTitle}" has been updated`, 'Article Updated', {
+                    timeOut: 4000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
+            });
+
+            // News article deleted
+            window.signalRConnection.on("NewsArticleDeleted", function(newsTitle) {
+                toastr.warning(`🗑️ Article "${newsTitle}" has been deleted`, 'Article Deleted', {
+                    timeOut: 4000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
+            });
+        }
     </script>
 }

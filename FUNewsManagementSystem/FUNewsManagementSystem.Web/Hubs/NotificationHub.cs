@@ -83,18 +83,18 @@ namespace FUNewsManagementSystem.Web.Hubs
         // Account CRUD notifications
         public async Task NotifyAccountCreated(string accountName)
         {
-            // Notify all Staff users
-            await Clients.Group(GROUP_STAFF).SendAsync("AccountCreated", accountName);
+            // Broadcast to all Admins viewing the Accounts page
+            await Clients.Group(GROUP_ADMIN).SendAsync("AccountCreated", accountName);
 
-            // Also send to Admins
-            await Clients.Group(GROUP_ADMIN).SendAsync("ReceiveNotification",
-                $"New account '{accountName}' has been created", "success");
+            // Also notify Staff users
+            await Clients.Group(GROUP_STAFF).SendAsync("ReceiveNotification",
+                $"👤 New account '{accountName}' has been created by Admin", "success");
         }
 
         public async Task NotifyAccountUpdated(string accountName, int accountId, bool isActive)
         {
-            // Notify all users about the update
-            await Clients.All.SendAsync("AccountUpdated", accountName);
+            // Broadcast to all Admins viewing the Accounts page
+            await Clients.Group(GROUP_ADMIN).SendAsync("AccountUpdated", accountName);
 
             // If account is deactivated, force logout all sessions using this account
             if (!isActive)
@@ -105,8 +105,8 @@ namespace FUNewsManagementSystem.Web.Hubs
 
         public async Task NotifyAccountDeleted(string accountName, int accountId)
         {
-            // Notify all users about deletion
-            await Clients.All.SendAsync("AccountDeleted", accountName);
+            // Broadcast to all Admins viewing the Accounts page
+            await Clients.Group(GROUP_ADMIN).SendAsync("AccountDeleted", accountName);
 
             // Force logout all sessions using this account
             await Clients.All.SendAsync("ForceLogoutByAccountId", accountId);
@@ -115,22 +115,28 @@ namespace FUNewsManagementSystem.Web.Hubs
         // Category CRUD notifications
         public async Task NotifyCategoryCreated(string categoryName)
         {
-            await Clients.Groups(GROUP_ADMIN, GROUP_STAFF).SendAsync("ReceiveNotification",
-                $"New category created: {categoryName}", "success");
+            // Broadcast to Staff viewing Categories page
+            await Clients.Group(GROUP_STAFF).SendAsync("CategoryCreated", categoryName);
+
+            // Refresh category dropdowns on all pages
             await Clients.All.SendAsync("RefreshCategories");
         }
 
         public async Task NotifyCategoryUpdated(string categoryName)
         {
-            await Clients.Groups(GROUP_ADMIN, GROUP_STAFF).SendAsync("ReceiveNotification",
-                $"Category '{categoryName}' has been updated", "info");
+            // Broadcast to Staff viewing Categories page
+            await Clients.Group(GROUP_STAFF).SendAsync("CategoryUpdated", categoryName);
+
+            // Refresh category dropdowns on all pages
             await Clients.All.SendAsync("RefreshCategories");
         }
 
         public async Task NotifyCategoryDeleted(string categoryName)
         {
-            await Clients.Groups(GROUP_ADMIN, GROUP_STAFF).SendAsync("ReceiveNotification",
-                $"Category '{categoryName}' has been deleted", "warning");
+            // Broadcast to Staff viewing Categories page
+            await Clients.Group(GROUP_STAFF).SendAsync("CategoryDeleted", categoryName);
+
+            // Refresh category dropdowns on all pages
             await Clients.All.SendAsync("RefreshCategories");
         }
 
@@ -142,24 +148,34 @@ namespace FUNewsManagementSystem.Web.Hubs
         // News Article CRUD notifications
         public async Task NotifyNewsArticleCreated(string newsTitle, string authorName)
         {
-            await Clients.All.SendAsync("ReceiveNotification",
-                $"📰 New Article Published: '{newsTitle}' by {authorName}", "success");
+            // Broadcast to Staff viewing News Articles page
+            await Clients.Group(GROUP_STAFF).SendAsync("NewsArticleCreated", newsTitle, authorName);
+
+            // Refresh news list on all pages
             await Clients.All.SendAsync("RefreshNewsList");
+
+            // Refresh admin dashboard
             await Clients.Group(GROUP_ADMIN).SendAsync("RefreshDashboard");
         }
 
         public async Task NotifyNewsArticleUpdated(string newsTitle)
         {
-            await Clients.All.SendAsync("ReceiveNotification",
-                $"Article '{newsTitle}' has been updated", "info");
+            // Broadcast to Staff viewing News Articles page
+            await Clients.Group(GROUP_STAFF).SendAsync("NewsArticleUpdated", newsTitle);
+
+            // Refresh news list on all pages
             await Clients.All.SendAsync("RefreshNewsList");
         }
 
         public async Task NotifyNewsArticleDeleted(string newsTitle)
         {
-            await Clients.All.SendAsync("ReceiveNotification",
-                $"⚠️ Article '{newsTitle}' has been deleted", "warning");
+            // Broadcast to Staff viewing News Articles page
+            await Clients.Group(GROUP_STAFF).SendAsync("NewsArticleDeleted", newsTitle);
+
+            // Refresh news list on all pages
             await Clients.All.SendAsync("RefreshNewsList");
+
+            // Refresh admin dashboard
             await Clients.Group(GROUP_ADMIN).SendAsync("RefreshDashboard");
         }
 

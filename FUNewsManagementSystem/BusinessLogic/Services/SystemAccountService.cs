@@ -113,7 +113,9 @@ namespace BusinessLogic.Services
                 AccountId = account.AccountId,
                 AccountName = account.AccountName,
                 AccountEmail = account.AccountEmail,
-                AccountRole = account.AccountRole
+                AccountRole = account.AccountRole,
+                IsActive = true, // Default to true since database doesn't have this field
+                CreatedDate = null // Not available in current database schema
             };
         }
     }

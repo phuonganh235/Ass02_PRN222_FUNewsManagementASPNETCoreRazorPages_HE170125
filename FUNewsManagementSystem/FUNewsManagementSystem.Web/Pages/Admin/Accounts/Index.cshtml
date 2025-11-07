@@ -65,13 +65,11 @@
             <table class="table table-hover">
                 <thead class="table-light">
                     <tr>
-                        <th width="5%">ID</th>
-                        <th width="20%">Name</th>
-                        <th width="25%">Email</th>
-                        <th width="10%">Role</th>
-                        <th width="10%">Status</th>
-                        <th width="15%">Created Date</th>
-                        <th width="15%">Actions</th>
+                        <th width="10%">ID</th>
+                        <th width="30%">Name</th>
+                        <th width="35%">Email</th>
+                        <th width="15%">Role</th>
+                        <th width="10%">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="accountTableBody">
@@ -103,19 +101,6 @@
                                     };
                                 }
                                 <span class="badge @roleClass">@roleName</span>
-                            </td>
-                            <td>
-                                @if (account.IsActive)
-                                {
-                                    <span class="badge bg-success">Active</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Inactive</span>
-                                }
-                            </td>
-                            <td>
-                                <small>@account.CreatedDate?.ToString("dd/MM/yyyy HH:mm")</small>
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
@@ -176,14 +161,6 @@
                             <option value="2">Lecturer</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="createIsActive" checked />
-                            <label class="form-check-label" for="createIsActive">
-                                Active
-                            </label>
-                        </div>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -229,14 +206,6 @@
                             <option value="1">Staff</option>
                             <option value="2">Lecturer</option>
                         </select>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="editIsActive" />
-                            <label class="form-check-label" for="editIsActive">
-                                Active
-                            </label>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -308,7 +277,6 @@
             const email = document.getElementById('createEmail').value.trim();
             const password = document.getElementById('createPassword').value;
             const role = parseInt(document.getElementById('createRole').value);
-            const isActive = document.getElementById('createIsActive').checked;
 
             if (!name || !email || !password) {
                 toastr.error('Please fill in all required fields');
@@ -327,8 +295,7 @@
                         accountName: name,
                         accountEmail: email,
                         accountPassword: password,
-                        role: role,
-                        isActive: isActive
+                        role: role
                     })
                 });
 
@@ -368,7 +335,6 @@
                 document.getElementById('editEmail').value = account.accountEmail;
                 document.getElementById('editPassword').value = '';
                 document.getElementById('editRole').value = account.role;
-                document.getElementById('editIsActive').checked = account.isActive;
 
                 editModal.show();
             } catch (error) {
@@ -384,7 +350,6 @@
             const email = document.getElementById('editEmail').value.trim();
             const password = document.getElementById('editPassword').value;
             const role = parseInt(document.getElementById('editRole').value);
-            const isActive = document.getElementById('editIsActive').checked;
 
             if (!name || !email) {
                 toastr.error('Please fill in all required fields');
@@ -398,8 +363,7 @@
                     accountId: accountId,
                     accountName: name,
                     accountEmail: email,
-                    role: role,
-                    isActive: isActive
+                    role: role
                 };
 
                 // Only include password if provided
@@ -424,7 +388,7 @@
                     editModal.hide();
 
                     // Notify via SignalR
-                    await window.signalRConnection?.invoke("NotifyAccountUpdated", name, accountId, isActive);
+                    await window.signalRConnection?.invoke("NotifyAccountUpdated", name, accountId, true);
 
                     setTimeout(() => location.reload(), 1500);
                 } else {

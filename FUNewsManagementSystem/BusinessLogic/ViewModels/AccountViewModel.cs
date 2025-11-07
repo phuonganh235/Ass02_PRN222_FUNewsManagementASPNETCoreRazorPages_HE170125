@@ -18,6 +18,17 @@ namespace BusinessLogic.ViewModels
         [Required(ErrorMessage = "Role is required")]
         public int AccountRole { get; set; }
 
+        // Alias property for compatibility
+        public int Role
+        {
+            get => AccountRole;
+            set => AccountRole = value;
+        }
+
+        public bool IsActive { get; set; } = true;
+
+        public DateTime? CreatedDate { get; set; }
+
         [StringLength(70, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 70 characters")]
         [DataType(DataType.Password)]
         public string? AccountPassword { get; set; }

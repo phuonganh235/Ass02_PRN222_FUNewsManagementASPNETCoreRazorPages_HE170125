@@ -56,10 +56,16 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
             return Page();
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostAddCommentAsync([FromBody] AddCommentRequest request)
         {
+            Console.WriteLine($"[DEBUG] OnPostAddCommentAsync called");
+            Console.WriteLine($"[DEBUG] NewsArticleId: {request?.NewsArticleId}, Content: '{request?.Content}'");
+
             var userId = HttpContext.Session.GetInt32("UserId");
             var userName = HttpContext.Session.GetString("UserName");
+
+            Console.WriteLine($"[DEBUG] UserId: {userId}, UserName: {userName}");
 
             if (!userId.HasValue || string.IsNullOrEmpty(userName))
             {
@@ -79,7 +85,9 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
                     request.Content
                 );
 
-                // Broadcast comment via SignalR
+                Console.WriteLine($"[DEBUG] Comment created: CommentId={comment.CommentId}");
+
+                // Broadcast comment via SignalR with proper notification format
                 await _hubContext.Clients.All.SendAsync(
                     "ReceiveComment",
                     request.NewsArticleId,
@@ -89,17 +97,28 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
                     comment.TimeAgo
                 );
 
-                // Update dashboard
+                // Dashboard update with detailed notification - matches NotificationHub format
+                await _hubContext.Clients.Group("Group_Admin").SendAsync(
+                    "DashboardUpdate",
+                    "Comment",
+                    "Created",
+                    userName
+                );
+
+                // Refresh admin dashboard stats
                 await _hubContext.Clients.Group("Group_Admin").SendAsync("RefreshDashboard");
 
                 return new JsonResult(new { success = true, comment });
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[ERROR] Exception in CreateComment: {ex.Message}");
+                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
                 return new JsonResult(new { success = false, message = ex.Message });
             }
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostDeleteCommentAsync(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -129,6 +148,16 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
             {
                 // Notify via SignalR
                 await _hubContext.Clients.All.SendAsync("CommentDeleted", id, comment.NewsArticleId);
+
+                // Dashboard update with detailed notification
+                await _hubContext.Clients.Group("Group_Admin").SendAsync(
+                    "DashboardUpdate",
+                    "Comment",
+                    "Deleted",
+                    ""
+                );
+
+                // Refresh admin dashboard stats
                 await _hubContext.Clients.Group("Group_Admin").SendAsync("RefreshDashboard");
 
                 return new JsonResult(new { success = true, message = "Comment deleted successfully" });

@@ -209,16 +209,17 @@
 
         // Real-time dashboard refresh function
         function refreshDashboard() {
-            fetch('/Admin/Dashboard/GetStats')
+            fetch('/Admin/Dashboard?handler=GetStats')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('totalArticles').textContent = data.totalArticles;
-                    document.getElementById('activeArticles').textContent = data.activeArticles;
-                    document.getElementById('inactiveArticles').textContent = data.inactiveArticles;
-                    document.getElementById('totalAccounts').textContent = data.totalAccounts;
-                    document.getElementById('totalCategories').textContent = data.totalCategories;
-                    document.getElementById('totalTags').textContent = data.totalTags;
-                    document.getElementById('totalComments').textContent = data.totalComments;
+                    // Update statistics with animation
+                    animateValue('totalArticles', parseInt(document.getElementById('totalArticles').textContent), data.totalArticles, 500);
+                    animateValue('activeArticles', parseInt(document.getElementById('activeArticles').textContent), data.activeArticles, 500);
+                    animateValue('inactiveArticles', parseInt(document.getElementById('inactiveArticles').textContent), data.inactiveArticles, 500);
+                    animateValue('totalAccounts', parseInt(document.getElementById('totalAccounts').textContent), data.totalAccounts, 500);
+                    animateValue('totalCategories', parseInt(document.getElementById('totalCategories').textContent), data.totalCategories, 500);
+                    animateValue('totalTags', parseInt(document.getElementById('totalTags').textContent), data.totalTags, 500);
+                    animateValue('totalComments', parseInt(document.getElementById('totalComments').textContent), data.totalComments, 500);
 
                     // Update charts
                     categoryChart.data.labels = Object.keys(data.articlesByCategory);
@@ -228,10 +229,134 @@
                     authorChart.data.labels = Object.keys(data.articlesByAuthor);
                     authorChart.data.datasets[0].data = Object.values(data.articlesByAuthor);
                     authorChart.update();
-                });
+                })
+                .catch(error => console.error('Error refreshing dashboard:', error));
+        }
+
+        // Animate number changes
+        function animateValue(elementId, start, end, duration) {
+            const element = document.getElementById(elementId);
+            const range = end - start;
+            const increment = range / (duration / 16); // 60fps
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.round(current);
+            }, 16);
         }
 
         // Make function available globally for SignalR
         window.refreshDashboard = refreshDashboard;
+
+        // SignalR Real-time notifications
+        if (window.signalRConnection) {
+            // General dashboard refresh
+            window.signalRConnection.on("RefreshDashboard", function() {
+                refreshDashboard();
+            });
+
+            // Specific entity notifications with detailed messages
+            window.signalRConnection.on("DashboardUpdate", function(entity, action, name) {
+                let icon = '';
+                let message = '';
+                let type = 'info';
+
+                switch(entity) {
+                    case 'Article':
+                        icon = '📰';
+                        switch(action) {
+                            case 'Created':
+                                message = `New article "${name}" published`;
+                                type = 'success';
+                                break;
+                            case 'Updated':
+                                message = `Article "${name}" updated`;
+                                break;
+                            case 'Deleted':
+                                message = `Article "${name}" deleted`;
+                                type = 'warning';
+                                break;
+                        }
+                        break;
+                    case 'Category':
+                        icon = '📁';
+                        switch(action) {
+                            case 'Created':
+                                message = `New category "${name}" created`;
+                                type = 'success';
+                                break;
+                            case 'Updated':
+                                message = `Category "${name}" updated`;
+                                break;
+                            case 'Deleted':
+                                message = `Category "${name}" deleted`;
+                                type = 'warning';
+                                break;
+                        }
+                        break;
+                    case 'Tag':
+                        icon = '🏷️';
+                        switch(action) {
+                            case 'Created':
+                                message = `New tag "${name}" created`;
+                                type = 'success';
+                                break;
+                            case 'Updated':
+                                message = `Tag "${name}" updated`;
+                                break;
+                            case 'Deleted':
+                                message = `Tag "${name}" deleted`;
+                                type = 'warning';
+                                break;
+                        }
+                        break;
+                    case 'Comment':
+                        icon = '💬';
+                        switch(action) {
+                            case 'Created':
+                                message = `New comment posted`;
+                                type = 'success';
+                                break;
+                            case 'Deleted':
+                                message = `Comment deleted`;
+                                type = 'warning';
+                                break;
+                        }
+                        break;
+                    case 'Account':
+                        icon = '👤';
+                        switch(action) {
+                            case 'Created':
+                                message = `New account "${name}" created`;
+                                type = 'success';
+                                break;
+                            case 'Updated':
+                                message = `Account "${name}" updated`;
+                                break;
+                            case 'Deleted':
+                                message = `Account "${name}" deleted`;
+                                type = 'warning';
+                                break;
+                        }
+                        break;
+                }
+
+                if (message) {
+                    toastr[type](`${icon} ${message}`, 'Dashboard Update', {
+                        timeOut: 4000,
+                        closeButton: true,
+                        progressBar: true
+                    });
+
+                    // Refresh dashboard data
+                    setTimeout(() => refreshDashboard(), 500);
+                }
+            });
+        }
     </script>
 }

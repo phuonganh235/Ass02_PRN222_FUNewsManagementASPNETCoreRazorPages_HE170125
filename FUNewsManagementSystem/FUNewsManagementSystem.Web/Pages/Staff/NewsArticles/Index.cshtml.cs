@@ -69,5 +69,28 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
 
             return new JsonResult(new { success = false, message = "News article not found" });
         }
+
+        public async Task<IActionResult> OnPostDuplicateAsync(string id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue)
+            {
+                return new JsonResult(new { success = false, message = "User not authenticated" });
+            }
+
+            var newId = await _newsService.DuplicateNewsAsync(id, (short)userId.Value);
+
+            if (newId != null)
+            {
+                return new JsonResult(new
+                {
+                    success = true,
+                    message = "Article duplicated successfully",
+                    newId = newId
+                });
+            }
+
+            return new JsonResult(new { success = false, message = "Failed to duplicate article" });
+        }
     }
 }

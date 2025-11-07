@@ -46,9 +46,10 @@ namespace BusinessLogic.Services
             var category = new Category
             {
                 CategoryName = model.CategoryName,
-                            CategoryDescription = model.CategoryDesciption,
+                CategoryDescription = model.CategoryDesciption,
                 ParentCategoryID = model.ParentCategoryId,
-                IsActive = model.IsActive
+                IsActive = model.IsActive,
+                SortOrder = model.SortOrder
             };
 
             await _categoryRepository.AddAsync(category);
@@ -67,6 +68,7 @@ namespace BusinessLogic.Services
             category.CategoryDescription = model.CategoryDesciption;
             category.ParentCategoryID = model.ParentCategoryId;
             category.IsActive = model.IsActive;
+            category.SortOrder = model.SortOrder;
 
             await _categoryRepository.UpdateAsync(category);
             return true;
@@ -100,6 +102,11 @@ namespace BusinessLogic.Services
             return await _categoryRepository.CategoryNameExistsAsync(name, excludeCategoryId);
         }
 
+        public async Task<bool> UpdateCategoryOrdersAsync(Dictionary<short, int> categoryOrders)
+        {
+            return await _categoryRepository.UpdateCategoryOrdersAsync(categoryOrders);
+        }
+
         private CategoryViewModel MapToViewModel(Category category)
         {
             return new CategoryViewModel
@@ -109,7 +116,8 @@ namespace BusinessLogic.Services
                 CategoryDesciption = category.CategoryDescription,
                 ParentCategoryId = category.ParentCategoryID,
                 ParentCategoryName = category.ParentCategory?.CategoryName,
-                IsActive = category.IsActive
+                IsActive = category.IsActive,
+                SortOrder = category.SortOrder
             };
         }
     }

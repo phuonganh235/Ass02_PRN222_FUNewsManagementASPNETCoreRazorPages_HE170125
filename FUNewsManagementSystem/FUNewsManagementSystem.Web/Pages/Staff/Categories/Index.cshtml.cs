@@ -104,5 +104,17 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.Categories
 
             return new JsonResult(new { success = false, message = "Category not found" });
         }
+
+        public async Task<IActionResult> OnPostUpdateOrdersAsync([FromBody] Dictionary<short, int> categoryOrders)
+        {
+            var result = await _categoryService.UpdateCategoryOrdersAsync(categoryOrders);
+
+            if (result)
+            {
+                return new JsonResult(new { success = true, message = "Category order updated successfully" });
+            }
+
+            return new JsonResult(new { success = false, message = "Failed to update category order" });
+        }
     }
 }

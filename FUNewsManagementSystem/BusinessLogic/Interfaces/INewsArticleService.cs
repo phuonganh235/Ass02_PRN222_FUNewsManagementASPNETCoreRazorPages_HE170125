@@ -17,5 +17,6 @@ namespace BusinessLogic.Interfaces
         Task<bool> NewsIdExistsAsync(string newsId);
         Task<Dictionary<string, int>> GetArticleStatisticsByCategoryAsync(DateTime? startDate, DateTime? endDate);
         Task<Dictionary<string, int>> GetArticleStatisticsByAuthorAsync(DateTime? startDate, DateTime? endDate);
+        Task<string?> DuplicateNewsAsync(string originalNewsId, short createdById);
     }
 }

@@ -111,5 +111,16 @@
         if (userName) {
             window.signalRConnection?.invoke("NotifyUserEditing", '', userName + " is creating a new article");
         }
+
+        // Listen for category updates
+        if (window.signalRConnection) {
+            window.signalRConnection.on("RefreshCategories", function() {
+                // Show notification that categories were updated
+                toastr.info('📁 Categories have been updated by another user', 'Category Update', {
+                    timeOut: 5000,
+                    closeButton: true
+                });
+            });
+        }
     </script>
 }

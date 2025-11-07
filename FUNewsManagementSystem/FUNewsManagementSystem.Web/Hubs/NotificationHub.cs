@@ -121,6 +121,11 @@ namespace FUNewsManagementSystem.Web.Hubs
             await Clients.All.SendAsync("RefreshCategories");
         }
 
+        public async Task NotifyCategoryOrderChanged()
+        {
+            await Clients.All.SendAsync("RefreshCategoryOrder");
+        }
+
         // News Article CRUD notifications
         public async Task NotifyNewsArticleCreated(string newsTitle, string authorName)
         {

@@ -10,5 +10,6 @@ namespace DataAccess.Repositories
         Task<bool> CategoryNameExistsAsync(string name, short? excludeCategoryId = null);
         Task<IEnumerable<Category>> SearchCategoriesAsync(string? searchTerm, bool? isActive);
         Task<Category?> GetCategoryWithChildrenAsync(short categoryId);
+        Task<bool> UpdateCategoryOrdersAsync(Dictionary<short, int> categoryOrders);
     }
 }

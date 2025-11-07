@@ -134,5 +134,15 @@
         if (userName && newsId) {
             window.signalRConnection?.invoke("NotifyUserEditing", newsId, userName);
         }
+
+        // Listen for category updates
+        if (window.signalRConnection) {
+            window.signalRConnection.on("RefreshCategories", function() {
+                toastr.info('📁 Categories have been updated by another user', 'Category Update', {
+                    timeOut: 5000,
+                    closeButton: true
+                });
+            });
+        }
     </script>
 }

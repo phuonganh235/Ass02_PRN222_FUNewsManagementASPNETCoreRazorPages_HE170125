@@ -283,23 +283,34 @@
                 return;
             }
 
+            if (password.length < 6) {
+                toastr.error('Password must be at least 6 characters');
+                return;
+            }
+
             showLoading();
 
             try {
+                const payload = {
+                    AccountName: name,
+                    AccountEmail: email,
+                    AccountPassword: password,
+                    AccountRole: role
+                };
+
+                console.log('Creating account with payload:', payload);
+
                 const response = await fetch('/Admin/Accounts/Index?handler=Create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        AccountName: name,
-                        AccountEmail: email,
-                        AccountPassword: password,
-                        AccountRole: role
-                    })
+                    body: JSON.stringify(payload)
                 });
 
+                console.log('Response status:', response.status);
                 const result = await response.json();
+                console.log('Response data:', result);
 
                 hideLoading();
 
@@ -316,6 +327,7 @@
                 }
             } catch (error) {
                 hideLoading();
+                console.error('Error creating account:', error);
                 toastr.error('An error occurred while creating the account');
                 console.error(error);
             }

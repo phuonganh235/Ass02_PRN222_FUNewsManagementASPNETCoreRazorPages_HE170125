@@ -52,9 +52,38 @@ namespace FUNewsManagementSystem.Web.Pages.Admin.Accounts
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostCreateAsync([FromBody] AccountViewModel model)
         {
+            // Validate password for new account
+            if (string.IsNullOrWhiteSpace(model.AccountPassword))
+            {
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = "Password is required for new account"
+                });
+            }
+
+            if (model.AccountPassword.Length < 6)
+            {
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = "Password must be at least 6 characters"
+                });
+            }
+
             if (!ModelState.IsValid)
             {
-                return new JsonResult(new { success = false, message = "Invalid data" });
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = "Invalid data: " + string.Join(", ", errors),
+                    errors = errors
+                });
             }
 
             var result = await _accountService.CreateAccountAsync(model);
@@ -70,9 +99,29 @@ namespace FUNewsManagementSystem.Web.Pages.Admin.Accounts
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostUpdateAsync([FromBody] AccountViewModel model)
         {
+            // Validate password if provided
+            if (!string.IsNullOrWhiteSpace(model.AccountPassword) && model.AccountPassword.Length < 6)
+            {
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = "Password must be at least 6 characters"
+                });
+            }
+
             if (!ModelState.IsValid)
             {
-                return new JsonResult(new { success = false, message = "Invalid data" });
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = "Invalid data: " + string.Join(", ", errors),
+                    errors = errors
+                });
             }
 
             var result = await _accountService.UpdateAccountAsync(model);

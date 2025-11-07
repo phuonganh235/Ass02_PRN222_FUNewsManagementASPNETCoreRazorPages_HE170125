@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementsystem\\funewsmanagementsystem.web\\pages\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|solutionrelative:funewsmanagementsystem.web\\pages\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementsystem\\funewsmanagementsystem.web\\pages\\tags\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|solutionrelative:funewsmanagementsystem.web\\pages\\tags\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -127,10 +131,6 @@
       "RelativeMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|solutionrelative:funewsmanagementsystem.web\\pages\\logout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementsystem\\funewsmanagementsystem.web\\pages\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|solutionrelative:funewsmanagementsystem.web\\pages\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|d:\\fall25\\prn222\\ass02_prn222_funewsmanagementaspnetcorerazorpages_he170125\\funewsmanagementsystem\\funewsmanagementsystem.web\\pages\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{37D4990E-633D-4444-B3FF-22FB4208F5B0}|FUNewsManagementSystem.Web\\FUNewsManagementSystem.Web.csproj|solutionrelative:funewsmanagementsystem.web\\pages\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -169,8 +169,8 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedHeight": 314,
-          "SelectedChildIndex": 19,
+          "DockedHeight": 349,
+          "SelectedChildIndex": 27,
           "Children": [
             {
               "$type": "Bookmark",
@@ -250,33 +250,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Index.cshtml.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml.cs",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml.cs",
               "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml.cs",
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml.cs",
-              "ViewState": "AgIAAEEAAAAAAAAAAAAiwFsAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAqwFUAAABkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-07T05:54:19.492Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml",
-              "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml",
-              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml",
-              "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml",
-              "ViewState": "AgIAALoAAAAAAAAAAAAUwNUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-07T05:54:11.147Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "TagViewModel.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\BusinessLogic\\ViewModels\\TagViewModel.cs",
               "RelativeDocumentMoniker": "BusinessLogic\\ViewModels\\TagViewModel.cs",
@@ -284,12 +271,11 @@
               "RelativeToolTip": "BusinessLogic\\ViewModels\\TagViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T05:53:55.747Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T05:53:55.747Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "TagService.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\BusinessLogic\\Services\\TagService.cs",
               "RelativeDocumentMoniker": "BusinessLogic\\Services\\TagService.cs",
@@ -297,12 +283,11 @@
               "RelativeToolTip": "BusinessLogic\\Services\\TagService.cs",
               "ViewState": "AgIAAEQAAAAAAAAAAAAwwF0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T05:53:46.978Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T05:53:46.978Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ITagService.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\BusinessLogic\\Interfaces\\ITagService.cs",
               "RelativeDocumentMoniker": "BusinessLogic\\Interfaces\\ITagService.cs",
@@ -310,12 +295,11 @@
               "RelativeToolTip": "BusinessLogic\\Interfaces\\ITagService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T05:53:38.346Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T05:53:38.346Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Tag.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\DataAccess\\Entities\\Tag.cs",
               "RelativeDocumentMoniker": "DataAccess\\Entities\\Tag.cs",
@@ -323,12 +307,11 @@
               "RelativeToolTip": "DataAccess\\Entities\\Tag.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T05:53:25.049Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T05:53:25.049Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "Get.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Get.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Get.cshtml",
@@ -336,12 +319,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Get.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-07T03:35:35.13Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T03:35:35.13Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Update.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Update.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Update.cshtml",
@@ -349,12 +331,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Update.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAUwAIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-07T03:35:11.877Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T03:35:11.877Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Create.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Create.cshtml",
@@ -362,12 +343,36 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Create.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-07T03:34:44.894Z",
+              "WhenOpened": "2025-11-07T03:34:44.894Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Login.cshtml",
+              "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Login.cshtml",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Login.cshtml",
+              "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Login.cshtml",
+              "ViewState": "AgIAADEAAAAAAAAAAAAAAEEAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-07T01:12:23.525Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml",
+              "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml",
+              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml",
+              "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Tags\\Index.cshtml",
+              "ViewState": "AgIAALoAAAAAAAAAAAAUwNUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-07T05:54:11.147Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "Create.cshtml.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Create.cshtml.cs",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Create.cshtml.cs",
@@ -375,12 +380,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Create.cshtml.cs",
               "ViewState": "AgIAABoAAAAAAAAAAAAcwDQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T03:05:40.142Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T03:05:40.142Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "Delete.cshtml.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Delete.cshtml.cs",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Delete.cshtml.cs",
@@ -388,12 +392,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Delete.cshtml.cs",
               "ViewState": "AgIAACEAAAAAAAAAAAAUwDwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T02:58:33.959Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T02:58:33.959Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Get.cshtml.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Get.cshtml.cs",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Get.cshtml.cs",
@@ -401,12 +404,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Get.cshtml.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAAAcwB4AAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T03:00:38.674Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T03:00:38.674Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Update.cshtml.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Update.cshtml.cs",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Update.cshtml.cs",
@@ -414,12 +416,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Update.cshtml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T02:58:09.827Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T02:58:09.827Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Index.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Index.cshtml",
@@ -427,12 +428,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\Categories\\Index.cshtml",
               "ViewState": "AgIAAOMAAAAAAAAAAAAAwPkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-07T02:53:38.17Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T02:53:38.17Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Index.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Index.cshtml",
@@ -440,12 +440,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGEAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-06T19:19:28.897Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T19:19:28.897Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\Create.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\Create.cshtml",
@@ -453,12 +452,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\Create.cshtml",
               "ViewState": "AgIAAFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-07T03:41:13.504Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T03:41:13.504Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "Details.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\Details.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\Details.cshtml",
@@ -466,12 +464,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\Details.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-07T03:41:18.634Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T03:41:18.634Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "CategoryViewModel.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\BusinessLogic\\ViewModels\\CategoryViewModel.cs",
               "RelativeDocumentMoniker": "BusinessLogic\\ViewModels\\CategoryViewModel.cs",
@@ -479,12 +476,11 @@
               "RelativeToolTip": "BusinessLogic\\ViewModels\\CategoryViewModel.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAAcwBgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T02:53:18.256Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T02:53:18.256Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "ICategoryService.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\BusinessLogic\\Interfaces\\ICategoryService.cs",
               "RelativeDocumentMoniker": "BusinessLogic\\Interfaces\\ICategoryService.cs",
@@ -492,12 +488,11 @@
               "RelativeToolTip": "BusinessLogic\\Interfaces\\ICategoryService.cs",
               "ViewState": "AgIAAAQAAAAAAAAAAAAswBEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T02:53:00.793Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T02:53:00.793Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\Index.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\Index.cshtml",
@@ -509,7 +504,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Program.cs",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Program.cs",
@@ -517,12 +512,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Program.cs",
               "ViewState": "AgIAACsAAAAAAAAAAAAiwEAAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T19:33:34.593Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T19:33:34.593Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Shared\\_Layout.cshtml",
@@ -530,12 +524,11 @@
               "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAABoAAAAAAAAAAAArwCgAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-06T19:21:11.562Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T19:21:11.562Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "Profile.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Profile.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Profile.cshtml",
@@ -547,7 +540,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "Profile.cshtml.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\Profile.cshtml.cs",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\Profile.cshtml.cs",
@@ -559,19 +552,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "Login.cshtml",
-              "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Login.cshtml",
-              "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Login.cshtml",
-              "ToolTip": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Login.cshtml",
-              "RelativeToolTip": "FUNewsManagementSystem.Web\\Pages\\Login.cshtml",
-              "ViewState": "AgIAADQAAAAAAAAAAAAAAEMAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-07T01:12:23.525Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "Category.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\DataAccess\\Entities\\Category.cs",
               "RelativeDocumentMoniker": "DataAccess\\Entities\\Category.cs",
@@ -579,12 +560,11 @@
               "RelativeToolTip": "DataAccess\\Entities\\Category.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAUwBsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T19:28:41.353Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T19:28:41.353Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "CategoryService.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\BusinessLogic\\Services\\CategoryService.cs",
               "RelativeDocumentMoniker": "BusinessLogic\\Services\\CategoryService.cs",
@@ -592,12 +572,11 @@
               "RelativeToolTip": "BusinessLogic\\Services\\CategoryService.cs",
               "ViewState": "AgIAAF4AAAAAAAAAAAAuwHMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T19:45:12.706Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T19:45:12.706Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "History.cshtml.cs",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\History.cshtml.cs",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\History.cshtml.cs",
@@ -609,7 +588,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "History.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\History.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Staff\\NewsArticles\\History.cshtml",
@@ -621,7 +600,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "_ValidationScriptsPartial.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Shared\\_ValidationScriptsPartial.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Shared\\_ValidationScriptsPartial.cshtml",
@@ -633,7 +612,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "Logout.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Logout.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Logout.cshtml",
@@ -657,7 +636,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\FALL25\\PRN222\\Ass02_PRN222_FUNewsManagementASPNETCoreRazorPages_HE170125\\FUNewsManagementSystem\\FUNewsManagementSystem.Web\\Pages\\Admin\\Accounts\\Index.cshtml",
               "RelativeDocumentMoniker": "FUNewsManagementSystem.Web\\Pages\\Admin\\Accounts\\Index.cshtml",
@@ -754,7 +733,7 @@
           ]
         },
         {
-          "DockedHeight": 86,
+          "DockedHeight": 51,
           "SelectedChildIndex": -1,
           "Children": [
             {

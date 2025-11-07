@@ -62,5 +62,5 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapHub<NotificationHub>("/notificationHub");
-
+app.MapRazorPages();
 app.Run();

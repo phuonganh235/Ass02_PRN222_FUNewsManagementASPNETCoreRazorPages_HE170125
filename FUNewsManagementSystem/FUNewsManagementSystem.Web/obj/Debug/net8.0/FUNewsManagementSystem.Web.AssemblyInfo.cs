@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FUNewsManagementSystem.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54bc8c27edf632a0e7f8fbee974ed54be68cee04")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6bacaf63ee76296277f29eea980e468059da10ea")]
 [assembly: System.Reflection.AssemblyProductAttribute("FUNewsManagementSystem.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FUNewsManagementSystem.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -83,20 +83,33 @@ namespace FUNewsManagementSystem.Web.Hubs
         // Account CRUD notifications
         public async Task NotifyAccountCreated(string accountName)
         {
-            await Clients.Group(GROUP_STAFF).SendAsync("ReceiveNotification",
-                $"Admin has added a new account: {accountName}", "info");
+            // Notify all Staff users
+            await Clients.Group(GROUP_STAFF).SendAsync("AccountCreated", accountName);
+
+            // Also send to Admins
+            await Clients.Group(GROUP_ADMIN).SendAsync("ReceiveNotification",
+                $"New account '{accountName}' has been created", "success");
         }
 
-        public async Task NotifyAccountUpdated(string accountName)
+        public async Task NotifyAccountUpdated(string accountName, int accountId, bool isActive)
         {
-            await Clients.All.SendAsync("ReceiveNotification",
-                $"Account '{accountName}' has been updated", "info");
+            // Notify all users about the update
+            await Clients.All.SendAsync("AccountUpdated", accountName);
+
+            // If account is deactivated, force logout all sessions using this account
+            if (!isActive)
+            {
+                await Clients.All.SendAsync("CheckAccountStatus", accountId);
+            }
         }
 
-        public async Task NotifyAccountDeleted(string accountName)
+        public async Task NotifyAccountDeleted(string accountName, int accountId)
         {
-            await Clients.All.SendAsync("ReceiveNotification",
-                $"Account '{accountName}' has been deleted", "warning");
+            // Notify all users about deletion
+            await Clients.All.SendAsync("AccountDeleted", accountName);
+
+            // Force logout all sessions using this account
+            await Clients.All.SendAsync("ForceLogoutByAccountId", accountId);
         }
 
         // Category CRUD notifications

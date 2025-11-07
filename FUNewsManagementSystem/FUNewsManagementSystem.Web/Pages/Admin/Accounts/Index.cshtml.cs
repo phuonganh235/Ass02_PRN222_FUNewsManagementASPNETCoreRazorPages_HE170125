@@ -1,41 +1,112 @@
-﻿using BusinessLogic.Interfaces;
+using BusinessLogic.Interfaces;
 using BusinessLogic.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FUNewsManagementSystem.Web.Pages.Accounts
+namespace FUNewsManagementSystem.Web.Pages.Admin.Accounts
 {
     public class IndexModel : PageModel
     {
-        private readonly IAccountService _accountService;
+        private readonly ISystemAccountService _accountService;
 
-        public IndexModel(IAccountService accountService)
+        public List<AccountViewModel> Accounts { get; set; } = new List<AccountViewModel>();
+
+        [BindProperty(SupportsGet = true)]
+        public string? SearchTerm { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int? Role { get; set; }
+
+        public IndexModel(ISystemAccountService accountService)
         {
             _accountService = accountService;
         }
 
-        public List<AccountViewModel> Accounts { get; set; } = new();
-
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            Accounts = (await _accountService.GetAllAccountsAsync()).ToList();
-        }
-
-        public async Task<IActionResult> OnPostDeleteAsync(int id)
-        {
-            await _accountService.DeleteAccountAsync((short)id);
-            return RedirectToPage();
-        }
-
-        public string GetRoleName(int roleId)
-        {
-            return roleId switch
+            // Check if user is Admin
+            var userRole = HttpContext.Session.GetInt32("UserRole");
+            if (userRole != 0)
             {
-                3 => "Admin",
-                2 => "Staff",
-                1 => "Lecturer",
-                _ => "Unknown"
-            };
+                return RedirectToPage("/Index");
+            }
+
+            if (!string.IsNullOrEmpty(SearchTerm) || Role.HasValue)
+            {
+                Accounts = (await _accountService.SearchAccountsAsync(SearchTerm, Role)).ToList();
+            }
+            else
+            {
+                Accounts = (await _accountService.GetAllAccountsAsync()).ToList();
+            }
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetGetAsync(short id)
+        {
+            var account = await _accountService.GetAccountByIdAsync(id);
+            return new JsonResult(account);
+        }
+
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> OnPostCreateAsync([FromBody] AccountViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(new { success = false, message = "Invalid data" });
+            }
+
+            var result = await _accountService.CreateAccountAsync(model);
+
+            if (result)
+            {
+                return new JsonResult(new { success = true, message = "Account created successfully" });
+            }
+
+            return new JsonResult(new { success = false, message = "Email already exists" });
+        }
+
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> OnPostUpdateAsync([FromBody] AccountViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(new { success = false, message = "Invalid data" });
+            }
+
+            var result = await _accountService.UpdateAccountAsync(model);
+
+            if (result)
+            {
+                return new JsonResult(new { success = true, message = "Account updated successfully" });
+            }
+
+            return new JsonResult(new { success = false, message = "Email already exists or account not found" });
+        }
+
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> OnPostDeleteAsync(short id)
+        {
+            var canDelete = await _accountService.CanDeleteAccountAsync(id);
+
+            if (!canDelete)
+            {
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = "Cannot delete this account because it has created news articles"
+                });
+            }
+
+            var result = await _accountService.DeleteAccountAsync(id);
+
+            if (result)
+            {
+                return new JsonResult(new { success = true, message = "Account deleted successfully" });
+            }
+
+            return new JsonResult(new { success = false, message = "Account not found" });
         }
     }
 }

@@ -1,3 +1,38 @@
+/* ========================================
+   PINK PASTEL THEME - FU News Management
+   ======================================== */
+
+:root {
+    /* Pink Pastel Color Palette */
+    --pink-light: #FFE4E1;        /* Misty Rose - Very light pink */
+    --pink-pastel: #FFB6C1;       /* Light Pink - Main pink */
+    --pink-medium: #FFC0CB;       /* Pink - Medium pink */
+    --pink-dark: #FF69B4;         /* Hot Pink - Accent pink */
+    --pink-gradient: linear-gradient(135deg, #FFE4E1 0%, #FFC0CB 100%);
+
+    /* Background Colors */
+    --bg-primary: #FFF5F7;        /* Very light pink background */
+    --bg-white: #FFFFFF;
+    --bg-card: #FFFFFF;
+
+    /* Text Colors */
+    --text-primary: #4A4A4A;      /* Dark gray for readability */
+    --text-secondary: #6c757d;
+    --text-pink: #FF69B4;
+    --text-pink-dark: #E91E63;
+
+    /* Button Colors */
+    --btn-pink: #FFB6C1;
+    --btn-pink-hover: #FF69B4;
+    --btn-pink-dark: #E91E63;
+
+    /* Status Colors (Pink-themed) */
+    --success-pink: #FFB6D9;
+    --warning-pink: #FFD4E5;
+    --info-pink: #E8C4D8;
+    --danger-pink: #FF8FAB;
+}
+
 html {
     font-size: 14px;
 }
@@ -9,7 +44,7 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--pink-pastel);
 }
 
 html {
@@ -19,6 +54,8 @@ html {
 
 body {
     margin-bottom: 60px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 .footer {
@@ -29,73 +66,223 @@ body {
     line-height: 60px;
 }
 
-/* Custom Styles */
-.card {
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+/* ========================================
+   PINK THEME - Navbar Styles
+   ======================================== */
+
+.bg-pink-gradient {
+    background: var(--pink-gradient) !important;
+    box-shadow: 0 2px 10px rgba(255, 182, 193, 0.3);
 }
 
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
+.text-pink {
+    color: var(--text-pink) !important;
+}
+
+.text-pink-dark {
+    color: var(--text-pink-dark) !important;
+    font-weight: 600;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+    color: var(--pink-dark) !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-pink-outline {
+    border: 2px solid var(--pink-dark);
+    color: var(--pink-dark) !important;
+    background: transparent;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-weight: 600;
+}
+
+.btn-pink-outline:hover {
+    background: var(--pink-dark);
+    color: white !important;
+}
+
+/* Dropdown Pink Theme */
+.pink-dropdown {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+    border: 2px solid var(--pink-light);
+}
+
+.pink-dropdown .dropdown-item {
+    transition: all 0.3s ease;
+}
+
+.pink-dropdown .dropdown-item:hover {
+    background-color: var(--pink-light);
+    color: var(--pink-dark);
+    transform: translateX(5px);
+}
+
+/* ========================================
+   PINK THEME - Card Styles
+   ======================================== */
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(255, 182, 193, 0.2);
+    transition: all 0.3s ease;
+    background: white;
+    border: 2px solid var(--pink-light);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(255, 105, 180, 0.3);
+    border-color: var(--pink-pastel);
+}
+
+.card-header {
+    background: var(--pink-gradient) !important;
+    color: var(--text-primary);
+    font-weight: 600;
+    border-bottom: none;
+}
 
 .table-hover tbody tr:hover {
-    background-color: rgba(0,0,0,0.03);
+    background-color: var(--pink-light);
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .badge {
-    padding: 0.4em 0.6em;
-    font-weight: 500;
+    padding: 0.5em 0.8em;
+    font-weight: 600;
+    border-radius: 10px;
 }
 
-/* Modal Styles */
+/* ========================================
+   PINK THEME - Modal Styles
+   ======================================== */
+
 .modal-content {
-    border-radius: 10px;
-    border: none;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 20px;
+    border: 3px solid var(--pink-pastel);
+    box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
 }
 
 .modal-header {
-    border-bottom: 2px solid #f0f0f0;
-    background-color: #f8f9fa;
+    border-bottom: 2px solid var(--pink-light);
+    background: var(--pink-gradient);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-radius: 17px 17px 0 0;
 }
 
 .modal-footer {
-    border-top: 2px solid #f0f0f0;
-    background-color: #f8f9fa;
+    border-top: 2px solid var(--pink-light);
+    background-color: var(--pink-light);
+    border-radius: 0 0 17px 17px;
 }
 
-/* Button Styles */
+/* ========================================
+   PINK THEME - Button Styles
+   ======================================== */
+
 .btn {
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s;
+    border-radius: 10px;
+    padding: 0.6rem 1.2rem;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
 
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--pink-pastel) 0%, var(--pink-dark) 100%);
+    border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--pink-dark) 0%, var(--pink-medium) 100%);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #FFB6D9 0%, #FF8FAB 100%);
+    border: none;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #FFD4E5 0%, #FFC0CB 100%);
+    border: none;
+    color: var(--text-primary);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #E8C4D8 0%, #D8B4E8 100%);
+    border: none;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #FF8FAB 0%, #FF1493 100%);
+    border: none;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%);
+    border: none;
+}
 
 .btn-sm {
-    padding: 0.25rem 0.5rem;
+    padding: 0.3rem 0.7rem;
     font-size: 0.875rem;
+    border-radius: 8px;
 }
 
-/* Form Styles */
+/* ========================================
+   PINK THEME - Form Styles
+   ======================================== */
+
 .form-control, .form-select {
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    border-radius: 10px;
+    border: 2px solid var(--pink-light);
+    transition: all 0.3s ease;
+    background-color: white;
 }
 
-    .form-control:focus, .form-select:focus {
-        border-color: #80bdff;
-        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
-    }
+.form-control:focus, .form-select:focus {
+    border-color: var(--pink-pastel);
+    box-shadow: 0 0 0 0.2rem rgba(255, 182, 193, 0.25);
+    background-color: white;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-check-input:checked {
+    background-color: var(--pink-dark);
+    border-color: var(--pink-dark);
+}
 
 /* Navbar Styles */
 .navbar {
@@ -107,33 +294,63 @@ body {
     font-size: 1.5rem;
 }
 
-/* Dashboard Card Styles */
-.bg-primary, .bg-success, .bg-warning, .bg-info, .bg-danger, .bg-secondary, .bg-dark {
-    background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary-dark, #0056b3) 100%) !important;
+/* ========================================
+   PINK THEME - Background & Status Colors
+   ======================================== */
+
+.bg-pink-light {
+    background-color: var(--pink-light) !important;
+}
+
+.bg-primary {
+    background: linear-gradient(135deg, var(--pink-pastel) 0%, var(--pink-dark) 100%) !important;
 }
 
 .bg-success {
-    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%) !important;
+    background: linear-gradient(135deg, #FFB6D9 0%, #FF8FAB 100%) !important;
 }
 
 .bg-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%) !important;
+    background: linear-gradient(135deg, #FFD4E5 0%, #FFC0CB 100%) !important;
 }
 
 .bg-info {
-    background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%) !important;
+    background: linear-gradient(135deg, #E8C4D8 0%, #D8B4E8 100%) !important;
 }
 
 .bg-danger {
-    background: linear-gradient(135deg, #dc3545 0%, #bd2130 100%) !important;
+    background: linear-gradient(135deg, #FF8FAB 0%, #FF1493 100%) !important;
 }
 
 .bg-secondary {
-    background: linear-gradient(135deg, #6c757d 0%, #545b62 100%) !important;
+    background: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%) !important;
 }
 
-.bg-dark {
-    background: linear-gradient(135deg, #343a40 0%, #1d2124 100%) !important;
+/* Badge Colors - Pink Theme */
+.badge.bg-primary {
+    background: var(--pink-dark) !important;
+}
+
+.badge.bg-success {
+    background: #FFB6D9 !important;
+    color: var(--text-primary) !important;
+}
+
+.badge.bg-warning {
+    background: #FFD4E5 !important;
+    color: var(--text-primary) !important;
+}
+
+.badge.bg-info {
+    background: #E8C4D8 !important;
+}
+
+.badge.bg-danger {
+    background: #FF8FAB !important;
+}
+
+.badge.bg-secondary {
+    background: #D0D0D0 !important;
 }
 
 .display-4 {
@@ -187,25 +404,33 @@ body {
     border-width: 0.2em;
 }
 
-/* Toast Notifications Override */
+/* ========================================
+   PINK THEME - Toast Notifications
+   ======================================== */
+
 #toast-container > div {
     opacity: 0.95;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
 }
 
 .toast-success {
-    background-color: #51a351;
+    background-color: #FFB6D9 !important;
+    color: var(--text-primary) !important;
 }
 
 .toast-error {
-    background-color: #bd362f;
+    background-color: #FF8FAB !important;
 }
 
 .toast-info {
-    background-color: #2f96b4;
+    background-color: #E8C4D8 !important;
+    color: var(--text-primary) !important;
 }
 
 .toast-warning {
-    background-color: #f89406;
+    background-color: #FFD4E5 !important;
+    color: var(--text-primary) !important;
 }
 
 /* Responsive adjustments */
@@ -234,24 +459,29 @@ body {
     margin-top: 10px;
 }
 
-/* Scrollbar Styling */
+/* ========================================
+   PINK THEME - Scrollbar Styling
+   ======================================== */
+
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--pink-light);
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
+    background: var(--pink-pastel);
+    border-radius: 10px;
+    border: 2px solid var(--pink-light);
 }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
+::-webkit-scrollbar-thumb:hover {
+    background: var(--pink-dark);
+}
 
 /* Animation */
 @keyframes fadeIn {
@@ -270,7 +500,57 @@ body {
     animation: fadeIn 0.5s ease-in;
 }
 
+/* ========================================
+   PINK THEME - Miscellaneous
+   ======================================== */
+
 /* Chart Container */
 canvas {
     max-height: 400px;
+    border-radius: 10px;
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 10px;
+    border-left: 5px solid var(--pink-dark);
+}
+
+.alert-info {
+    background-color: var(--pink-light);
+    color: var(--text-primary);
+    border-color: var(--pink-pastel);
+}
+
+.alert-success {
+    background-color: #FFE4F0;
+    color: var(--text-primary);
+    border-color: #FFB6D9;
+}
+
+.alert-warning {
+    background-color: #FFF0F5;
+    color: var(--text-primary);
+    border-color: #FFD4E5;
+}
+
+/* Table Pink Theme */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: var(--pink-gradient);
+    color: var(--text-primary);
+}
+
+.table-light {
+    background-color: var(--pink-light) !important;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--pink-light);
+    border-top: 3px solid var(--pink-pastel);
 }

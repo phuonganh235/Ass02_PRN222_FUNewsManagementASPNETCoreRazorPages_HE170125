@@ -86,6 +86,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Broadcast to all Admins viewing the Accounts page
             await Clients.Group(GROUP_ADMIN).SendAsync("AccountCreated", accountName);
 
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Account", "Created", accountName);
+
             // Also notify Staff users
             await Clients.Group(GROUP_STAFF).SendAsync("ReceiveNotification",
                 $"👤 New account '{accountName}' has been created by Admin", "success");
@@ -95,6 +98,9 @@ namespace FUNewsManagementSystem.Web.Hubs
         {
             // Broadcast to all Admins viewing the Accounts page
             await Clients.Group(GROUP_ADMIN).SendAsync("AccountUpdated", accountName);
+
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Account", "Updated", accountName);
 
             // If account is deactivated, force logout all sessions using this account
             if (!isActive)
@@ -108,6 +114,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Broadcast to all Admins viewing the Accounts page
             await Clients.Group(GROUP_ADMIN).SendAsync("AccountDeleted", accountName);
 
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Account", "Deleted", accountName);
+
             // Force logout all sessions using this account
             await Clients.All.SendAsync("ForceLogoutByAccountId", accountId);
         }
@@ -118,6 +127,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Broadcast to Staff viewing Categories page
             await Clients.Group(GROUP_STAFF).SendAsync("CategoryCreated", categoryName);
 
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Category", "Created", categoryName);
+
             // Refresh category dropdowns on all pages
             await Clients.All.SendAsync("RefreshCategories");
         }
@@ -127,6 +139,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Broadcast to Staff viewing Categories page
             await Clients.Group(GROUP_STAFF).SendAsync("CategoryUpdated", categoryName);
 
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Category", "Updated", categoryName);
+
             // Refresh category dropdowns on all pages
             await Clients.All.SendAsync("RefreshCategories");
         }
@@ -135,6 +150,9 @@ namespace FUNewsManagementSystem.Web.Hubs
         {
             // Broadcast to Staff viewing Categories page
             await Clients.Group(GROUP_STAFF).SendAsync("CategoryDeleted", categoryName);
+
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Category", "Deleted", categoryName);
 
             // Refresh category dropdowns on all pages
             await Clients.All.SendAsync("RefreshCategories");
@@ -151,6 +169,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Broadcast to Staff viewing News Articles page
             await Clients.Group(GROUP_STAFF).SendAsync("NewsArticleCreated", newsTitle, authorName);
 
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Article", "Created", newsTitle);
+
             // Refresh news list on all pages
             await Clients.All.SendAsync("RefreshNewsList");
 
@@ -163,6 +184,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Broadcast to Staff viewing News Articles page
             await Clients.Group(GROUP_STAFF).SendAsync("NewsArticleUpdated", newsTitle);
 
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Article", "Updated", newsTitle);
+
             // Refresh news list on all pages
             await Clients.All.SendAsync("RefreshNewsList");
         }
@@ -171,6 +195,9 @@ namespace FUNewsManagementSystem.Web.Hubs
         {
             // Broadcast to Staff viewing News Articles page
             await Clients.Group(GROUP_STAFF).SendAsync("NewsArticleDeleted", newsTitle);
+
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Article", "Deleted", newsTitle);
 
             // Refresh news list on all pages
             await Clients.All.SendAsync("RefreshNewsList");
@@ -185,6 +212,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Broadcast to Staff viewing Tags page
             await Clients.Group(GROUP_STAFF).SendAsync("TagCreated", tagName);
 
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Tag", "Created", tagName);
+
             // Refresh tag lists on all pages
             await Clients.All.SendAsync("RefreshTags");
         }
@@ -193,6 +223,9 @@ namespace FUNewsManagementSystem.Web.Hubs
         {
             // Broadcast to Staff viewing Tags page
             await Clients.Group(GROUP_STAFF).SendAsync("TagUpdated", tagName);
+
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Tag", "Updated", tagName);
 
             // Refresh tag lists on all pages
             await Clients.All.SendAsync("RefreshTags");
@@ -203,6 +236,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Broadcast to Staff viewing Tags page
             await Clients.Group(GROUP_STAFF).SendAsync("TagDeleted", tagName);
 
+            // Dashboard update with detailed notification
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Tag", "Deleted", tagName);
+
             // Refresh tag lists on all pages
             await Clients.All.SendAsync("RefreshTags");
         }
@@ -211,11 +247,17 @@ namespace FUNewsManagementSystem.Web.Hubs
         public async Task SendCommentToArticle(string newsArticleId, string commentId, string accountName, string content, string timeAgo)
         {
             await Clients.All.SendAsync("ReceiveComment", newsArticleId, commentId, accountName, content, timeAgo);
+
+            // Dashboard update for new comment
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Comment", "Created", accountName);
         }
 
         public async Task NotifyCommentDeleted(int commentId, string newsArticleId)
         {
             await Clients.All.SendAsync("CommentDeleted", commentId, newsArticleId);
+
+            // Dashboard update for deleted comment
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Comment", "Deleted", "");
         }
 
         public async Task NotifyCommentDeletedByAdmin(int commentId, int accountId, string accountName)
@@ -223,6 +265,9 @@ namespace FUNewsManagementSystem.Web.Hubs
             // Notify all users that a comment was deleted
             await Clients.All.SendAsync("ReceiveNotification",
                 $"💬 Comment by {accountName} has been removed by Admin", "warning");
+
+            // Dashboard update for admin-deleted comment
+            await Clients.Group(GROUP_ADMIN).SendAsync("DashboardUpdate", "Comment", "Deleted", accountName);
 
             // Send specific notification to the comment author
             await Clients.All.SendAsync("CommentDeletedByAdmin", commentId, accountId);

@@ -164,6 +164,33 @@
             }
         });
 
+        // Account management - Force logout handlers
+        connection.on("ForceLogoutByAccountId", function (accountId) {
+            const currentUserId = @(Context.Session.GetInt32("UserId") ?? 0);
+            if (currentUserId === accountId) {
+                toastr.error('⚠️ Your account has been deleted by Admin. You will be logged out.', 'Account Deleted', {
+                    timeOut: 3000,
+                    closeButton: true
+                });
+                setTimeout(function () {
+                    window.location.href = '/Login/Index';
+                }, 3000);
+            }
+        });
+
+        connection.on("CheckAccountStatus", function (accountId) {
+            const currentUserId = @(Context.Session.GetInt32("UserId") ?? 0);
+            if (currentUserId === accountId) {
+                toastr.error('⚠️ Your account has been deactivated by Admin. You will be logged out.', 'Account Deactivated', {
+                    timeOut: 3000,
+                    closeButton: true
+                });
+                setTimeout(function () {
+                    window.location.href = '/Login/Index';
+                }, 3000);
+            }
+        });
+
         connection.start().catch(function (err) {
             console.error('SignalR Connection Error: ', err.toString());
         });

@@ -82,13 +82,22 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.NewsArticles
 
             if (result)
             {
-                // Send SignalR notification
-                await _hubContext.Clients.All.SendAsync(
-                    "ReceiveNotification",
-                    $"Article '{Input.NewsTitle}' has been updated",
-                    "info"
+                // Send SignalR notifications via NotificationHub methods
+                // This will automatically send "DashboardUpdate" to Admin
+                await _hubContext.Clients.Group("Group_Staff").SendAsync(
+                    "NewsArticleUpdated",
+                    Input.NewsTitle
                 );
 
+                // Dashboard update with detailed notification
+                await _hubContext.Clients.Group("Group_Admin").SendAsync(
+                    "DashboardUpdate",
+                    "Article",
+                    "Updated",
+                    Input.NewsTitle
+                );
+
+                // Refresh news list on all pages
                 await _hubContext.Clients.All.SendAsync("RefreshNewsList");
 
                 TempData["SuccessMessage"] = "News article updated successfully!";

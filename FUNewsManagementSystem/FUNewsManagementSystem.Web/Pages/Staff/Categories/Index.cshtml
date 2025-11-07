@@ -208,7 +208,7 @@
         }
 
         async function openEditModal(id) {
-            const response = await fetch(`/Staff/Categories/Get?id=${id}`);
+            const response = await fetch(`/Staff/Categories/Index?handler=Get&id=${id}`);
             const category = await response.json();
 
             $('#modalTitle').text('Edit Category');

@@ -133,6 +133,106 @@
             toastr[type || 'info'](message);
         });
 
+        // Category notifications for Staff
+        connection.on("CategoryCreated", function (categoryName) {
+            toastr.success(`📁 Staff created new category "${categoryName}"`, 'Category Created', {
+                timeOut: 5000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        connection.on("CategoryUpdated", function (categoryName) {
+            toastr.info(`✏️ Category "${categoryName}" was updated by Staff`, 'Category Updated', {
+                timeOut: 4000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        connection.on("CategoryDeleted", function (categoryName) {
+            toastr.warning(`🗑️ Category "${categoryName}" was deleted by Staff`, 'Category Deleted', {
+                timeOut: 4000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        // News Article notifications for Staff
+        connection.on("NewsArticleCreated", function (newsTitle, authorName) {
+            toastr.success(`📰 ${authorName} published new article "${newsTitle}"`, 'Article Created', {
+                timeOut: 5000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        connection.on("NewsArticleUpdated", function (newsTitle) {
+            toastr.info(`✏️ Article "${newsTitle}" was updated`, 'Article Updated', {
+                timeOut: 4000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        connection.on("NewsArticleDeleted", function (newsTitle) {
+            toastr.warning(`🗑️ Article "${newsTitle}" was deleted`, 'Article Deleted', {
+                timeOut: 4000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        // Tag notifications for Staff
+        connection.on("TagCreated", function (tagName) {
+            toastr.success(`🏷️ Staff created new tag "${tagName}"`, 'Tag Created', {
+                timeOut: 5000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        connection.on("TagUpdated", function (tagName) {
+            toastr.info(`✏️ Tag "${tagName}" was updated by Staff`, 'Tag Updated', {
+                timeOut: 4000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        connection.on("TagDeleted", function (tagName) {
+            toastr.warning(`🗑️ Tag "${tagName}" was deleted by Staff`, 'Tag Deleted', {
+                timeOut: 4000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        // Account notifications for Staff (when Admin creates/updates/deletes accounts)
+        connection.on("AccountCreated", function (accountName) {
+            toastr.info(`👤 Admin created new account "${accountName}"`, 'Account Created', {
+                timeOut: 5000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        connection.on("AccountUpdated", function (accountName) {
+            toastr.info(`✏️ Admin updated account "${accountName}"`, 'Account Updated', {
+                timeOut: 4000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
+        connection.on("AccountDeleted", function (accountName) {
+            toastr.warning(`🗑️ Admin deleted account "${accountName}"`, 'Account Deleted', {
+                timeOut: 4000,
+                closeButton: true,
+                progressBar: true
+            });
+        });
+
         connection.on("RefreshCategories", function () {
             if (typeof refreshCategoriesList === 'function') {
                 refreshCategoriesList();

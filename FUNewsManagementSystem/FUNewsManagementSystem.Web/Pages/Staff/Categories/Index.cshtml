@@ -310,11 +310,42 @@
         }
         window.refreshCategoriesList = refreshCategoriesList;
 
-        // Listen for category order changes from other users
+        // SignalR Real-time notifications
         if (window.signalRConnection) {
+            // Category order changed
             window.signalRConnection.on("RefreshCategoryOrder", function() {
-                toastr.info('Categories reordered by another user');
+                toastr.info('📊 Categories reordered by another user', 'Order Changed', {
+                    timeOut: 3000,
+                    closeButton: true
+                });
                 setTimeout(() => location.reload(), 1500);
+            });
+
+            // Category created
+            window.signalRConnection.on("CategoryCreated", function(categoryName) {
+                toastr.success(`📁 New category "${categoryName}" has been created`, 'Category Created', {
+                    timeOut: 4000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
+            });
+
+            // Category updated
+            window.signalRConnection.on("CategoryUpdated", function(categoryName) {
+                toastr.info(`✏️ Category "${categoryName}" has been updated`, 'Category Updated', {
+                    timeOut: 4000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
+            });
+
+            // Category deleted
+            window.signalRConnection.on("CategoryDeleted", function(categoryName) {
+                toastr.warning(`🗑️ Category "${categoryName}" has been deleted`, 'Category Deleted', {
+                    timeOut: 4000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
             });
         }
     </script>

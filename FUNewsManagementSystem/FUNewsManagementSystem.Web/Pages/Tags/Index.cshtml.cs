@@ -43,11 +43,21 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.Tags
             return new JsonResult(tag);
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostCreateAsync([FromBody] TagViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(new { success = false, message = "Invalid data" });
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = "Invalid data: " + string.Join(", ", errors)
+                });
             }
 
             var result = await _tagService.CreateTagAsync(model);
@@ -60,11 +70,21 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.Tags
             return new JsonResult(new { success = false, message = "Tag name already exists" });
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostUpdateAsync([FromBody] TagViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(new { success = false, message = "Invalid data" });
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return new JsonResult(new
+                {
+                    success = false,
+                    message = "Invalid data: " + string.Join(", ", errors)
+                });
             }
 
             var result = await _tagService.UpdateTagAsync(model);
@@ -77,6 +97,7 @@ namespace FUNewsManagementSystem.Web.Pages.Staff.Tags
             return new JsonResult(new { success = false, message = "Tag name already exists or tag not found" });
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
             var result = await _tagService.DeleteTagAsync(id);

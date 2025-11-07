@@ -292,10 +292,10 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        accountName: name,
-                        accountEmail: email,
-                        accountPassword: password,
-                        role: role
+                        AccountName: name,
+                        AccountEmail: email,
+                        AccountPassword: password,
+                        AccountRole: role
                     })
                 });
 
@@ -330,11 +330,11 @@
 
                 hideLoading();
 
-                document.getElementById('editAccountId').value = account.accountId;
-                document.getElementById('editName').value = account.accountName;
-                document.getElementById('editEmail').value = account.accountEmail;
+                document.getElementById('editAccountId').value = account.accountId || account.AccountId;
+                document.getElementById('editName').value = account.accountName || account.AccountName;
+                document.getElementById('editEmail').value = account.accountEmail || account.AccountEmail;
                 document.getElementById('editPassword').value = '';
-                document.getElementById('editRole').value = account.role;
+                document.getElementById('editRole').value = account.role || account.Role || account.accountRole || account.AccountRole;
 
                 editModal.show();
             } catch (error) {
@@ -360,15 +360,15 @@
 
             try {
                 const payload = {
-                    accountId: accountId,
-                    accountName: name,
-                    accountEmail: email,
-                    role: role
+                    AccountId: accountId,
+                    AccountName: name,
+                    AccountEmail: email,
+                    AccountRole: role
                 };
 
                 // Only include password if provided
                 if (password) {
-                    payload.accountPassword = password;
+                    payload.AccountPassword = password;
                 }
 
                 const response = await fetch('/Admin/Accounts/Index?handler=Update', {

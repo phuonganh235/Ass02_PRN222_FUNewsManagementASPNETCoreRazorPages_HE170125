@@ -182,15 +182,28 @@ namespace FUNewsManagementSystem.Web.Hubs
         // Tag CRUD notifications
         public async Task NotifyTagCreated(string tagName)
         {
-            await Clients.Groups(GROUP_ADMIN, GROUP_STAFF).SendAsync("ReceiveNotification",
-                $"New tag created: {tagName}", "success");
+            // Broadcast to Staff viewing Tags page
+            await Clients.Group(GROUP_STAFF).SendAsync("TagCreated", tagName);
+
+            // Refresh tag lists on all pages
+            await Clients.All.SendAsync("RefreshTags");
+        }
+
+        public async Task NotifyTagUpdated(string tagName)
+        {
+            // Broadcast to Staff viewing Tags page
+            await Clients.Group(GROUP_STAFF).SendAsync("TagUpdated", tagName);
+
+            // Refresh tag lists on all pages
             await Clients.All.SendAsync("RefreshTags");
         }
 
         public async Task NotifyTagDeleted(string tagName)
         {
-            await Clients.All.SendAsync("ReceiveNotification",
-                $"Tag '{tagName}' was deleted by Admin", "warning");
+            // Broadcast to Staff viewing Tags page
+            await Clients.Group(GROUP_STAFF).SendAsync("TagDeleted", tagName);
+
+            // Refresh tag lists on all pages
             await Clients.All.SendAsync("RefreshTags");
         }
 

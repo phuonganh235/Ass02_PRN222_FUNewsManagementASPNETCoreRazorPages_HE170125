@@ -115,30 +115,43 @@
         }
 
         async function openEditModal(id) {
-            const response = await fetch(`/Staff/Tags/Get?id=${id}`);
-            const tag = await response.json();
+            showLoading();
 
-            $('#modalTitle').text('Edit Tag');
-            $('#tagId').val(tag.tagId);
-            $('#tagName').val(tag.tagName);
-            $('#note').val(tag.note || '');
+            try {
+                const response = await fetch(`/Tags/Index?handler=Get&id=${id}`);
+                const tag = await response.json();
 
-            tagModal.show();
+                hideLoading();
+
+                $('#modalTitle').text('Edit Tag');
+                $('#tagId').val(tag.tagId);
+                $('#tagName').val(tag.tagName);
+                $('#note').val(tag.note || '');
+
+                tagModal.show();
+            } catch (error) {
+                hideLoading();
+                toastr.error('Failed to load tag data');
+                console.error(error);
+            }
         }
 
         async function saveTag() {
             const tagData = {
-                tagId: $('#tagId').val() || 0,
-                tagName: $('#tagName').val(),
-                note: $('#note').val()
+                TagId: parseInt($('#tagId').val()) || 0,
+                TagName: $('#tagName').val().trim(),
+                Note: $('#note').val().trim()
             };
 
-            if (!tagData.tagName) {
+            if (!tagData.TagName) {
                 toastr.error('Tag name is required');
                 return;
             }
 
-            const url = tagData.tagId > 0 ? '/Staff/Tags/Update' : '/Staff/Tags/Create';
+            const handler = tagData.TagId > 0 ? 'Update' : 'Create';
+            const url = `/Tags/Index?handler=${handler}`;
+
+            showLoading();
 
             try {
                 const response = await fetch(url, {
@@ -149,22 +162,25 @@
 
                 const result = await response.json();
 
+                hideLoading();
+
                 if (result.success) {
                     toastr.success(result.message);
                     tagModal.hide();
 
                     // Notify via SignalR
-                    if (tagData.tagId > 0) {
-                        await window.signalRConnection.invoke("NotifyTagUpdated", tagData.tagName);
+                    if (tagData.TagId > 0) {
+                        await window.signalRConnection?.invoke("NotifyTagUpdated", tagData.TagName);
                     } else {
-                        await window.signalRConnection.invoke("NotifyTagCreated", tagData.tagName);
+                        await window.signalRConnection?.invoke("NotifyTagCreated", tagData.TagName);
                     }
 
-                    setTimeout(() => location.reload(), 1000);
+                    setTimeout(() => location.reload(), 1500);
                 } else {
                     toastr.error(result.message);
                 }
             } catch (error) {
+                hideLoading();
                 toastr.error('An error occurred while saving the tag');
                 console.error(error);
             }
@@ -177,24 +193,30 @@
         }
 
         async function deleteTag(id, name) {
+            showLoading();
+
             try {
-                const response = await fetch(`/Staff/Tags/Delete?id=${id}`, {
-                    method: 'POST'
+                const response = await fetch(`/Tags/Index?handler=Delete&id=${id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
                 });
 
                 const result = await response.json();
+
+                hideLoading();
 
                 if (result.success) {
                     toastr.success(result.message);
 
                     // Notify via SignalR
-                    await window.signalRConnection.invoke("NotifyTagDeleted", name);
+                    await window.signalRConnection?.invoke("NotifyTagDeleted", name);
 
-                    setTimeout(() => location.reload(), 1000);
+                    setTimeout(() => location.reload(), 1500);
                 } else {
                     toastr.error(result.message);
                 }
             } catch (error) {
+                hideLoading();
                 toastr.error('An error occurred while deleting the tag');
                 console.error(error);
             }
@@ -210,5 +232,35 @@
             location.reload();
         }
         window.refreshTagsList = refreshTagsList;
+
+        // SignalR Real-time notifications
+        if (window.signalRConnection) {
+            // Tag created
+            window.signalRConnection.on("TagCreated", function(tagName) {
+                toastr.success(`🏷️ New tag "${tagName}" has been created`, 'Tag Created', {
+                    timeOut: 4000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
+            });
+
+            // Tag updated
+            window.signalRConnection.on("TagUpdated", function(tagName) {
+                toastr.info(`✏️ Tag "${tagName}" has been updated`, 'Tag Updated', {
+                    timeOut: 4000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
+            });
+
+            // Tag deleted
+            window.signalRConnection.on("TagDeleted", function(tagName) {
+                toastr.warning(`🗑️ Tag "${tagName}" has been deleted`, 'Tag Deleted', {
+                    timeOut: 4000,
+                    closeButton: true
+                });
+                setTimeout(() => location.reload(), 2000);
+            });
+        }
     </script>
 }

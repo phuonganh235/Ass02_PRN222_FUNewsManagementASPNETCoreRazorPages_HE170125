@@ -43,6 +43,11 @@
                                     <i class="fas fa-users"></i> Accounts
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Admin/Comments/Index">
+                                    <i class="fas fa-comments"></i> Comments
+                                </a>
+                            </li>
                         }
                         @if (userRole == 1) // Staff (role = 1)
 {
@@ -188,6 +193,18 @@
                 setTimeout(function () {
                     window.location.href = '/Login/Index';
                 }, 3000);
+            }
+        });
+
+        // Comment moderation - Notification when comment is deleted by Admin
+        connection.on("CommentDeletedByAdmin", function (commentId, accountId) {
+            const currentUserId = @(Context.Session.GetInt32("UserId") ?? 0);
+            if (currentUserId === accountId) {
+                toastr.warning('⚠️ Your comment has been removed by Admin due to violation of community guidelines.', 'Comment Removed', {
+                    timeOut: 10000,
+                    closeButton: true,
+                    progressBar: true
+                });
             }
         });
 

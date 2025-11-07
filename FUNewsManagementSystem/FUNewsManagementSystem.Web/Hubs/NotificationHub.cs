@@ -189,6 +189,16 @@ namespace FUNewsManagementSystem.Web.Hubs
             await Clients.All.SendAsync("CommentDeleted", commentId, newsArticleId);
         }
 
+        public async Task NotifyCommentDeletedByAdmin(int commentId, int accountId, string accountName)
+        {
+            // Notify all users that a comment was deleted
+            await Clients.All.SendAsync("ReceiveNotification",
+                $"💬 Comment by {accountName} has been removed by Admin", "warning");
+
+            // Send specific notification to the comment author
+            await Clients.All.SendAsync("CommentDeletedByAdmin", commentId, accountId);
+        }
+
         // Live editing notification
         public async Task NotifyUserEditing(string newsArticleId, string userName)
         {

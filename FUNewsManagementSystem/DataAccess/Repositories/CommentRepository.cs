@@ -19,6 +19,15 @@ namespace DataAccess.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Comment>> GetAllCommentsWithDetailsAsync()
+        {
+            return await _dbSet
+                .Include(c => c.Account)
+                .Include(c => c.NewsArticle)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToListAsync();
+        }
+
         public async Task<int> GetCommentCountByNewsArticleAsync(string newsArticleId)
         {
             return await _dbSet.CountAsync(c => c.NewsArticleId == newsArticleId);

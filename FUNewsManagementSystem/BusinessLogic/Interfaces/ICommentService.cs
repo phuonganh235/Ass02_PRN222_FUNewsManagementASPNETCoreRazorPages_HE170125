@@ -5,6 +5,7 @@ namespace BusinessLogic.Interfaces
     public interface ICommentService
     {
         Task<IEnumerable<CommentViewModel>> GetCommentsByNewsArticleAsync(string newsArticleId);
+        Task<IEnumerable<CommentViewModel>> GetAllCommentsAsync();
         Task<CommentViewModel?> GetCommentByIdAsync(int id);
         Task<CommentViewModel> CreateCommentAsync(string newsArticleId, short accountId, string content);
         Task<bool> DeleteCommentAsync(int id);

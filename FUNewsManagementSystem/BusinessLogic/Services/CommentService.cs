@@ -20,6 +20,12 @@ namespace BusinessLogic.Services
             return comments.Select(MapToViewModel);
         }
 
+        public async Task<IEnumerable<CommentViewModel>> GetAllCommentsAsync()
+        {
+            var comments = await _commentRepository.GetAllCommentsWithDetailsAsync();
+            return comments.Select(MapToViewModel);
+        }
+
         public async Task<CommentViewModel?> GetCommentByIdAsync(int id)
         {
             var comment = await _commentRepository.GetByIdAsync(id);
@@ -70,6 +76,7 @@ namespace BusinessLogic.Services
                 NewsArticleId = comment.NewsArticleId,
                 AccountId = comment.AccountId,
                 AccountName = comment.Account?.AccountName ?? "Unknown",
+                NewsTitle = comment.NewsArticle?.NewsTitle ?? "Unknown Article",
                 Content = comment.Content,
                 CreatedAt = comment.CreatedAt
             };

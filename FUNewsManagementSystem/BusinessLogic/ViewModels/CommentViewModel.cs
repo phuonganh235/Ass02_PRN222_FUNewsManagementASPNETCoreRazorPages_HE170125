@@ -13,6 +13,8 @@ namespace BusinessLogic.ViewModels
 
         public string AccountName { get; set; } = string.Empty;
 
+        public string NewsTitle { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Comment content is required")]
         [StringLength(1000, ErrorMessage = "Comment cannot exceed 1000 characters")]
         public string Content { get; set; } = string.Empty;

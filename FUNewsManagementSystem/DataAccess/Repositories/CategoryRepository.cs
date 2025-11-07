@@ -14,7 +14,8 @@ namespace DataAccess.Repositories
         {
             return await _dbSet
                 .Where(c => c.IsActive)
-                .OrderBy(c => c.CategoryName)
+                .OrderBy(c => c.SortOrder)
+                .ThenBy(c => c.CategoryName)
                 .ToListAsync();
         }
 
@@ -22,7 +23,8 @@ namespace DataAccess.Repositories
         {
             return await _dbSet
                 .Where(c => c.ParentCategoryID == null && c.IsActive)
-                .OrderBy(c => c.CategoryName)
+                .OrderBy(c => c.SortOrder)
+                .ThenBy(c => c.CategoryName)
                 .ToListAsync();
         }
 
@@ -61,7 +63,8 @@ namespace DataAccess.Repositories
 
             return await query
                 .Include(c => c.ParentCategory)
-                .OrderBy(c => c.CategoryName)
+                .OrderBy(c => c.SortOrder)
+                .ThenBy(c => c.CategoryName)
                 .ToListAsync();
         }
 
@@ -70,6 +73,27 @@ namespace DataAccess.Repositories
             return await _dbSet
                 .Include(c => c.ChildCategories)
                 .FirstOrDefaultAsync(c => c.CategoryID == categoryId);
+        }
+
+        public async Task<bool> UpdateCategoryOrdersAsync(Dictionary<short, int> categoryOrders)
+        {
+            try
+            {
+                foreach (var order in categoryOrders)
+                {
+                    var category = await _dbSet.FindAsync(order.Key);
+                    if (category != null)
+                    {
+                        category.SortOrder = order.Value;
+                    }
+                }
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

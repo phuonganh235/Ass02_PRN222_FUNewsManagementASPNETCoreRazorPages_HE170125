@@ -21,6 +21,8 @@ public class Category
     [Required]
     public bool IsActive { get; set; } = true;
 
+    public int SortOrder { get; set; } = 0;
+
     // Navigation properties...
     public virtual ICollection<Category> ChildCategories { get; set; } = new List<Category>();
     public virtual Category? ParentCategory { get; set; }

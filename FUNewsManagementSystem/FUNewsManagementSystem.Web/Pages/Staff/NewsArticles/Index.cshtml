@@ -129,6 +129,11 @@
                                        class="btn btn-warning" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    <button class="btn btn-success"
+                                            onclick="duplicateArticle('@news.NewsArticleId', '@news.NewsTitle')"
+                                            title="Duplicate">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
                                     <button class="btn btn-danger"
                                             onclick="confirmDelete('@news.NewsArticleId', '@news.NewsTitle')"
                                             title="Delete">
@@ -193,6 +198,48 @@
             } catch (error) {
                 hideLoading();
                 toastr.error('An error occurred while deleting the article');
+                console.error(error);
+            }
+        }
+
+        async function duplicateArticle(id, title) {
+            if (!confirm(`📋 DUPLICATE ARTICLE\n\nCreate a copy of:\n"${title}"?\n\nThe duplicate will be created with [COPY] prefix and set to inactive.`)) {
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const response = await fetch(`/Staff/NewsArticles/Index?handler=Duplicate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                    },
+                    body: JSON.stringify({ id: id })
+                });
+
+                const result = await response.json();
+
+                hideLoading();
+
+                if (result.success) {
+                    toastr.success(`${result.message} (ID: ${result.newId})`);
+
+                    // Notify via SignalR
+                    const userName = '@HttpContext.Session.GetString("UserName")';
+                    await window.signalRConnection?.invoke("NotifyNewsArticleCreated",
+                        `[COPY] ${title}`,
+                        userName
+                    );
+
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    toastr.error(result.message);
+                }
+            } catch (error) {
+                hideLoading();
+                toastr.error('An error occurred while duplicating the article');
                 console.error(error);
             }
         }

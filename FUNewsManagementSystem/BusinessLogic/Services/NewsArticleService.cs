@@ -212,6 +212,55 @@ namespace BusinessLogic.Services
             return result;
         }
 
+        public async Task<string?> DuplicateNewsAsync(string originalNewsId, short createdById)
+        {
+            // Get original article
+            var original = await _newsRepository.GetNewsWithDetailsAsync(originalNewsId);
+            if (original == null)
+                return null;
+
+            // Generate new ID by appending "_COPY" and timestamp
+            var newId = $"{originalNewsId}_COPY_{DateTime.Now:yyyyMMddHHmmss}";
+
+            // Ensure new ID doesn't exist
+            int counter = 1;
+            while (await _newsRepository.NewsIdExistsAsync(newId))
+            {
+                newId = $"{originalNewsId}_COPY_{DateTime.Now:yyyyMMddHHmmss}_{counter}";
+                counter++;
+            }
+
+            // Create duplicate article
+            var duplicate = new NewsArticle
+            {
+                NewsArticleId = newId,
+                NewsTitle = $"[COPY] {original.NewsTitle}",
+                Headline = original.Headline,
+                NewsContent = original.NewsContent,
+                NewsSource = original.NewsSource,
+                CategoryId = original.CategoryId,
+                NewsStatus = false, // Set to inactive by default
+                CreatedDate = DateTime.Now,
+                CreatedById = createdById
+            };
+
+            await _newsRepository.AddAsync(duplicate);
+
+            // Copy tags
+            var originalTags = await _newsTagRepository.GetByNewsArticleIdAsync(originalNewsId);
+            foreach (var tag in originalTags)
+            {
+                var newsTag = new NewsTag
+                {
+                    NewsArticleId = newId,
+                    TagId = tag.TagId
+                };
+                await _newsTagRepository.AddAsync(newsTag);
+            }
+
+            return newId;
+        }
+
         private async Task<NewsArticleViewModel> MapToViewModel(NewsArticle news)
         {
             var viewModel = new NewsArticleViewModel

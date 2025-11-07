@@ -14,5 +14,6 @@ namespace BusinessLogic.Interfaces
         Task<IEnumerable<CategoryViewModel>> SearchCategoriesAsync(string? searchTerm, bool? isActive);
         Task<bool> CanDeleteCategoryAsync(short categoryId);
         Task<bool> CategoryNameExistsAsync(string name, short? excludeCategoryId = null);
+        Task<bool> UpdateCategoryOrdersAsync(Dictionary<short, int> categoryOrders);
     }
 }

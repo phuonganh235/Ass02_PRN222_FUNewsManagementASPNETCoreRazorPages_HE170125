@@ -20,6 +20,8 @@ namespace BusinessLogic.ViewModels
         [Required]
         public bool IsActive { get; set; } = true;
 
+        public int SortOrder { get; set; } = 0;
+
         public string StatusText => IsActive ? "Active" : "Inactive";
     }
 }

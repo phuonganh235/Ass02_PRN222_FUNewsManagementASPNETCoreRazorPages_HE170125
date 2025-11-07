@@ -7,6 +7,7 @@
 <div class="row mb-3">
     <div class="col-md-6">
         <h2><i class="fas fa-folder"></i> Category Management</h2>
+        <p class="text-muted"><i class="fas fa-arrows-alt"></i> Drag and drop to reorder categories</p>
     </div>
     <div class="col-md-6 text-end">
         <button type="button" class="btn btn-primary" onclick="openCreateModal()">
@@ -39,6 +40,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th width="40px"><i class="fas fa-grip-vertical"></i></th>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Description</th>
@@ -50,7 +52,10 @@
                 <tbody id="categoryTableBody">
                     @foreach (var category in Model.Categories)
                     {
-                        <tr>
+                        <tr data-category-id="@category.CategoryId" style="cursor: move;">
+                            <td class="drag-handle" style="cursor: grab;">
+                                <i class="fas fa-grip-vertical text-muted"></i>
+                            </td>
                             <td>@category.CategoryId</td>
                             <td>@category.CategoryName</td>
                             <td>@category.CategoryDesciption</td>
@@ -129,12 +134,70 @@
 </div>
 
 @section Scripts {
+    <!-- SortableJS for drag-and-drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
     <script>
         let categoryModal;
+        let sortable;
 
         $(document).ready(function() {
             categoryModal = new bootstrap.Modal(document.getElementById('categoryModal'));
+
+            // Initialize SortableJS
+            initializeSortable();
         });
+
+        function initializeSortable() {
+            const tbody = document.getElementById('categoryTableBody');
+            if (!tbody) return;
+
+            sortable = new Sortable(tbody, {
+                animation: 150,
+                handle: '.drag-handle',
+                ghostClass: 'bg-light',
+                onEnd: async function(evt) {
+                    await updateCategoryOrder();
+                }
+            });
+        }
+
+        async function updateCategoryOrder() {
+            const rows = document.querySelectorAll('#categoryTableBody tr');
+            const categoryOrders = {};
+
+            rows.forEach((row, index) => {
+                const categoryId = parseInt(row.getAttribute('data-category-id'));
+                categoryOrders[categoryId] = index;
+            });
+
+            try {
+                const response = await fetch('/Staff/Categories/Index?handler=UpdateOrders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                    },
+                    body: JSON.stringify(categoryOrders)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    toastr.success('Category order updated!');
+
+                    // Notify other users via SignalR
+                    await window.signalRConnection.invoke("NotifyCategoryOrderChanged");
+                } else {
+                    toastr.error(result.message || 'Failed to update order');
+                    location.reload(); // Reload to restore original order
+                }
+            } catch (error) {
+                console.error('Error updating category order:', error);
+                toastr.error('An error occurred while updating order');
+                location.reload();
+            }
+        }
 
         function openCreateModal() {
             $('#modalTitle').text('Add New Category');
@@ -241,10 +304,18 @@
             window.location.href = `?searchTerm=${searchTerm}&isActive=${status}`;
         }
 
-        // Real-time refresh function
+        // Real-time refresh functions
         function refreshCategoriesList() {
             location.reload();
         }
         window.refreshCategoriesList = refreshCategoriesList;
+
+        // Listen for category order changes from other users
+        if (window.signalRConnection) {
+            window.signalRConnection.on("RefreshCategoryOrder", function() {
+                toastr.info('Categories reordered by another user');
+                setTimeout(() => location.reload(), 1500);
+            });
+        }
     </script>
 }
